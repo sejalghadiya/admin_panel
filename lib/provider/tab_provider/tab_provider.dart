@@ -1,0 +1,29 @@
+import 'package:flutter/material.dart';
+
+import '../../access_code/access_code.dart';
+import '../../dashboard.dart';
+import '../../product/all_product_get.dart';
+import '../../report/report_screen.dart';
+import '../../user/user_Screen.dart';
+
+class TabProvider with ChangeNotifier {
+  int selectedIndex = 0;
+  int lastIndex = 0;
+  Widget selectedWidget = Dashboard();
+
+  void setSelectedIndex(int index) {
+    lastIndex = selectedIndex;
+    selectedIndex = index;
+
+    switch(index) {
+      case 0: selectedWidget = Dashboard(); break;
+      case 1: selectedWidget = AllProductGet(); break;
+      case 2: selectedWidget = UserScreen(); break;
+      case 3: selectedWidget = AccessCode(); break;
+      case 4: selectedWidget = ReportScreen(); break;
+      default: selectedWidget = Dashboard();
+    }
+
+    notifyListeners();
+  }
+}
