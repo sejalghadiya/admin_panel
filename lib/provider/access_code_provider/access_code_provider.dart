@@ -116,7 +116,7 @@ class AccessCodeProvider extends ChangeNotifier {
       print(data);
       if (response.statusCode == 200) {
         ToastMessage.success("Success", "Access code sent successfully");
-        GetxNavigation.goBack();
+        // GetxNavigation.goBack();
       }
       else {
         ToastMessage.error("Error", data['message']);
@@ -146,6 +146,4 @@ class AccessCodeProvider extends ChangeNotifier {
     }
 
   }
-
-
 }

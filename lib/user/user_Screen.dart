@@ -281,6 +281,10 @@ class _UserScreenState extends State<UserScreen>
 
   @override
   Widget build(BuildContext context) {
+    AccessCodeProvider accessCodeProvider = Provider.of<AccessCodeProvider>(
+      context,
+      listen: true,
+    );
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -499,7 +503,11 @@ class _UserScreenState extends State<UserScreen>
                                           } else if ((user.category == 'B' ||
                                                   user.category == 'β') &&
                                               !user.isOtpVerified) {
-                                            return null;
+                                            Map<String, dynamic> body = {
+                                              "email": user.email,
+                                              "userCategory": user.category,
+                                            };
+                                            accessCodeProvider.userAccess(body);
                                           }
                                         },
                                         child: Text(
