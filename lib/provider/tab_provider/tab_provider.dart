@@ -1,3 +1,4 @@
+import 'package:admin_panel/app_version/app_version.dart';
 import 'package:flutter/material.dart';
 
 import '../../access_code/access_code.dart';
@@ -21,6 +22,7 @@ class TabProvider with ChangeNotifier {
       case 2: selectedWidget = UserScreen(); break;
       case 3: selectedWidget = AccessCode(); break;
       case 4: selectedWidget = ReportScreen(); break;
+      case 5: selectedWidget = AppVersion(); break;
       default: selectedWidget = Dashboard();
     }
 

@@ -4,6 +4,8 @@ import 'package:admin_panel/local_Storage/admin_shredPreferences.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../../network_connection/apis.dart';
+
 class TotalUserProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -157,7 +159,7 @@ class TotalUserProvider extends ChangeNotifier {
 
       var request = http.Request(
         'GET',
-        Uri.parse('https://api.bhavnika.shop/api/admin/get_all_user'),
+        Uri.parse('${Apis.BASE_URL}/admin/get_all_user'),
       );
       request.headers.addAll({
         'Content-Type': 'application/json',

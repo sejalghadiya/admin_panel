@@ -15,6 +15,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../navigation/getX_navigation.dart';
+import '../network_connection/apis.dart';
 
 class AllProductGet extends StatefulWidget {
   static const routeName = "/all-product-get";
@@ -30,7 +31,7 @@ class _AllProductGetState extends State<AllProductGet>
   @override
   TabController? _tabController;
 
-  String baseUrl = 'https://api.bhavnika.shop';
+  String baseUrl = Apis.BASE_URL_IMAGE;
   String selectedCategory = "";
   int selectedProductTypeIndex = 0;
   TextEditingController searchController = TextEditingController();
@@ -176,7 +177,7 @@ class _AllProductGetState extends State<AllProductGet>
                               ? Colors.green.shade700
                               : Colors.white,
                     ),
-                    child: Text("A ${productProvider.countByCategory("A")}",style: TextStyle(color: selectedCategory == "A" ? Colors.white : Colors.green),),
+                    child: Text("A ${productProvider.countByProductTypeId(selectedProductTypeIndex).A}",style: TextStyle(color: selectedCategory == "A" ? Colors.white : Colors.green),),
                   ),
                 ),
                 InkWell(
@@ -220,7 +221,7 @@ class _AllProductGetState extends State<AllProductGet>
                           ? Colors.green.shade700
                           : Colors.white,
                     ),
-                    child: Text("B ${productProvider.countByCategory("B")}",style: TextStyle(color: selectedCategory == "B" ? Colors.white : Colors.green),),
+                    child: Text("B ${productProvider.countByProductTypeId(selectedProductTypeIndex).B}",style: TextStyle(color: selectedCategory == "B" ? Colors.white : Colors.green),),
                   ),
                 ),
                 InkWell(
@@ -264,7 +265,7 @@ class _AllProductGetState extends State<AllProductGet>
                           ? Colors.green.shade700
                           : Colors.white,
                     ),
-                    child: Text("C ${productProvider.countByCategory("C")}",style: TextStyle(color: selectedCategory == "C" ? Colors.white : Colors.green),),
+                    child: Text("C ${productProvider.countByProductTypeId(selectedProductTypeIndex).C}",style: TextStyle(color: selectedCategory == "C" ? Colors.white : Colors.green),),
                   ),
                 ),
                 InkWell(
@@ -308,7 +309,7 @@ class _AllProductGetState extends State<AllProductGet>
                           ? Colors.green.shade700
                           : Colors.white,
                     ),
-                    child: Text("D ${productProvider.countByCategory("D")}",style: TextStyle(color: selectedCategory == "D" ? Colors.white : Colors.green),),
+                    child: Text("D ${productProvider.countByProductTypeId(selectedProductTypeIndex).D}",style: TextStyle(color: selectedCategory == "D" ? Colors.white : Colors.green),),
                   ),
                 ),
                 InkWell(
@@ -352,7 +353,7 @@ class _AllProductGetState extends State<AllProductGet>
                           ? Colors.green.shade700
                           : Colors.white,
                     ),
-                    child: Text("E ${productProvider.countByCategory("E")}",style: TextStyle(color: selectedCategory == "E" ? Colors.white : Colors.green),),
+                    child: Text("E ${productProvider.countByProductTypeId(selectedProductTypeIndex).E}",style: TextStyle(color: selectedCategory == "E" ? Colors.white : Colors.green),),
                   ),
                 ),
               ],

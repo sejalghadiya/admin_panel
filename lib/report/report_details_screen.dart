@@ -214,7 +214,7 @@ class _ReportDetailsScreenState extends State<ReportDetailsScreen> {
                             onPressed: () {
                               Get.toNamed(
                                 UserDetailsScreen.routeName,
-                                arguments: report.productId, // make sure this ID is available in report
+                                arguments: report.productUserId, // make sure this ID is available in report
                               );
                             },
                             icon: const Icon(Icons.info_outline),

@@ -1,4 +1,5 @@
 import 'package:admin_panel/admin_auth/login_page.dart';
+import 'package:admin_panel/app_version/app_version.dart';
 import 'package:admin_panel/dashboard.dart';
 import 'package:admin_panel/home_page.dart';
 import 'package:admin_panel/product/all_product_get.dart';
@@ -46,6 +47,7 @@ class Routs{
     GetPage(name: ServicesDetailScreen.routeName, page: () => ServicesDetailScreen()),
     GetPage(name: OtherProductDetails.routeName, page: () => OtherProductDetails()),
     GetPage(name: PropertyDetailsScreen.routeName, page: () => PropertyDetailsScreen()),
+    GetPage(name: AppVersion.routeName, page: () => AppVersion()),
 
   ];
 }

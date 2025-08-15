@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../network_connection/apis.dart';
 import '../../../provider/product_provider/product_provider.dart';
 import '../../../widgets/loading_widget.dart';
 
@@ -43,7 +44,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
   int selectedIndex = 0;
   String productId = "";
   String modelName = "";
-  String baseUrl = 'https://api.bhavnika.shop';
+  String baseUrl = Apis.BASE_URL_IMAGE;
   final OutlineInputBorder border = OutlineInputBorder(
     borderSide: BorderSide(color: Colors.black,width: 0.5),
     borderRadius: BorderRadius.circular(8),

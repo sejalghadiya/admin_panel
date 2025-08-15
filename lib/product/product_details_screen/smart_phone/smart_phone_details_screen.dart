@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import '../../../local_Storage/admin_shredPreferences.dart';
+import '../../../network_connection/apis.dart';
 import '../../../provider/product_provider/product_provider.dart';
 import '../../../utils/brand_list.dart';
 import '../../../widgets/loading_widget.dart';
@@ -37,7 +38,7 @@ class _SmartPhoneDetailsScreenState extends State<SmartPhoneDetailsScreen> {
   String productId = "";
   String modelName = "";
 
-  String baseUrl = 'https://api.bhavnika.shop';
+  String baseUrl = Apis.BASE_URL_IMAGE;
   @override
   void initState() {
     super.initState();

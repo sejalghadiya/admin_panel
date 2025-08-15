@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import '../../../network_connection/apis.dart';
 import '../../../provider/product_provider/product_provider.dart';
 import '../../../widgets/loading_widget.dart';
 class ServicesDetailScreen extends StatefulWidget {
@@ -20,7 +21,7 @@ class _ServicesDetailScreenState extends State<ServicesDetailScreen> {
   final TextEditingController _addServiceOrJobType = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   bool isEditable = false;
-  String baseUrl = 'https://api.bhavnika.shop';
+  String baseUrl = Apis.BASE_URL_IMAGE;
   int selectedIndex = 0;
   String productId = "";
   String modelName = "";

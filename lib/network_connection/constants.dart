@@ -11,6 +11,7 @@ class Constants {
 }
 
 class Url {
-  static const String baseUrl = 'https://api.bhavnika.shop';
+  // static const String baseUrl = Apis.BASE_URL_IMAGE;
+  static const String baseUrl = 'https://localhost:3001';
 
 }

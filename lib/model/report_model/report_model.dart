@@ -36,7 +36,7 @@ class ReportModel {
   String productPrice;
   String productCategory;
   String productAddress;
-
+  String productUserId;
   String productUserFName;
   String productUserLName;
   String productUserPhone;
@@ -95,6 +95,7 @@ class ReportModel {
     required this.productUserArea,
     required this.isActive,
     required this.userLName,
+    required this.productUserId,
     // required this.userPhone,
     // required this.userDOB,
     // required this.userOccupation,
@@ -103,6 +104,8 @@ class ReportModel {
   factory ReportModel.fromJson(Map<String, dynamic> json) {
     final user = json['userId'] ?? {};
     final product = json['productId'] ?? {};
+
+    print("product user id${product['userId']['_id']}");
 
     return ReportModel(
       userModel: UserModel.fromJson(user),
@@ -144,6 +147,7 @@ class ReportModel {
       productUserState: getLastIndexOfData(product['userId']['state'] ?? []),
       productUserDistrict: getLastIndexOfData(product['userId']['city'] ?? []),
       productUserArea: getLastIndexOfData(product['userId']['area'] ?? []),
+      productUserId: product['userId']['_id'],
       userState: getLastIndexOfData(user['state'] ?? []),
       userDistrict: getLastIndexOfData(user['city'] ?? []),
       userArea: getLastIndexOfData(user['area'] ?? []),

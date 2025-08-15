@@ -5,6 +5,8 @@ import 'package:admin_panel/model/report_model/report_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
+import '../../network_connection/apis.dart';
+
 class ReportProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -34,7 +36,7 @@ class ReportProvider extends ChangeNotifier {
       };
       var request = http.Request(
         'GET',
-        Uri.parse('https://api.bhavnika.shop/api/admin/report_product'),
+        Uri.parse('${Apis.BASE_URL}/admin/report_product'),
       );
       request.headers.addAll(headers);
       http.StreamedResponse response = await request.send();
@@ -64,7 +66,7 @@ class ReportProvider extends ChangeNotifier {
         'Content-Type': 'application/json',
         'Authorization' : 'Bearer $token'
       };
-      var request = http.Request('GET', Uri.parse('https://api.bhavnika.shop/api/admin/get_report_product_by_id?reportId=$reportId'));
+      var request = http.Request('GET', Uri.parse('${Apis.BASE_URL}/admin/get_report_product_by_id?reportId=$reportId'));
       request.headers.addAll(headers);
       http.StreamedResponse response = await request.send();
       final responseBody = await response.stream.bytesToString();
@@ -96,7 +98,7 @@ class ReportProvider extends ChangeNotifier {
       };
       var request = http.Request(
         'GET',
-        Uri.parse('https://api.bhavnika.shop/api/admin/get_report_count'),
+        Uri.parse('${Apis.BASE_URL}/admin/get_report_count'),
       );
       request.headers.addAll(headers);
       http.StreamedResponse response = await request.send();

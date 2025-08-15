@@ -32,9 +32,12 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    userId = Get.arguments;
-    Provider.of<UserProvider>(context, listen: false).fetchUserData(userId);
-    Provider.of<ProductProvider>(context, listen: false).getProductByUserId(userId);
+    Future.microtask(() {
+      userId = Get.arguments;
+      Provider.of<UserProvider>(context, listen: false).clearUserData();
+      Provider.of<UserProvider>(context, listen: false).fetchUserData(userId);
+      Provider.of<ProductProvider>(context, listen: false).getProductByUserId(userId);
+    });
   }
 
   @override

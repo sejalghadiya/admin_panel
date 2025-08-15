@@ -82,6 +82,16 @@ class ProductProvider extends ChangeNotifier {
     return _allProducts.where((p) => p.category == category).length;
   }
 
+  ({int A, int B, int C, int D, int E}) countByProductTypeId(int index) {
+    CategoryCount categoryCount = products[index].categoryCounts;
+    int countA = categoryCount.countForA;
+    int countB = categoryCount.countForB;
+    int countC = categoryCount.countForC;
+    int countD = categoryCount.countForD;
+    int countE = categoryCount.countForE;
+    return (A:countA,B:countB,C:countC,D:countD,E:countE);
+  }
+
   List<String> nameList = [];
   void setNames(List<ProductTypeModel> names) {
     nameList = _name as List<String>;
@@ -126,7 +136,7 @@ class ProductProvider extends ChangeNotifier {
   }
 
   Future<void> fetchProducts(String productTypeId, {String category = ""}) async {
-    final url = Uri.parse('https://api.bhavnika.shop/api/admin/get_product_with_type?productTypeId=$productTypeId&category=$category');
+    final url = Uri.parse('${Apis.BASE_URL}/admin/get_product_with_type?productTypeId=$productTypeId&category=$category');
 
     try {
       String token = await AdminSharedPreferences().getAuthToken();
@@ -411,7 +421,7 @@ class ProductProvider extends ChangeNotifier {
       var request = http.Request(
         'DELETE',
         Uri.parse(
-          'https://api.bhavnika.shop/api/admin/delete_product_by_admin?productId=$productId&productType=$productType',
+          '${Apis.BASE_URL}/admin/delete_product_by_admin?productId=$productId&productType=$productType',
         ),
       );
       request.headers.addAll(headers);
@@ -470,7 +480,7 @@ class ProductProvider extends ChangeNotifier {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
     };
-    var request = http.Request('POST', Uri.parse('https://api.bhavnika.shop/api/products/product-active-inactive'));
+    var request = http.Request('POST', Uri.parse('${Apis.BASE_URL}/products/product-active-inactive'));
     request.body = json.encode(body);
     request.headers.addAll(headers);
     print(body);
@@ -537,7 +547,7 @@ class ProductProvider extends ChangeNotifier {
       };
       var request = http.Request(
         'GET',
-        Uri.parse('https://api.bhavnika.shop/api/admin/get-product-by-userId?userId=$userId'),
+        Uri.parse('${Apis.BASE_URL}/admin/get-product-by-userId?userId=$userId'),
       );
       print("Url:---$request");
       request.headers.addAll(headers);
@@ -609,7 +619,7 @@ class ProductProvider extends ChangeNotifier {
     try {
       final request = http.Request(
         'GET',
-        Uri.parse('https://api.bhavnika.shop/api/products/get?query=$searchQuery&categories=$selectedCategory&modelName=$modelName'),
+        Uri.parse('${Apis.BASE_URL}/products/get?query=$searchQuery&categories=$selectedCategory&modelName=$modelName'),
       );
 
       final response = await request.send();

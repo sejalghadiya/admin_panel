@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import '../../../network_connection/apis.dart';
 import '../../../provider/product_provider/product_provider.dart';
 import '../../../utils/brand_list.dart';
 
@@ -39,7 +40,7 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
   String productId = "";
   String modelName = "";
   int selectedIndex = 0;
-  String baseUrl = 'https://api.bhavnika.shop';
+  String baseUrl = Apis.BASE_URL_IMAGE;
   final OutlineInputBorder border = OutlineInputBorder(
     borderSide: BorderSide(color: Colors.black, width: 0.5),
     borderRadius: BorderRadius.circular(8),

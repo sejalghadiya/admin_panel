@@ -153,7 +153,7 @@ class UserProvider extends ChangeNotifier {
     };
     var request = http.Request(
       'GET',
-      Uri.parse('https://api.bhavnika.shop/api/admin/get_user_category'),
+      Uri.parse('${Apis.BASE_URL}/admin/get_user_category'),
     );
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
@@ -187,7 +187,7 @@ class UserProvider extends ChangeNotifier {
       };
       var request = http.Request(
         'GET',
-        Uri.parse('https://api.bhavnika.shop/api/admin/get_user_by_userCategory?userCategory=$_selectedCategory'),
+        Uri.parse('${Apis.BASE_URL}/admin/get_user_by_userCategory?userCategory=$_selectedCategory'),
       );
       request.headers.addAll(headers);
       http.StreamedResponse response = await request.send();
@@ -222,8 +222,71 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
+  void clearUserData(){
+    _userId = "";
+    _userFName = "";
+    _userMName = "";
+    _userLName = "";
+    _userGender = "";
+    _userDOB = "";
+    _userEmail ="";
+    _userPhone = "";
+    _userStreet1 = "";
+    _userStreet2 = "";
+    _userState = "";
+    _userDistrict = "";
+    _userArea = "";
+    _userPinCode = "";
+    _userAadhaarNumber = "";
+    _userProfileImage = "";
+    _userAadhaarFront = "";
+    _userAadhaarBack = "";
+    _userOccupationId = "";
+    _userCategory = "";
+    _userRole = "";
+    _isDeleted = false;
+    _isBlocked = false;
+    _isPinVerified = false;
+    _isOtpVerified = false;
+    _isActive =  true;
+    _userAssignPin ="";
+    _userReadData = [];
+    _userWriteData = [];
+    notifyListeners();
+  }
+
 
   Future<void> fetchUserData(String userId) async {
+    _userId = userId;
+    _userFName = "";
+    _userMName = "";
+    _userLName = "";
+    _userGender = "";
+    _userDOB = "";
+    _userEmail ="";
+    _userPhone = "";
+    _userStreet1 = "";
+    _userStreet2 = "";
+    _userState = "";
+    _userDistrict = "";
+    _userArea = "";
+    _userPinCode = "";
+    _userAadhaarNumber = "";
+    _userProfileImage = "";
+    _userAadhaarFront = "";
+    _userAadhaarBack = "";
+    _userOccupationId = "";
+    _userCategory = "";
+    _userRole = "";
+    _isDeleted = false;
+    _isBlocked = false;
+    _isPinVerified = false;
+    _isOtpVerified = false;
+    _isActive =  true;
+    _userAssignPin ="";
+    _userReadData = [];
+    _userWriteData = [];
+    notifyListeners();
     final uri = Uri.parse(Apis.GET_USER_BY_ID(userId));
     print(uri);
     print("--------->");
@@ -305,7 +368,7 @@ class UserProvider extends ChangeNotifier {
     };
     var request = http.Request(
       'DELETE',
-      Uri.parse('https://api.bhavnika.shop/api/admin/delete_user_by_admin?userId=$userId'),
+      Uri.parse('${Apis.BASE_URL}/admin/delete_user_by_admin?userId=$userId'),
     );
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
@@ -344,7 +407,7 @@ class UserProvider extends ChangeNotifier {
       'Content-Type': 'application/json',
       'Authorization' : 'Bearer $token'
     };
-    var request = http.Request('GET', Uri.parse('https://api.bhavnika.shop/api/admin/get_all_user'));
+    var request = http.Request('GET', Uri.parse('${Apis.BASE_URL}/admin/get_all_user'));
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     String res = await response.stream.bytesToString();
@@ -367,7 +430,7 @@ class UserProvider extends ChangeNotifier {
         'Content-Type': 'application/json',
         'Authorization' : 'Bearer $token'
       };
-      final url = Uri.parse('https://api.bhavnika.shop/api/admin/user_active_inActive?userId=$userId');
+      final url = Uri.parse('${Apis.BASE_URL}/admin/user_active_inActive?userId=$userId');
       final request = http.Request('POST', url);
       request.headers.addAll(headers);
       final response = await request.send();

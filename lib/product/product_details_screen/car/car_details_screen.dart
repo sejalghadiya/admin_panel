@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import '../../../network_connection/apis.dart';
 import '../../../provider/product_provider/product_provider.dart';
 import '../../../utils/brand_list.dart';
 import '../../../widgets/loading_widget.dart';
@@ -35,7 +36,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
   int selectedIndex = 0;
   String productId = "";
   String modelName = "";
-  String baseUrl = "https://api.bhavnika.shop";
+  String baseUrl = Apis.BASE_URL_IMAGE;
   List<String> fuelType = ['CNG & Hybrid','Diesel','Electric','LPG','Petrol'];
   List<String> generateYearList() {
     return List.generate(61, (index) => (2000 + index).toString());

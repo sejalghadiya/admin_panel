@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:admin_panel/local_Storage/admin_shredPreferences.dart';
 import 'package:admin_panel/model/access_code_model/access_code_model.dart';
 import 'package:admin_panel/navigation/getX_navigation.dart';
+import 'package:admin_panel/network_connection/apis.dart';
 import 'package:admin_panel/utils/toast_message/toast_message.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -27,7 +28,7 @@ class AccessCodeProvider extends ChangeNotifier {
 
     var request = http.Request(
       'GET',
-      Uri.parse('https://api.bhavnika.shop/api/admin/get-user-by-assign-pin?pin=$encodedPin'),
+      Uri.parse('${Apis.BASE_URL}/admin/get-user-by-assign-pin?pin=$encodedPin'),
     );
 
     request.headers.addAll(headers);
@@ -54,7 +55,7 @@ class AccessCodeProvider extends ChangeNotifier {
       'Content-Type': 'application/json',
       'Authorization' : 'Bearer $token'
     };
-    var request = http.Request('GET', Uri.parse('https://api.bhavnika.shop/api/admin/get-user-by-assign-pin?pin=$encodedPin'));
+    var request = http.Request('GET', Uri.parse('${Apis.BASE_URL}/admin/get-user-by-assign-pin?pin=$encodedPin'));
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     String resString = await response.stream.bytesToString();
@@ -78,7 +79,7 @@ class AccessCodeProvider extends ChangeNotifier {
       'Content-Type': 'application/json',
         'Authorization': 'Bearer $token'
     };
-    var request = http.Request('GET', Uri.parse('https://api.bhavnika.shop/api/admin/get-access-codes'));
+    var request = http.Request('GET', Uri.parse('${Apis.BASE_URL}/admin/get-access-codes'));
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     String resString = await response.stream.bytesToString();
@@ -107,7 +108,7 @@ class AccessCodeProvider extends ChangeNotifier {
         'Authorization': 'Bearer $token'
       };
       var request = http.Request(
-          'POST', Uri.parse('https://api.bhavnika.shop/api/admin/user-access'));
+          'POST', Uri.parse('${Apis.BASE_URL}/admin/user-access'));
       request.body = json.encode(body);
       request.headers.addAll(headers);
       http.StreamedResponse response = await request.send();
@@ -134,7 +135,7 @@ class AccessCodeProvider extends ChangeNotifier {
       'Content-Type': 'application/json',
       'Authorization' : 'Bearer $token'
     };
-    var request = http.Request('POST', Uri.parse('https://api.bhavnika.shop/api/admin/access_pin'));
+    var request = http.Request('POST', Uri.parse('${Apis.BASE_URL}/admin/access_pin'));
     request.body = json.encode(body);
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();

@@ -1,4 +1,5 @@
 
+import 'package:admin_panel/app_version/app_version_provider.dart';
 import 'package:admin_panel/provider/access_code_provider/access_code_provider.dart';
 import 'package:admin_panel/provider/admin_login_provider/admin_login_provider.dart';
 import 'package:admin_panel/provider/product_provider/product_provider.dart';
@@ -21,6 +22,7 @@ class ProviderList {
     ChangeNotifierProvider(create: (_) => AccessCodeProvider()),
     ChangeNotifierProvider(create: (_) => ReportProvider()),
     ChangeNotifierProvider(create: (_) => TabProvider()),
+    ChangeNotifierProvider(create: (_) => AppVersionProvider()),
 
   ];
 }

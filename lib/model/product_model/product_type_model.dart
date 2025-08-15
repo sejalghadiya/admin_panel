@@ -3,12 +3,14 @@ class ProductTypeModel {
   String name;
   String modelName;
   int count;
+  CategoryCount categoryCounts;
 
   ProductTypeModel({
     required this.id,
     required this.name,
     required this.modelName,
     required this.count,
+    required this.categoryCounts,
   });
 
   factory ProductTypeModel.fromJson(Map<String, dynamic> data) {
@@ -17,27 +19,36 @@ class ProductTypeModel {
       name: data['name'] ?? '',
       modelName: data['modelName'] ?? '',
       count: data['count'] ?? 0,
+      categoryCounts: CategoryCount.fromJson(data['categories'] ?? {}),
     );
   }
 }
 
-// class ProductTypeModel {
-//   final String name;
-//   final String modelName;
-//
-//   ProductTypeModel({required this.name, required this.modelName});
-//
-//   factory ProductTypeModel.fromJson(Map<String, dynamic> json) {
-//     return ProductTypeModel(
-//       name: json['name'],
-//       modelName: json['modelName'],
-//     );
-//   }
-//
-//   // Override the toString method to return the name and modelName
-//   @override
-//   String toString() {
-//     return 'ProductTypeModel(name: $name, modelName: $modelName)';
-//   }
-// }
+
+
+class CategoryCount{
+  int countForA;
+  int countForB;
+  int countForC;
+  int countForD;
+  int countForE;
+
+  CategoryCount({
+    required this.countForA,
+    required this.countForB,
+    required this.countForC,
+    required this.countForD,
+    required this.countForE,
+  });
+
+  factory CategoryCount.fromJson(Map<String, dynamic> data) {
+    return CategoryCount(
+      countForA: data['A'] ?? 0,
+      countForB: data['B'] ?? 0,
+      countForC: data['C'] ?? 0,
+      countForD: data['D'] ?? 0,
+      countForE: data['E'] ?? 0,
+    );
+  }
+}
 
