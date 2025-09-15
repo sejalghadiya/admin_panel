@@ -45,14 +45,16 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
     borderSide: BorderSide(color: Colors.black, width: 0.5),
     borderRadius: BorderRadius.circular(8),
   );
-
+  bool showAppBarActions = true;
   @override
   void initState() {
     super.initState();
     productId = Get.arguments['productId'] as String;
     modelName = Get.arguments['modelName'] as String;
+    showAppBarActions = Get.arguments['isEdit'] as bool? ?? true;
     ProductProvider productProvider = Provider.of<ProductProvider>(context, listen: false,);
     productProvider.fetchProductDetails(productId, modelName);
+    setData();
   }
 
   void setData() {
@@ -82,7 +84,7 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
         elevation: 0,
         shadowColor: Colors.transparent,
         title: Text('Bike Details'),
-        actions: [
+        actions: showAppBarActions ? [
           IconButton(
             icon: Icon(Icons.edit, color: Colors.black),
             onPressed: () async {
@@ -95,38 +97,6 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
               }
             },
           ),
-          /*IconButton(
-            icon: Icon(Icons.delete, color: Colors.black),
-            onPressed: () async {
-              final confirm = await showDialog<bool>(
-                context: context,
-                builder:
-                    (context) => AlertDialog(
-                      title: const Text("Delete Product"),
-                      content: const Text(
-                        "Are you sure you want to delete this product?",
-                      ),
-                      actions: [
-                        TextButton(
-                          child: const Text("Cancel"),
-                          onPressed: () => Navigator.of(context).pop(false),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            productProvider.deleteProduct(
-                              productProvider.bikeList[0].id,
-                              productProvider.bikeList[0].productType,
-                            );
-                            Navigator.of(context).pop(true);
-                            setState(() {});
-                          },
-                          child: const Text("Delete"),
-                        ),
-                      ],
-                    ),
-              );
-            },
-          ),*/
           IconButton(
             icon: Icon(
               productProvider.bikeList[0].isDeleted
@@ -198,7 +168,7 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
               }
             },
           ),
-        ],
+        ] : [],
         centerTitle: true,
       ),
       body: Stack(
@@ -299,48 +269,6 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
                                             )
                                                 : Icon(Icons.image, size: 90),
                                           ),
-                                          Positioned(
-                                            right: 4,
-                                            top: 4,
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return AlertDialog(
-                                                      backgroundColor: Colors.white,
-                                                      title: const Text('Delete Image'),
-                                                      content: const Text('Are you sure you want to delete this image?'),
-                                                      actions: [
-                                                        TextButton(
-                                                          onPressed: () {
-                                                            Navigator.of(context).pop();
-                                                          },
-                                                          child: const Text('Cancel'),
-                                                        ),
-                                                        TextButton(
-                                                          onPressed: () async {
-                                                            Map<String,dynamic> body = {
-                                                              "productId": productId,
-                                                              "imagePath": productProvider.bikeList[0].images[selectedIndex],
-                                                              "modelName": productProvider.bikeList[0].modelName
-                                                            };
-                                                            print(body);
-                                                            productProvider.deleteProductImage(body);
-
-                                                            Navigator.of(context).pop();
-                                                          },
-                                                          child: const Text('Delete'),
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                );
-                                              },
-                                              child: const Icon(Icons.cancel,
-                                                  size: 18, color: Colors.red),
-                                            ),
-                                          ),
                                         ],
                                       );
                                     },
@@ -423,12 +351,6 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
                             width: double.infinity,
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              border: Border(
-                                top: BorderSide(
-                                  color: Colors.grey.shade200,
-                                  width: 1,
-                                ),
-                              ),
                             ),
                             child: SingleChildScrollView(
                               child: Column(
@@ -440,148 +362,56 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       if (productProvider.bikeList.isNotEmpty) ...[
-                                        if (isEditable) ...[
                                           TextField(
                                             controller: priceController,
+                                            enabled: false,
                                             decoration: InputDecoration(
                                               labelText: 'Price',
-                                              suffixIcon: Icon(Icons.edit),
                                               border: border,
                                               enabledBorder: border,
                                               focusedBorder: border,
                                             ),
                                           ),
-                                        ] else ...[
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 10,
-                                              vertical: 10,
-                                            ),
-                                            child: Text(
-                                             '₹ ${ ListFormatter.formatList(
-                                            productProvider.bikeList[0].price,
-                                            )}',
-                                              style: TextStyle(fontSize: 16),
-                                            ),
-                                          ),
-                                        ],
                                       ] else
                                         ...[],
                                       if (productProvider.bikeList.isNotEmpty) ...[
-                                          if (isEditable) ...[
                                           TextFormField(
                                             controller: titleController,
+                                            enabled: showAppBarActions && isEditable,
                                             textCapitalization:
                                             TextCapitalization.sentences,
                                             maxLines: null,
                                             decoration: InputDecoration(
                                               labelText: 'Title',
-                                              suffixIcon: Icon(Icons.edit),
                                               border: border,
                                               enabledBorder: border,
                                               focusedBorder: border,
                                             ),
                                           ),
-                                        ] else ...[
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 10,
-                                            ),
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text("Title"),
-                                                Text(
-                                                  ListFormatter.formatList(
-                                                    productProvider.bikeList[0].adTitle,
-                                                  ),
-                                                  style: TextStyle(fontSize: 16),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
                                       ] else
                                         ...[],
                                     ],
                                   ),
                                   if (productProvider.bikeList.isNotEmpty) ...[
-                                    if (isEditable) ...[
-                                      DropdownButtonFormField2(
-                                        value: (productProvider.bikeList[0].brand.isNotEmpty)
-                                            ? productProvider.bikeList[0].brand.last.toString()
-                                            : null,
-                                        items: bikeBrands.map((val) {
-                                          return DropdownMenuItem<String>(
-                                            value: val,
-                                            child: Text(val),
-                                          );
-                                        }).toList(),
-                                        onChanged: (val) {
-                                          setState(() {
-                                            brandController.text = val!;
-                                          });
-                                        },
-                                        decoration: InputDecoration(
-                                          labelText: 'Brand',
-                                          border: border,
-                                          enabledBorder: border,
-                                          focusedBorder: border,
-                                        ),
-                                        dropdownStyleData: DropdownStyleData(
-                                          maxHeight: 200,
-                                          width: 300,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(8),
-                                          ),
-                                        ),
+                                    TextFormField(
+                                      controller: brandController,
+                                      enabled: false,
+                                      textCapitalization:
+                                      TextCapitalization.sentences,
+                                      maxLines: null,
+                                      decoration: InputDecoration(
+                                        labelText: 'Brand',
+                                        border: border,
+                                        enabledBorder: border,
+                                        focusedBorder: border,
                                       ),
-                                    ] else ...[
-                                      Container(
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Container(
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal: 10,
-                                                vertical: 5,
-                                              ),
-                                              child: Text("Brand"),
-                                            ),
-                                            if (productProvider
-                                                .bikeList
-                                                .isNotEmpty) ...[
-                                              Container(
-                                                padding: EdgeInsets.symmetric(
-                                                  horizontal: 10,
-                                                  vertical: 5,
-                                                ),
-                                                child: Text(
-                                                  ListFormatter.formatList(
-                                                    productProvider
-                                                        .bikeList[0]
-                                                        .brand,
-                                                  ),
-                                                  style: TextStyle(fontSize: 15),
-                                                ),
-                                              ),
-                                            ] else
-                                              ...[],
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+                                    ),
                                   ] else
                                     ...[],
                                   if (productProvider.bikeList.isNotEmpty) ...[
-                                    if (isEditable) ...[
                                       TextField(
                                         controller: modelController,
+                                        enabled: false,
                                         textCapitalization:
                                         TextCapitalization.sentences,
                                         decoration: InputDecoration(
@@ -592,106 +422,32 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
                                           focusedBorder: border,
                                         ),
                                       ),
-                                    ] else ...[
-                                      Container(
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Container(
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal: 10,
-                                                vertical: 5,
-                                              ),
-                                              child: Text("Model"),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal: 10,
-                                                vertical: 5,
-                                              ),
-                                              child: Text(
-                                                ListFormatter.formatList(
-                                                  productProvider.bikeList[0].model,
-                                                ),
-                                                style: TextStyle(fontSize: 15),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
                                   ] else
                                     ...[],
                                   if (productProvider.bikeList.isNotEmpty) ...[
-                                    if (isEditable) ...[
-                                      DropdownButtonFormField<String>(
-                                        // (productProvider.bikeList[0].brand.isNotEmpty)
-                                        //     ? productProvider.bikeList[0].brand.last.toString()
-                                        //     : null,
-                                        value: productProvider.bikeList[0].year.isNotEmpty ? productProvider.bikeList[0].year.last.toString() : null,
-                                        items: generateYearList().map((year) {
-                                          return DropdownMenuItem<String>(
-                                            value: year,
-                                            child: Text(year),
-                                          );
-                                        }).toList(),
-                                        onChanged: (val) {
-                                          setState(() {
-                                            selectedYear = val;
-                                          });
-
-                                        },
-                                        decoration: InputDecoration(
-                                          labelText: 'Year',
-                                          border: border,
-                                          enabledBorder: border,
-                                          focusedBorder: border,
-                                        ),
+                                    TextField(
+                                      controller: TextEditingController(
+                                        text: productProvider.bikeList[0].year.isNotEmpty
+                                            ? productProvider.bikeList[0].year.last.toString()
+                                            : '',
                                       ),
-                                    ] else ...[
-                                      Container(
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Container(
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal: 10,
-                                                vertical: 5,
-                                              ),
-                                              child: Text("Year"),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal: 10,
-                                                vertical: 5,
-                                              ),
-                                              child: Text(
-                                                ListFormatter.formatList(
-                                                  productProvider.bikeList[0].year,
-                                                ),
-                                                style: TextStyle(fontSize: 15),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                      enabled: false,
+                                      textCapitalization:
+                                      TextCapitalization.sentences,
+                                      decoration: InputDecoration(
+                                        labelText: 'Year',
+                                        suffixIcon: Icon(Icons.edit),
+                                        border: border,
+                                        enabledBorder: border,
+                                        focusedBorder: border,
                                       ),
-                                    ],
+                                    ),
                                   ] else
                                     ...[],
                                   if (productProvider.bikeList.isNotEmpty) ...[
-                                    if (isEditable) ...[
                                       TextField(
                                         controller: kmDrivenController,
+                                        enabled: false,
                                         decoration: InputDecoration(
                                           labelText: 'Kms Driven',
                                           suffixIcon: Icon(Icons.edit),
@@ -700,41 +456,6 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
                                           focusedBorder: border,
                                         ),
                                       ),
-                                    ] else ...[
-                                      Container(
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Container(
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal: 10,
-                                                vertical: 5,
-                                              ),
-                                              child: Text("KM driven"),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal: 10,
-                                                vertical: 5,
-                                              ),
-                                              child: Text(
-                                                ListFormatter.formatList(
-                                                  productProvider
-                                                      .bikeList[0]
-                                                      .kmDriven,
-                                                ),
-                                                style: TextStyle(fontSize: 15),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
                                   ] else
                                     ...[],
                                 ],
@@ -748,90 +469,41 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
                 ),
                   const SizedBox(height: 10),
                   if (productProvider.bikeList.isNotEmpty) ...[
-                    if (isEditable) ...[
-                      TextField(
-                        controller: descriptionController,
-                        textCapitalization:
-                        TextCapitalization.sentences,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          labelText: 'Description',
-                          suffixIcon: Icon(Icons.edit),
-                          border: border,
-                          enabledBorder: border,
-                          focusedBorder: border,
-                        ),
+                    TextField(
+                      controller: descriptionController,
+                      enabled: showAppBarActions && isEditable,
+                      textCapitalization:
+                      TextCapitalization.sentences,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        labelText: 'Description',
+                        suffixIcon: Icon(Icons.edit),
+                        border: border,
+                        enabledBorder: border,
+                        focusedBorder: border,
                       ),
-                    ] else ...[
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 10,
-                        ),
-                        child: Column(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.start,
-                          children: [
-                            Text("Description: "),
-                            Text(
-                              ListFormatter.formatList(
-                                productProvider
-                                    .bikeList[0]
-                                    .description,
-                              ),
-                              style: TextStyle(fontSize: 15),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                    ),
                   ] else
                     ...[],
                   if (productProvider.bikeList.isNotEmpty) ...[
-                    if (isEditable) ...[
-                      TextField(
-                        controller: address1Controller,
-                        textCapitalization:
-                        TextCapitalization.sentences,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          labelText: 'Address',
-                          suffixIcon: Icon(Icons.edit),
-                          border: border,
-                          enabledBorder: border,
-                          focusedBorder: border,
-                        ),
+                    TextField(
+                      controller: address1Controller,
+                      enabled: showAppBarActions && isEditable,
+                      textCapitalization:
+                      TextCapitalization.sentences,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        labelText: 'Address',
+                        suffixIcon: Icon(Icons.edit),
+                        border: border,
+                        enabledBorder: border,
+                        focusedBorder: border,
                       ),
-                    ] else ...[
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 10,
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.location_on_outlined,
-                              size: 17,
-                            ),
-                            const SizedBox(width: 5),
-                            // Text(
-                            //   ListFormatter.formatList(
-                            //     productProvider
-                            //         .bikeList[0]
-                            //         .address1,
-                            //   ),
-                            //   style: TextStyle(fontSize: 12),
-                            // ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ] else
+                    ),
+                    ] else
                     ...[],
                   SizedBox(height: 20),
-                  Container(
+                  showAppBarActions ?Container(
                     color: Colors.grey.shade50,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -886,7 +558,7 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
                         ),
                       ),
                     ),
-                  ),
+                  ) : SizedBox(),
                 ],
               ),
             ),

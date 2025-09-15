@@ -1,8 +1,10 @@
 
 import 'package:admin_panel/app_version/app_version_provider.dart';
+import 'package:admin_panel/feature_request/provider/feature_request_provider.dart';
 import 'package:admin_panel/provider/access_code_provider/access_code_provider.dart';
 import 'package:admin_panel/provider/admin_login_provider/admin_login_provider.dart';
 import 'package:admin_panel/provider/product_provider/product_provider.dart';
+import 'package:admin_panel/provider/rate_provider/rate_provider.dart';
 import 'package:admin_panel/provider/report_provider/report_provider.dart';
 import 'package:admin_panel/provider/tab_provider/tab_provider.dart';
 import 'package:admin_panel/provider/user_provider/user_provider.dart';
@@ -23,6 +25,8 @@ class ProviderList {
     ChangeNotifierProvider(create: (_) => ReportProvider()),
     ChangeNotifierProvider(create: (_) => TabProvider()),
     ChangeNotifierProvider(create: (_) => AppVersionProvider()),
+    ChangeNotifierProvider(create: (_) => RateProvider()),
+    ChangeNotifierProvider(create: (_) => FeatureRequestProvider()),
 
   ];
 }

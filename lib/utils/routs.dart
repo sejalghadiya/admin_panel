@@ -1,6 +1,7 @@
 import 'package:admin_panel/admin_auth/login_page.dart';
 import 'package:admin_panel/app_version/app_version.dart';
 import 'package:admin_panel/dashboard.dart';
+import 'package:admin_panel/feature_request/feature_request_screen.dart';
 import 'package:admin_panel/home_page.dart';
 import 'package:admin_panel/product/all_product_get.dart';
 import 'package:admin_panel/product/product_details_screen/bike/bike_details_screen.dart';
@@ -48,6 +49,7 @@ class Routs{
     GetPage(name: OtherProductDetails.routeName, page: () => OtherProductDetails()),
     GetPage(name: PropertyDetailsScreen.routeName, page: () => PropertyDetailsScreen()),
     GetPage(name: AppVersion.routeName, page: () => AppVersion()),
+    GetPage(name: FeatureRequestScreen.routeName, page: () => FeatureRequestScreen()),
 
   ];
 }

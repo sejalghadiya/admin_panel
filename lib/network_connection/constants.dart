@@ -1,3 +1,5 @@
+import 'apis.dart';
+
 class Constants {
   static const String ADMIN_LOGIN = "/admin/login";
   static const String PRODUCT_TYPE = '/admin/get_productS_Type';
@@ -6,12 +8,14 @@ class Constants {
   static const String PRODUCT_UPDATE_ = "/admin/update_product_for_admin";
   static const String PRODUCT_IMAGE_DELETE_BY_USER = "/products/delete-product-image";
   static String GET_USER_BY_ID(String id) => '/admin/getUserByID?userId=$id';
+  static const String GET_ALL_RATINGS = '/admin/get-all-ratings';
 
   static const IMAGE_URL = '';
+  static const GET_FEATURE_REQUEST = '/feature-request/admin/list';
 }
 
 class Url {
   // static const String baseUrl = Apis.BASE_URL_IMAGE;
-  static const String baseUrl = 'https://localhost:3001';
+  // static const String baseUrl = 'https://localhost:3001';
 
 }

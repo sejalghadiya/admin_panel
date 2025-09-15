@@ -44,6 +44,10 @@ class _AllProductGetState extends State<AllProductGet>
       context,
       listen: false,
     );
+
+    // Get the selected category from the provider
+    selectedCategory = productProvider.getSelectedCategory;
+
     getAllProducts();
     productProvider.getProductType().then((_) {
       _tabController = TabController(
@@ -60,7 +64,13 @@ class _AllProductGetState extends State<AllProductGet>
     );
     if (productProvider.products.isNotEmpty) {
       String productTypeId = productProvider.products[0].id;
-      productProvider.fetchProducts(productTypeId);
+
+      // Apply category filter if it exists
+      if (selectedCategory.isNotEmpty) {
+        productProvider.fetchProducts(productTypeId, category: selectedCategory);
+      } else {
+        productProvider.fetchProducts(productTypeId);
+      }
     }
   }
 
@@ -535,7 +545,7 @@ class _AllProductGetState extends State<AllProductGet>
 
   void navigateToProductFormScreen(String modelName, String productId) {
     print(modelName);
-    Map<String, String> args = {"productId": productId, "modelName": modelName};
+    Map<String, dynamic> args = {"productId": productId, "modelName": modelName,"isEdit": true };
     switch (modelName.toLowerCase()) {
       case "bike":
         {

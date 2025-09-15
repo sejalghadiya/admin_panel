@@ -23,7 +23,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AdminLoginProvider adminLoginProvider = Provider.of(context, listen: true);
+    AdminLoginProvider adminLoginProvider = Provider.of<AdminLoginProvider>(context, listen: true);
     return Scaffold(
       backgroundColor: Colors.white,
       body: LayoutBuilder(
@@ -163,7 +163,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                         // ),
                        // SizedBox(height: 70,),
                         ElevatedButton(
-                          onPressed: () async {
+                          onPressed: adminLoginProvider.isLoading?null: () async {
                             Map<String, dynamic> body = {
                               "email": emailController.text.trim(),
                               "password": passwordController.text.trim(),
@@ -180,7 +180,11 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                             ),
                             minimumSize: Size(double.infinity, 50),
                           ),
-                          child: Text(
+                          child:adminLoginProvider.isLoading?
+                          CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                          )
+                              : Text(
                             "Login",
                             style: Theme.of(context).textTheme.titleLarge!.copyWith(
                                 fontWeight: FontWeight.w500, color: Colors.black),

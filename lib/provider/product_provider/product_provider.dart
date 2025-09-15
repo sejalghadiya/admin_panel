@@ -127,7 +127,12 @@ class ProductProvider extends ChangeNotifier {
       }
       products = tempList;
       if(products.isNotEmpty) {
-        fetchProducts(products[0].id);
+        // Preserve category filter when fetching products
+        if (_selectedCategory.isNotEmpty) {
+          fetchProducts(products[0].id, category: _selectedCategory);
+        } else {
+          fetchProducts(products[0].id);
+        }
       }
       notifyListeners();
     } else {

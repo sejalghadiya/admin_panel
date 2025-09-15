@@ -31,11 +31,13 @@ class _OtherProductDetailsState extends State<OtherProductDetails> {
     borderSide: BorderSide(color: Colors.black,width: 0.5),
     borderRadius: BorderRadius.circular(8),
   );
+  bool showAppBarActions = true;
   @override
   void initState() {
     super.initState();
     productId = Get.arguments['productId'] as String;
     modelName = Get.arguments['modelName'] as String;
+    showAppBarActions = Get.arguments['isEdit'] as bool? ?? true;
     ProductProvider productProvider = Provider.of<ProductProvider>(context, listen: false);
     productProvider.fetchProductDetails(productId, modelName);
   }
@@ -62,7 +64,7 @@ void setData(){
         title: Text(
           'Others Details',
         ),
-        actions: [
+        actions:showAppBarActions? [
           IconButton(
             icon: Icon(Icons.edit, color: Colors.black),
             onPressed: () async {
@@ -121,7 +123,7 @@ void setData(){
               }
             },
           ),
-        ],
+        ]:[],
       ),
       body: Stack(
         children: [
@@ -204,48 +206,48 @@ void setData(){
                                             )
                                                 : Icon(Icons.image, size: 90),
                                           ),
-                                          Positioned(
-                                            right: 4,
-                                            top: 4,
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return AlertDialog(
-                                                      backgroundColor: Colors.white,
-                                                      title: const Text('Delete Image'),
-                                                      content: const Text('Are you sure you want to delete this image?'),
-                                                      actions: [
-                                                        TextButton(
-                                                          onPressed: () {
-                                                            Navigator.of(context).pop();
-                                                          },
-                                                          child: const Text('Cancel'),
-                                                        ),
-                                                        TextButton(
-                                                          onPressed: () async {
-                                                            Map<String,dynamic> body = {
-                                                              "productId": productId,
-                                                              "imagePath": productProvider.otherList[0].images[selectedIndex],
-                                                              "modelName": productProvider.otherList[0].modelName
-                                                            };
-                                                            print(body);
-                                                            productProvider.deleteProductImage(body);
-
-                                                            Navigator.of(context).pop();
-                                                          },
-                                                          child: const Text('Delete'),
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                );
-                                              },
-                                              child: const Icon(Icons.cancel,
-                                                  size: 18, color: Colors.red),
-                                            ),
-                                          ),
+                                          // Positioned(
+                                          //   right: 4,
+                                          //   top: 4,
+                                          //   child: GestureDetector(
+                                          //     onTap: () {
+                                          //       showDialog(
+                                          //         context: context,
+                                          //         builder: (context) {
+                                          //           return AlertDialog(
+                                          //             backgroundColor: Colors.white,
+                                          //             title: const Text('Delete Image'),
+                                          //             content: const Text('Are you sure you want to delete this image?'),
+                                          //             actions: [
+                                          //               TextButton(
+                                          //                 onPressed: () {
+                                          //                   Navigator.of(context).pop();
+                                          //                 },
+                                          //                 child: const Text('Cancel'),
+                                          //               ),
+                                          //               TextButton(
+                                          //                 onPressed: () async {
+                                          //                   Map<String,dynamic> body = {
+                                          //                     "productId": productId,
+                                          //                     "imagePath": productProvider.otherList[0].images[selectedIndex],
+                                          //                     "modelName": productProvider.otherList[0].modelName
+                                          //                   };
+                                          //                   print(body);
+                                          //                   productProvider.deleteProductImage(body);
+                                          //
+                                          //                   Navigator.of(context).pop();
+                                          //                 },
+                                          //                 child: const Text('Delete'),
+                                          //               ),
+                                          //             ],
+                                          //           );
+                                          //         },
+                                          //       );
+                                          //     },
+                                          //     child: const Icon(Icons.cancel,
+                                          //         size: 18, color: Colors.red),
+                                          //   ),
+                                          // ),
                                         ],
                                       )
                                     ] else ...[],
@@ -457,7 +459,7 @@ void setData(){
                     )
                   ],
                ),
-                Container(
+               showAppBarActions? Container(
                   color: Colors.grey.shade50,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -507,7 +509,7 @@ void setData(){
                       ),
                     ),
                   ),
-                ),
+                ) : SizedBox.shrink(),
                 const SizedBox(height: 20),
               ],
             ),

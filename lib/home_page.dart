@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     ListTile(
                       leading: Icon(
-                        Icons.production_quantity_limits,
+                        Icons.production_quantity_limits_rounded,
                         color: tabProvider.selectedIndex == 1 ? Colors.green : Colors.black,
                       ),
                       title: Text(
@@ -139,8 +139,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     ListTile(
                       leading: Icon(
-                        Icons.help,
-                        color: tabProvider.selectedIndex == 4 ? Colors.green : Colors.black,
+                        Icons.new_releases_rounded,
+                        color: tabProvider.selectedIndex == 5 ? Colors.green : Colors.black,
                       ),
                       title: Text(
                         "App Versions",
@@ -155,19 +155,74 @@ class _HomeScreenState extends State<HomeScreen> {
                         tabProvider.setSelectedIndex(5);
                       },
                     ),
+                    /// TODO: new feature request
                     ListTile(
                       leading: Icon(
-                        Icons.logout,
+                        Icons.request_page_rounded,
                         color: tabProvider.selectedIndex == 6 ? Colors.green : Colors.black,
                       ),
                       title: Text(
-                        "Logout",
+                        "Feature Request",
                         style: TextStyle(
                           color: tabProvider.selectedIndex == 6 ? Colors.green : Colors.black,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       selected: tabProvider.selectedIndex == 6,
+                      selectedTileColor: Colors.green.shade100,
+                      onTap: () {
+                        tabProvider.setSelectedIndex(6);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.support_agent_rounded,
+                        color: tabProvider.selectedIndex == 8 ? Colors.green : Colors.black,
+                      ),
+                      title: Text(
+                        "Chat",
+                        style: TextStyle(
+                          color: tabProvider.selectedIndex == 8 ? Colors.green : Colors.black,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      selected: tabProvider.selectedIndex == 8,
+                      selectedTileColor: Colors.green.shade100,
+                      onTap: () {
+                        tabProvider.setSelectedIndex(8);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.reviews_rounded,
+                        color: tabProvider.selectedIndex == 7 ? Colors.green : Colors.black,
+                      ),
+                      title: Text(
+                        "Reviews/Rate",
+                        style: TextStyle(
+                          color: tabProvider.selectedIndex == 7 ? Colors.green : Colors.black,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      selected: tabProvider.selectedIndex == 7,
+                      selectedTileColor: Colors.green.shade100,
+                      onTap: () {
+                        tabProvider.setSelectedIndex(7);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.logout,
+                        color: tabProvider.selectedIndex == 9 ? Colors.green : Colors.black,
+                      ),
+                      title: Text(
+                        "Logout",
+                        style: TextStyle(
+                          color: tabProvider.selectedIndex == 9 ? Colors.green : Colors.black,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      selected: tabProvider.selectedIndex == 9,
                       selectedTileColor: Colors.green.shade100,
                       onTap: (){
                         _logout();
@@ -183,7 +238,7 @@ class _HomeScreenState extends State<HomeScreen> {
             builder: (context,tabProvider, child) {
               return Expanded(
                 child: Container(
-                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  // color: Theme.of(context).colorScheme.onPrimaryContainer,
                   child: PageTransitionSwitcher(
                     duration: const Duration(milliseconds: 400),
                     reverse: tabProvider.lastIndex > tabProvider.selectedIndex,

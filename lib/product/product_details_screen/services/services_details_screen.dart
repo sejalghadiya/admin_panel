@@ -32,11 +32,13 @@ class _ServicesDetailScreenState extends State<ServicesDetailScreen> {
     borderSide: BorderSide(color: Colors.black,width: 0.5),
     borderRadius: BorderRadius.circular(8),
   );
+  bool showAppBarActions = true;
   @override
   void initState() {
     super.initState();
     productId = Get.arguments['productId'] as String;
     modelName = Get.arguments['modelName'] as String;
+    showAppBarActions = Get.arguments['isEdit'] as bool? ?? true;
     ProductProvider productProvider = Provider.of<ProductProvider>(context,listen: false);
     productProvider.fetchProductDetails(productId, modelName);
   }
@@ -61,7 +63,7 @@ class _ServicesDetailScreenState extends State<ServicesDetailScreen> {
         title: Text(
           'Services Details',
         ),
-        actions: [
+        actions:showAppBarActions? [
           IconButton(
             icon: Icon(Icons.edit, color: Colors.black),
             onPressed: () async {
@@ -121,7 +123,7 @@ class _ServicesDetailScreenState extends State<ServicesDetailScreen> {
               }
             },
           ),
-        ],
+        ]:[],
       ),
       body: Stack(
         children: [
@@ -206,49 +208,50 @@ class _ServicesDetailScreenState extends State<ServicesDetailScreen> {
                                           )
                                               : Icon(Icons.image, size: 90),
                                         ),
-                                        Positioned(
-                                          right: 4,
-                                          top: 4,
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return AlertDialog(
-                                                    backgroundColor: Colors.white,
-                                                    title: const Text('Delete Image'),
-                                                    content: const Text('Are you sure you want to delete this image?'),
-                                                    actions: [
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          Navigator.of(context).pop();
-                                                        },
-                                                        child: const Text('Cancel'),
-                                                      ),
-                                                      TextButton(
-                                                        onPressed: () async {
-                                                          Map<String,dynamic> body = {
-                                                            "productId": productId,
-                                                            "imagePath": productProvider.servicesList[0].images[selectedIndex],
-                                                            "modelName": productProvider.servicesList[0].modelName
-                                                          };
-                                                          print(body);
-                                                          productProvider.deleteProductImage(body);
-
-                                                          Navigator.of(context).pop();
-                                                        },
-                                                        child: const Text('Delete'),
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
-                                            },
-                                            child: const Icon(Icons.cancel,
-                                                size: 18, color: Colors.red),
-                                          ),
-                                        ),
+                                        // Positioned(
+                                        //   right: 4,
+                                        //   top: 4,
+                                        //   child: GestureDetector(
+                                        //     onTap: () {
+                                        //       showDialog(
+                                        //         context: context,
+                                        //         builder: (context) {
+                                        //           return AlertDialog(
+                                        //             backgroundColor: Colors.white,
+                                        //             title: const Text('Delete Image'),
+                                        //             content: const Text('Are you sure you want to delete this image?'),
+                                        //             actions: [
+                                        //               TextButton(
+                                        //                 onPressed: () {
+                                        //                   Navigator.of(context).pop();
+                                        //                 },
+                                        //                 child: const Text('Cancel'),
+                                        //               ),
+                                        //               TextButton(
+                                        //                 onPressed: () async {
+                                        //                   Map<String,dynamic> body = {
+                                        //                     "productId": productId,
+                                        //                     "imagePath": productProvider.servicesList[0].images[selectedIndex],
+                                        //                     "modelName": productProvider.servicesList[0].modelName
+                                        //                   };
+                                        //                   print(body);
+                                        //                   productProvider.deleteProductImage(body);
+                                        //
+                                        //                   Navigator.of(context).pop();
+                                        //                 },
+                                        //                 child: const Text('Delete'),
+                                        //               ),
+                                        //             ],
+                                        //           );
+                                        //         },
+                                        //       );
+                                        //     },
+                                        //     child: const Icon(Icons.cancel,
+                                        //         size: 18, color: Colors.red),
+                                        //   ),
+                                        // ),
                                       ],
+
                                     )
                                    ] else ...[],
                                    const SizedBox(
@@ -479,7 +482,7 @@ class _ServicesDetailScreenState extends State<ServicesDetailScreen> {
                    )
                  ],
                ),
-                Container(
+               showAppBarActions? Container(
                   color: Colors.grey.shade50,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -523,7 +526,7 @@ class _ServicesDetailScreenState extends State<ServicesDetailScreen> {
                       ),
                     ),
                   ),
-                ),
+                ) : SizedBox.shrink(),
                 SizedBox(height: 20),
               ],
             ),

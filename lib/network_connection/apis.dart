@@ -19,6 +19,10 @@ class Apis {
   static const String CREATE_APP_VERSION = '$BASE_URL/app-version/';
   static const String GET_ALL_APP_VERSIONS = '$BASE_URL/app-version/all';
   static const String GET_LATEST_APP_VERSION = '$BASE_URL/app-version/latest';
+  static const String GET_ALL_RATINGS = BASE_URL + Constants.GET_ALL_RATINGS;
   static String GET_APP_VERSION_BY_ID(String id) => '$BASE_URL/app-version/$id';
   static String UPDATE_APP_VERSION_BY_ID(String id) => '$BASE_URL/app-version/$id';
+
+  // feature request
+  static const String GET_FEATURE_REQUEST = '$BASE_URL${Constants.GET_FEATURE_REQUEST}';
 }

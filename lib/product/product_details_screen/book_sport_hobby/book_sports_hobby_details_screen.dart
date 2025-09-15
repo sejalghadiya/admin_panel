@@ -27,6 +27,7 @@ class _BookSportsHobbyDetailsScreenState extends State<BookSportsHobbyDetailsScr
   String productId = "";
   String modelName = "";
   String baseUrl = Apis.BASE_URL_IMAGE;
+  bool showAppBarActions = true;
   final OutlineInputBorder border = OutlineInputBorder(
     borderSide: BorderSide(color: Colors.black,width: 0.5),
     borderRadius: BorderRadius.circular(8),
@@ -36,6 +37,7 @@ class _BookSportsHobbyDetailsScreenState extends State<BookSportsHobbyDetailsScr
     super.initState();
     productId = Get.arguments['productId'] as String;
     modelName = Get.arguments['modelName'] as String;
+    showAppBarActions = Get.arguments['isEdit'] as bool? ?? true;
     Future.microtask(() async {
       ProductProvider productDetailsProvider = Provider.of<ProductProvider>(context, listen: false);
      await productDetailsProvider.fetchProductDetails(productId, modelName);
@@ -53,8 +55,9 @@ class _BookSportsHobbyDetailsScreenState extends State<BookSportsHobbyDetailsScr
       appBar: AppBar(
         elevation: 0,
         shadowColor: Colors.transparent,
-        title: Text("BookList Sports & Hobbies Details"),
-        actions: [
+        title: Text("Book, Sports & Hobbies"
+            ""),
+        actions:showAppBarActions ? [
           IconButton(
             icon: Icon(Icons.edit, color: Colors.black),
             onPressed: () async {
@@ -110,7 +113,7 @@ class _BookSportsHobbyDetailsScreenState extends State<BookSportsHobbyDetailsScr
               }
             },
           ),
-        ],
+        ] : [],
       ),
       body: Stack(
         children: [
@@ -407,7 +410,7 @@ class _BookSportsHobbyDetailsScreenState extends State<BookSportsHobbyDetailsScr
                                           },
                                        ),
                                      const SizedBox(height: 20),
-                                     Container(
+                                    showAppBarActions? Container(
                                        color: Colors.grey.shade50,
                                        child: Padding(
                                          padding: const EdgeInsets.all(8.0),
@@ -466,7 +469,7 @@ class _BookSportsHobbyDetailsScreenState extends State<BookSportsHobbyDetailsScr
                                            ),
                                          ),
                                        ),
-                                     ),
+                                     ) : SizedBox(),
                                    ],
                                  ),
                                ),

@@ -321,7 +321,7 @@ class _ReportDetailsScreenState extends State<ReportDetailsScreen> {
   }
   void navigateToProductFormScreen(String modelName, String productId) {
     print(modelName);
-    Map<String, String> args = {"productId": productId, "modelName": modelName};
+    Map<String, dynamic> args = {"productId": productId, "modelName": modelName,"isEdit": false};
     switch (modelName.toLowerCase()) {
       case "bike":
         {

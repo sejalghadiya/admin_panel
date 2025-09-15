@@ -45,11 +45,13 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
     borderSide: BorderSide(color: Colors.black,width: 0.5),
     borderRadius: BorderRadius.circular(8),
   );
+  bool showAppBarActions = true;
   @override
   void initState() {
     super.initState();
     productId = Get.arguments['productId'] as String;
     modelName = Get.arguments['modelName'] as String;
+    showAppBarActions = Get.arguments['isEdit'] as bool? ?? true;
     ProductProvider productDetailsProvider = Provider.of<ProductProvider>(context, listen: false);
     productDetailsProvider.fetchProductDetails(productId, modelName);
   }
@@ -81,7 +83,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
         elevation: 0,
         shadowColor: Colors.transparent,
         title: const Text('Car Details'),
-        actions: [
+        actions:showAppBarActions ? [
           IconButton(
             icon: Icon(Icons.edit, color: Colors.black),
             onPressed: () async {
@@ -141,7 +143,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
             },
           ),
 
-        ],
+        ] : [],
         centerTitle: true,
       ),
       body: Stack(
@@ -228,49 +230,50 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                                               )
                                                   : Icon(Icons.image, size: 90),
                                             ),
-                                            Positioned(
-                                              right: 4,
-                                              top: 4,
-                                              child: GestureDetector(
-                                                onTap: () {
-                                                  showDialog(
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return AlertDialog(
-                                                        backgroundColor: Colors.white,
-                                                        title: const Text('Delete Image'),
-                                                        content: const Text('Are you sure you want to delete this image?'),
-                                                        actions: [
-                                                          TextButton(
-                                                            onPressed: () {
-                                                              Navigator.of(context).pop();
-                                                            },
-                                                            child: const Text('Cancel'),
-                                                          ),
-                                                          TextButton(
-                                                            onPressed: () async {
-                                                              Map<String,dynamic> body = {
-                                                                "productId": productId,
-                                                                "imagePath": productProvider.carList[0].images[selectedIndex],
-                                                                "modelName": productProvider.carList[0].modelName
-                                                              };
-                                                              print(body);
-                                                              productProvider.deleteProductImage(body);
-
-                                                              Navigator.of(context).pop();
-                                                            },
-                                                            child: const Text('Delete'),
-                                                          ),
-                                                        ],
-                                                      );
-                                                    },
-                                                  );
-                                                },
-                                                child: const Icon(Icons.cancel,
-                                                    size: 18, color: Colors.red),
-                                              ),
-                                            ),
+                                            // Positioned(
+                                            //   right: 4,
+                                            //   top: 4,
+                                            //   child: GestureDetector(
+                                            //     onTap: () {
+                                            //       showDialog(
+                                            //         context: context,
+                                            //         builder: (context) {
+                                            //           return AlertDialog(
+                                            //             backgroundColor: Colors.white,
+                                            //             title: const Text('Delete Image'),
+                                            //             content: const Text('Are you sure you want to delete this image?'),
+                                            //             actions: [
+                                            //               TextButton(
+                                            //                 onPressed: () {
+                                            //                   Navigator.of(context).pop();
+                                            //                 },
+                                            //                 child: const Text('Cancel'),
+                                            //               ),
+                                            //               TextButton(
+                                            //                 onPressed: () async {
+                                            //                   Map<String,dynamic> body = {
+                                            //                     "productId": productId,
+                                            //                     "imagePath": productProvider.carList[0].images[selectedIndex],
+                                            //                     "modelName": productProvider.carList[0].modelName
+                                            //                   };
+                                            //                   print(body);
+                                            //                   productProvider.deleteProductImage(body);
+                                            //
+                                            //                   Navigator.of(context).pop();
+                                            //                 },
+                                            //                 child: const Text('Delete'),
+                                            //               ),
+                                            //             ],
+                                            //           );
+                                            //         },
+                                            //       );
+                                            //     },
+                                            //     child: const Icon(Icons.cancel,
+                                            //         size: 18, color: Colors.red),
+                                            //   ),
+                                            // ),
                                           ],
+
                                         )
                                       ] else ...[],
                                       const SizedBox(
@@ -710,217 +713,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                      ),
                    ]
                  ]else...[],
-
-                  /*Consumer<ProductProvider>(
-                      builder: (context,productProvider,child){
-                        return Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border(
-                                top: BorderSide(
-                                  color: Colors.grey.shade300,
-                                  width: 1,
-                                ),
-                              )
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Column(
-                              spacing: 15,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Text("Wireless Earphone", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        if(productProvider.carList.isNotEmpty)...[
-                                          Text(
-                                            "₹ ${ListFormatter.formatList(productProvider.carList[0].price)}",
-                                            style: TextStyle(fontSize: 16)),]else...[],
-                                      ],
-                                    ),
-                                    if(productProvider.carList.isNotEmpty)...[
-                                      Text(ListFormatter.formatList(productProvider.carList[0].title),
-                                        style: TextStyle(fontSize: 15)),]else...[],
-
-                                  ],
-                                ),
-                                Container(
-                                    padding: EdgeInsets.symmetric(vertical: 10),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white
-                                    ),
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        //Text("Description :- "),
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.location_on_outlined,
-                                              size: 17,
-                                            ),
-                                            const SizedBox(width: 5),
-                                            if (productProvider.carList.isNotEmpty)
-                                              ...[
-                                                Text(ListFormatter.formatList(productProvider.carList[0].address1),
-                                                  style: TextStyle(fontSize: 12),
-                                                )
-                                              ]
-                                            else
-                                              ...[],
-
-                                          ],
-                                        ),
-                                      ],
-                                    )),
-
-                                Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text("Description: ",style: TextStyle(fontSize: 14),),
-                                        if(productProvider.carList.isNotEmpty)...[
-                                          Text(ListFormatter.formatList(productProvider.carList[0].description),
-                                            style: TextStyle(fontSize: 15)),]else...[],
-                                      ],
-                                    )),
-
-                                  Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                            child: Text("Brand")),
-                                        Container(
-                                          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                          child:  Text(ListFormatter.formatList(productProvider.carList[0].brand), style: TextStyle(fontSize: 14)),),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                            child: Text("Model")),
-                                        Container(
-                                          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                          child:  Text(ListFormatter.formatList(productProvider.carList[0].model), style: TextStyle(fontSize: 14)),),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                            child: Text("Year")),
-                                        Container(
-                                          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                          child:  Text(ListFormatter.formatList(productProvider.carList[0].year), style: TextStyle(fontSize: 14)),),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                            child: Text("Km driven")),
-                                        Container(
-                                          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                          child:  Text(ListFormatter.formatList(productProvider.carList[0].kmDriven) , style: TextStyle(fontSize: 14)),),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                            child: Text("Fuel Type")),
-                                        Container(
-                                          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                          child:  Text(ListFormatter.formatList(productProvider.carList[0].fuel), style: TextStyle(fontSize: 14)),),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                            child: Text("Transmission")),
-                                        Container(
-                                          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                          child:  Text(ListFormatter.formatList(productProvider.carList[0].transmission), style: TextStyle(fontSize: 14)),),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                            child: Text("Owner")),
-                                        Container(
-                                          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                          child:  Text(ListFormatter.formatList(productProvider.carList[0].noOfOwners), style: TextStyle(fontSize: 14)),),
-                                      ],
-                                    ),
-                                  ),
-                                SizedBox(height: 10),
-                              ],
-                            ),
-                          ),
-                        );
-                      }),*/
-                  Container(
+                 showAppBarActions? Container(
                     color: Colors.grey.shade50,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -978,7 +771,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                         ),
                       ),
                     ),
-                  ),
+                  ) : SizedBox.shrink(),
                   const SizedBox(height: 30,)
                 ],
               ),

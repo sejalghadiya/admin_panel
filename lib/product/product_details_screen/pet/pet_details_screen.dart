@@ -30,11 +30,13 @@ bool isEditable = false;
     borderSide: BorderSide(color: Colors.black,width: 1),
     borderRadius: BorderRadius.circular(8),
   );
+  bool showAppBarActions = true;
   @override
   void initState() {
     super.initState();
     productId = Get.arguments['productId'] as String;
     modelName = Get.arguments['modelName'] as String;
+    showAppBarActions = Get.arguments['isEdit'] as bool? ?? true;
     ProductProvider productProvider = Provider.of(context,listen: false);
     productProvider.fetchProductDetails(productId, modelName);
   }
@@ -59,7 +61,7 @@ bool isEditable = false;
         title: Text(
           'Pet Details',
         ),
-        actions: [
+        actions: showAppBarActions? [
           IconButton(
             icon: Icon(Icons.edit, color: Colors.black),
             onPressed: ()async {
@@ -118,7 +120,7 @@ bool isEditable = false;
               }
             },
           ),
-        ],
+        ]:[],
       ),
       body: Stack(
        children: [
@@ -197,48 +199,48 @@ bool isEditable = false;
                                        )
                                            : Icon(Icons.image, size: 90),
                                      ),
-                                     Positioned(
-                                       right: 4,
-                                       top: 4,
-                                       child: GestureDetector(
-                                         onTap: () {
-                                           showDialog(
-                                             context: context,
-                                             builder: (context) {
-                                               return AlertDialog(
-                                                 backgroundColor: Colors.white,
-                                                 title: const Text('Delete Image'),
-                                                 content: const Text('Are you sure you want to delete this image?'),
-                                                 actions: [
-                                                   TextButton(
-                                                     onPressed: () {
-                                                       Navigator.of(context).pop();
-                                                     },
-                                                     child: const Text('Cancel'),
-                                                   ),
-                                                   TextButton(
-                                                     onPressed: () async {
-                                                       Map<String,dynamic> body = {
-                                                         "productId": productId,
-                                                         "imagePath": productProvider.petList[0].images[selectedIndex],
-                                                         "modelName": productProvider.petList[0].modelName
-                                                       };
-                                                       print(body);
-                                                       productProvider.deleteProductImage(body);
-
-                                                       Navigator.of(context).pop();
-                                                     },
-                                                     child: const Text('Delete'),
-                                                   ),
-                                                 ],
-                                               );
-                                             },
-                                           );
-                                         },
-                                         child: const Icon(Icons.cancel,
-                                             size: 18, color: Colors.red),
-                                       ),
-                                     ),
+                                     // Positioned(
+                                     //   right: 4,
+                                     //   top: 4,
+                                     //   child: GestureDetector(
+                                     //     onTap: () {
+                                     //       showDialog(
+                                     //         context: context,
+                                     //         builder: (context) {
+                                     //           return AlertDialog(
+                                     //             backgroundColor: Colors.white,
+                                     //             title: const Text('Delete Image'),
+                                     //             content: const Text('Are you sure you want to delete this image?'),
+                                     //             actions: [
+                                     //               TextButton(
+                                     //                 onPressed: () {
+                                     //                   Navigator.of(context).pop();
+                                     //                 },
+                                     //                 child: const Text('Cancel'),
+                                     //               ),
+                                     //               TextButton(
+                                     //                 onPressed: () async {
+                                     //                   Map<String,dynamic> body = {
+                                     //                     "productId": productId,
+                                     //                     "imagePath": productProvider.petList[0].images[selectedIndex],
+                                     //                     "modelName": productProvider.petList[0].modelName
+                                     //                   };
+                                     //                   print(body);
+                                     //                   productProvider.deleteProductImage(body);
+                                     //
+                                     //                   Navigator.of(context).pop();
+                                     //                 },
+                                     //                 child: const Text('Delete'),
+                                     //               ),
+                                     //             ],
+                                     //           );
+                                     //         },
+                                     //       );
+                                     //     },
+                                     //     child: const Icon(Icons.cancel,
+                                     //         size: 18, color: Colors.red),
+                                     //   ),
+                                     // ),
                                    ],
                                  )
                                ] else ...[],
@@ -417,7 +419,7 @@ bool isEditable = false;
                  ],
                ),
                const SizedBox(height: 20),
-               Container(
+              showAppBarActions? Container(
                  color: Colors.grey.shade50,
                  child: Padding(
                    padding: const EdgeInsets.all(8.0),
@@ -465,7 +467,7 @@ bool isEditable = false;
                      ),
                    ),
                  ),
-               ),
+               ) : SizedBox.shrink(),
                const SizedBox(height: 10),
                /* Consumer<ProductProvider>(
                       builder: (context,productProvider,child) {

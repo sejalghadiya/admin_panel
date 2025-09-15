@@ -6,6 +6,7 @@ import 'package:admin_panel/provider/tab_provider/tab_provider.dart';
 import 'package:admin_panel/provider/user_provider/user_provider.dart';
 import 'package:admin_panel/report/report_screen.dart';
 import 'package:admin_panel/user/user_Screen.dart';
+import 'package:admin_panel/product/all_product_get.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +32,22 @@ class _DashboardState extends State<Dashboard> {
       Provider.of<ReportProvider>(context, listen: false).reportCount();
       // Provider.of<TotalUserProvider>(context, listen: false).getAllCategoryCounts();
     });
+  }
+
+  // Navigate to products screen with optional category filter
+  void navigateToProductsScreen({String category = ""}) {
+    final productProvider = Provider.of<ProductProvider>(context, listen: false);
+    final tabProvider = Provider.of<TabProvider>(context, listen: false);
+
+    // Set the selected category if provided
+    if (category.isNotEmpty) {
+      productProvider.setSelectedCategory(category);
+    } else {
+      productProvider.setSelectedCategory("");
+    }
+
+    // Change to products tab
+    tabProvider.setSelectedIndex(1);
   }
 
   @override
@@ -179,37 +196,49 @@ class _DashboardState extends State<Dashboard> {
                               title: "Total Products",
                               count: provider.totalProductCount.toString(),
                               color: Colors.blue,
-                              onTap: () {},
+                              onTap: () {
+                                navigateToProductsScreen();
+                              },
                             ),
                             _buildInfoBox(
                               title: "Category A Products",
                               count: provider.totalProductA.toString(),
                               color: Colors.blue,
-                              onTap: () {},
+                              onTap: () {
+                                navigateToProductsScreen(category: "A");
+                              },
                             ),
                             _buildInfoBox(
                               title: "Category B Products",
                               count: provider.totalProductB.toString(),
                               color: Colors.green,
-                              onTap: () {},
+                              onTap: () {
+                                navigateToProductsScreen(category: "B");
+                              },
                             ),
                             _buildInfoBox(
                               title: "Category C Products",
                               count: provider.totalProductC.toString(),
                               color: Colors.red,
-                              onTap: () {},
+                              onTap: () {
+                                navigateToProductsScreen(category: "C");
+                              },
                             ),
                             _buildInfoBox(
                               title: "Category D Products",
                               count: provider.totalProductD.toString(),
                               color: Colors.red,
-                              onTap: () {},
+                              onTap: () {
+                                navigateToProductsScreen(category: "D");
+                              },
                             ),
                             _buildInfoBox(
                               title: "Category E Products",
                               count: provider.totalProductE.toString(),
                               color: Colors.red,
-                              onTap: () {},
+                              onTap: () {
+                                navigateToProductsScreen(category: "E");
+                              },
                             ),
                           ],
                         ),

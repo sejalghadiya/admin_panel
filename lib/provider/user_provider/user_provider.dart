@@ -324,9 +324,9 @@ class UserProvider extends ChangeNotifier {
         _userArea = (userData['area'] as List).isNotEmpty ? userData['area'].last : "";
         _userPinCode = (userData['pinCode'] as List).isNotEmpty ? userData['pinCode'].last : "";
         _userAadhaarNumber = (userData['aadharNumber'] as List).isNotEmpty ? userData['aadharNumber'].last : "";
-        _userProfileImage = (userData['profileImage'] as List).isNotEmpty ? Url.baseUrl + userData['profileImage'].last : "";
-        _userAadhaarFront = (userData['aadhaarCardImage1'] as List).isNotEmpty ? Url.baseUrl + userData['aadhaarCardImage1'].last : "";
-        _userAadhaarBack = (userData['aadhaarCardImage2'] as List).isNotEmpty ? Url.baseUrl + userData['aadhaarCardImage2'].last : "";
+        _userProfileImage = (userData['profileImage'] as List).isNotEmpty ? Apis.BASE_URL_IMAGE + userData['profileImage'].last : "";
+        _userAadhaarFront = (userData['aadhaarCardImage1'] as List).isNotEmpty ? Apis.BASE_URL_IMAGE + userData['aadhaarCardImage1'].last : "";
+        _userAadhaarBack = (userData['aadhaarCardImage2'] as List).isNotEmpty ? Apis.BASE_URL_IMAGE + userData['aadhaarCardImage2'].last : "";
         _userOccupationId = userData['occupationId']["name"] ?? "";
         _userCategory = userData['userCategory'] ?? "";
         _userRole = userData['role'] ?? "";
