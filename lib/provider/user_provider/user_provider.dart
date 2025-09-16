@@ -401,6 +401,7 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<void> getAllUser() async {
+    setLoading(true);
     _allUsers = [];
     String token = await AdminSharedPreferences().getAuthToken();
     var headers = {
@@ -413,6 +414,7 @@ class UserProvider extends ChangeNotifier {
     String res = await response.stream.bytesToString();
 
     Map<String, dynamic> data = jsonDecode(res);
+    setLoading(false);
     if (response.statusCode == 200 && data['success'] == true) {
       _allUsers = (data['users'] as List)
           .map((userJson) => UserModel.fromJson(userJson))
@@ -425,6 +427,7 @@ class UserProvider extends ChangeNotifier {
 
   Future<bool> userActiveInactive(String userId) async {
     try {
+      setLoading(true); // Set loading state to true
       String token = await AdminSharedPreferences().getAuthToken();
       var headers = {
         'Content-Type': 'application/json',
@@ -456,6 +459,8 @@ class UserProvider extends ChangeNotifier {
     } catch (e) {
       ToastMessage.error("Exception", "Something went wrong: $e");
       return false;
+    } finally {
+      setLoading(false); // Reset loading state when done
     }
   }
 
