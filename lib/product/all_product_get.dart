@@ -10,6 +10,7 @@ import 'package:admin_panel/product/product_details_screen/property/property_det
 import 'package:admin_panel/product/product_details_screen/services/services_details_screen.dart';
 import 'package:admin_panel/product/product_details_screen/smart_phone/smart_phone_details_screen.dart';
 import 'package:admin_panel/provider/product_provider/product_provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -478,8 +479,8 @@ class _AllProductGetState extends State<AllProductGet>
                                     if (imageUrl.isNotEmpty)
                                       ClipRRect(
                                         borderRadius: BorderRadius.circular(10),
-                                        child: Image.network(
-                                          imageUrl,
+                                        child: CachedNetworkImage(
+                                          imageUrl:imageUrl,
                                           width: 90,
                                           height: 90,
                                           fit: BoxFit.cover,

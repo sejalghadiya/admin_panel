@@ -1,6 +1,7 @@
 import 'package:admin_panel/local_Storage/admin_shredPreferences.dart';
 import 'package:admin_panel/utils/list_formatter.dart';
 import 'package:admin_panel/widgets/loading_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -256,11 +257,12 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
                                                     .bikeList[0]
                                                     .images[selectedIndex]
                                                     .isNotEmpty
-                                                ? Image.network(
+                                                ? CachedNetworkImage(
+                                              imageUrl:
                                               '$baseUrl${productProvider.bikeList[0].images[selectedIndex]}',
                                               fit: BoxFit.fill,
                                               width: double.infinity,
-                                              errorBuilder:
+                                              errorWidget:
                                                   (context, error, stackTrace) =>
                                                   Icon(
                                                     Icons.broken_image,
@@ -316,10 +318,10 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
                                               child:
                                               imageUrl != null &&
                                                   imageUrl.isNotEmpty
-                                                  ? Image.network(
-                                                '$baseUrl$imageUrl',
+                                                  ? CachedNetworkImage(
+                                               imageUrl:  '$baseUrl$imageUrl',
                                                 fit: BoxFit.fill,
-                                                errorBuilder:
+                                                errorWidget:
                                                     (
                                                     context,
                                                     error,
@@ -416,7 +418,6 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
                                         TextCapitalization.sentences,
                                         decoration: InputDecoration(
                                           labelText: 'Model',
-                                          suffixIcon: Icon(Icons.edit),
                                           border: border,
                                           enabledBorder: border,
                                           focusedBorder: border,
@@ -436,7 +437,6 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
                                       TextCapitalization.sentences,
                                       decoration: InputDecoration(
                                         labelText: 'Year',
-                                        suffixIcon: Icon(Icons.edit),
                                         border: border,
                                         enabledBorder: border,
                                         focusedBorder: border,
@@ -450,7 +450,6 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
                                         enabled: false,
                                         decoration: InputDecoration(
                                           labelText: 'Kms Driven',
-                                          suffixIcon: Icon(Icons.edit),
                                           border: border,
                                           enabledBorder: border,
                                           focusedBorder: border,
@@ -477,7 +476,6 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
                       maxLines: null,
                       decoration: InputDecoration(
                         labelText: 'Description',
-                        suffixIcon: Icon(Icons.edit),
                         border: border,
                         enabledBorder: border,
                         focusedBorder: border,
@@ -494,7 +492,6 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
                       maxLines: null,
                       decoration: InputDecoration(
                         labelText: 'Address',
-                        suffixIcon: Icon(Icons.edit),
                         border: border,
                         enabledBorder: border,
                         focusedBorder: border,
@@ -503,7 +500,7 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
                     ] else
                     ...[],
                   SizedBox(height: 20),
-                  showAppBarActions ?Container(
+                  showAppBarActions && isEditable?Container(
                     color: Colors.grey.shade50,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),

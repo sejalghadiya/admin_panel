@@ -320,7 +320,6 @@ class _ReportDetailsScreenState extends State<ReportDetailsScreen> {
            userProvider.isLoading ? Center(child: LoadingWidget()) : SizedBox(),
          ],
        ),
-
     );
   }
   void navigateToProductFormScreen(String modelName, String productId) {
