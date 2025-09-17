@@ -1,5 +1,6 @@
 import 'package:admin_panel/local_Storage/admin_shredPreferences.dart';
 import 'package:admin_panel/utils/list_formatter.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -207,11 +208,11 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                              productProvider.jobList[0].images.isNotEmpty &&
                                              selectedIndex < productProvider.jobList[0].images.length &&
                                              productProvider.jobList[0].images[selectedIndex].isNotEmpty
-                                             ? Image.network(
+                                             ? CachedNetworkImage( imageUrl:
                                            '$baseUrl${productProvider.jobList[0].images[selectedIndex]}',
                                            fit: BoxFit.fill,
                                            width: double.infinity,
-                                           errorBuilder: (context, error, stackTrace) =>
+                                           errorWidget: (context, error, stackTrace) =>
                                                Icon(Icons.broken_image, size: 90),
                                          )
                                              : Icon(Icons.image, size: 90),
@@ -304,10 +305,10 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                                child:
                                                imageUrl != null &&
                                                    imageUrl.isNotEmpty
-                                                   ? Image.network(
+                                                   ? CachedNetworkImage( imageUrl:
                                                  '$baseUrl$imageUrl',
                                                  fit: BoxFit.fill,
-                                                 errorBuilder:
+                                                 errorWidget:
                                                      (
                                                      context,
                                                      error,
@@ -344,229 +345,95 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                                  Text(ListFormatter.formatList(productProvider.jobList[0].price),
                                      style: TextStyle(fontSize: 15,color: Colors.black)),]else...[],
                                if(productProvider.jobList.isNotEmpty)...[
-                                 if(isEditable)...[
-                                  /* DropdownButtonFormField<String>(
-                                     value: selectedTypes.contains(productProvider.jobList[0].serviceJob)
-                                         ? productProvider.jobList[0].serviceJob
-                                         : null,
-                                     items: selectedTypes.map((val) {
-                                       return DropdownMenuItem<String>(
-                                         value: val,
-                                         child: Text(val),
-                                       );
-                                     }).toList(),
-                                     onChanged: (val) {
-                                       selectedForTypes = val;
-                                     },
-                                     decoration: InputDecoration(
-                                       labelText: 'Service/Job',
-                                       border: border,
-                                       enabledBorder: border,
-                                       focusedBorder: border,
-                                     ),
-                                   ),*/
-                                   Container(
-                                     width: double.infinity,
-                                     decoration: BoxDecoration(
-                                         color: Colors.white
-                                     ),
-                                     child: Row(
-                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                       children: [
-                                         Container(
-                                             padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                             child: Text("Service/Job")),
-                                         Container(
-                                           padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                           child:  Text(productProvider.jobList[0].serviceJob, style: TextStyle(fontSize: 14)),),
-                                       ],
-                                     ),
-                                   ),
-                                 ]else...[
-                                   Container(
-                                     width: double.infinity,
-                                     decoration: BoxDecoration(
-                                         color: Colors.white
-                                     ),
-                                     child: Row(
-                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                       children: [
-                                         Container(
-                                             padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                             child: Text("Service/Job")),
-                                         Container(
-                                           padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                           child:  Text(productProvider.jobList[0].serviceJob, style: TextStyle(fontSize: 14)),),
-                                       ],
-                                     ),
-                                   ),
-                                 ]
-                               ]else...[],
-                               if(productProvider.jobList.isNotEmpty)...[
-                                 if(isEditable)...[
-                                   DropdownButtonFormField<String>(
-                                     value: productProvider.jobList[0].positionType.last.isNotEmpty
-                                         ? productProvider.jobList[0].positionType.last.toString()
-                                         : null,
-                                     items: selectedPositionTypes.map((val) {
-                                       return DropdownMenuItem<String>(
-                                         value: val,
-                                         child: Text(val),
-                                       );
-                                     }).toList(),
-                                     onChanged: (val) {
-                                       selectedPositionalType = val;
-                                     },
-                                     decoration: InputDecoration(
-                                       labelText: 'Selected Position Type',
-                                       border: border,
-                                       enabledBorder: border,
-                                       focusedBorder: border,
-                                     ),
-                                   ),
-                                 ]else...[
-                                   Container(
-                                     width: double.infinity,
-                                     decoration: BoxDecoration(
-                                         color: Colors.white
-                                     ),
-                                     child: Row(
-                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                       children: [
-                                         Container(
-                                             padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                             child: Text("Position type")),
-                                         Container(
-                                           padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                           child:  Text(ListFormatter.formatList(productProvider.jobList[0].positionType), style: TextStyle(fontSize: 14)),),
-                                       ],
-                                     ),
-                                   ),
-                                 ]
-                               ]else...[],
-                              if(productProvider.jobList.isNotEmpty)...[
-                                if(isEditable)...[
-                                  DropdownButtonFormField<String>(
-                                    value: selectedSalaryTypes.contains(productProvider.jobList[0].salaryPeriod)
-                                        ? productProvider.jobList[0].salaryPeriod.last.toString()
-                                        : null,
-                                    items: selectedSalaryTypes.map((val) {
-                                      return DropdownMenuItem<String>(
-                                        value: val,
-                                        child: Text(val),
-                                      );
-                                    }).toList(),
-                                    onChanged: (val) {
-                                      selectedSalaryType = val;
-                                    },
-                                    decoration: InputDecoration(
-                                      labelText: 'Salary Period',
-                                      border: border,
-                                      enabledBorder: border,
-                                      focusedBorder: border,
-                                    ),
-                                  ),
-                                ]else...[
-                                  Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                            child: Text("Salary period")),
-                                        Container(
-                                          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                          child:  Text(ListFormatter.formatList(productProvider.jobList[0].salaryPeriod),  style: TextStyle(fontSize: 14)),),
-                                      ],
-                                    ),
-                                  ),
-                                ]
-                              ]else...[],
-                              if(productProvider.jobList.isNotEmpty)...[
-                                if(isEditable)...[
                                   TextField(
-                                    controller: _salaryFroController,
+                                    controller: TextEditingController(
+                                        text: productProvider.jobList[0].serviceJob .isNotEmpty
+                                            ? productProvider.jobList[0].productType.toString()
+                                            : ''
+                                    ),
+                                    enabled: false,
                                     decoration: InputDecoration(
-                                      labelText: 'Salary From',
+                                      labelText: 'Service/Job',
                                       suffixIcon: Icon(Icons.edit),
                                       border: border,
                                       enabledBorder: border,
                                       focusedBorder: border,
                                     ),
                                   ),
-                                ]else...[
-                                  Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                            child: Text("Salary from")),
-                                        Container(
-                                          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                          child:  Text(ListFormatter.formatList(productProvider.jobList[0].salaryFrom), style: TextStyle(fontSize: 14)),),
-                                      ],
-                                    ),
-                                  ),
-                                ]
-                              ]else...[],
-                               if(productProvider.jobList.isNotEmpty)...[
-                                 if(isEditable)...[
-                                   TextField(
-                                     controller: _salaryToController,
-                                     decoration: InputDecoration(
-                                       labelText: 'Salary To',
-                                       suffixIcon: Icon(Icons.edit),
-                                       border: border,
-                                       enabledBorder: border,
-                                       focusedBorder: border,
-                                     ),
-                                   ),
-                                 ]else...[
-                                   Container(
-                                     width: double.infinity,
-                                     decoration: BoxDecoration(
-                                         color: Colors.white
-                                     ),
-                                     child: Row(
-                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                       children: [
-                                         Container(
-                                             padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                             child: Text("Salary to")),
-                                         Container(
-                                           padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                           child:  Text(ListFormatter.formatList(productProvider.jobList[0].salaryTo), style: TextStyle(fontSize: 14)),),
-                                       ],
-                                     ),
-                                   ),
-                                 ]
                                ]else...[],
                                if(productProvider.jobList.isNotEmpty)...[
-                                 if(isEditable)...[
-                                   TextField(
-                                     controller: _adTitleController,
-                                     textCapitalization: TextCapitalization.sentences,
-                                     maxLines: null,
-                                     decoration: InputDecoration(
-                                       labelText: 'Title',
-                                       suffixIcon: Icon(Icons.edit),
-                                       border: border,
-                                       enabledBorder: border,
-                                       focusedBorder: border,
-                                     ),
+                                 TextField(
+                                   controller: TextEditingController(
+                                       text: productProvider.jobList[0].salaryPeriod.isNotEmpty
+                                           ? productProvider.jobList[0].salaryPeriod.last.toString()
+                                           : ''
                                    ),
-                                 ]else...[
-                                   Text(ListFormatter.formatList(productProvider.jobList[0].adTitle),)
-                                 ]
+                                   enabled: false,
+                                   decoration: InputDecoration(
+                                     labelText: 'Position Type',
+                                     suffixIcon: Icon(Icons.edit),
+                                     border: border,
+                                     enabledBorder: border,
+                                     focusedBorder: border,
+                                   ),
+                                 ),
+                               ]else...[],
+                              if(productProvider.jobList.isNotEmpty)...[
+                                TextField(
+                                  controller: TextEditingController(
+                                      text: productProvider.jobList[0].salaryFrom.isNotEmpty
+                                          ? productProvider.jobList[0].salaryFrom.last.toString()
+                                          : ''
+                                  ),
+                                  enabled: false,
+                                  decoration: InputDecoration(
+                                    labelText: 'Salary Period',
+                                    suffixIcon: Icon(Icons.edit),
+                                    border: border,
+                                    enabledBorder: border,
+                                    focusedBorder: border,
+                                  ),
+                                ),
+                              ]else...[],
+                              if(productProvider.jobList.isNotEmpty)...[
+                                TextField(
+                                controller: _salaryFroController,
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  labelText: 'Salary From',
+                                  suffixIcon: Icon(Icons.edit),
+                                  border: border,
+                                  enabledBorder: border,
+                                  focusedBorder: border,
+                                ),
+                              ),
+                              ]else...[],
+                               if(productProvider.jobList.isNotEmpty)...[TextField(
+                                 enabled: false,
+                                 controller: _salaryToController,
+                                 decoration: InputDecoration(
+                                   labelText: 'Salary To',
+                                   suffixIcon: Icon(Icons.edit),
+                                   border: border,
+                                   enabledBorder: border,
+                                   focusedBorder: border,
+                                 ),
+                               ),
+                               ]else...[],
+                               if(productProvider.jobList.isNotEmpty)...[
+                                 TextField(
+                                 controller: _adTitleController,
+                                 textCapitalization: TextCapitalization.sentences,
+                                 maxLines: null,
+                                 enabled: isEditable,
+                                 decoration: InputDecoration(
+                                   labelText: 'Title',
+                                   suffixIcon: Icon(Icons.edit),
+                                   border: border,
+                                   enabledBorder: border,
+                                   focusedBorder: border,
+                                 ),
+                               ),
                                ]else...[],
                              ],
                            ),
@@ -575,67 +442,37 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
                      )
                    ],
                  ),
-                  if(productProvider.jobList.isNotEmpty)...[
-                    if(isEditable)...[
-                      TextField(
-                        controller: _addressController,
-                        textCapitalization: TextCapitalization.sentences,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          labelText: 'Address',
-                          suffixIcon: Icon(Icons.edit),
-                          border: border,
-                          enabledBorder: border,
-                          focusedBorder: border,
-                        ),
-                      ),
-                    ]else...[
-                      Row(
-                        children: [
-                          Icon(Icons.location_on_outlined,size: 17,),
-                          const SizedBox(width: 5),
-                          if (productProvider.jobList.isNotEmpty)
-                            ...[
-                              // Text(ListFormatter.formatList(productProvider.jobList[0].address1),
-                              //   style: TextStyle(fontSize: 12),
-                              // )
-                            ]
-                          else
-                            ...[],
-
-                        ],
-                      ),
-                    ]
+                  if(productProvider.jobList.isNotEmpty)...[TextField(
+                    controller: _addressController,
+                    textCapitalization: TextCapitalization.sentences,
+                    maxLines: null,
+                    enabled: isEditable,
+                    decoration: InputDecoration(
+                      labelText: 'Address',
+                      suffixIcon: Icon(Icons.edit),
+                      border: border,
+                      enabledBorder: border,
+                      focusedBorder: border,
+                    ),
+                  ),
                   ]else...[],
-                  if(productProvider.jobList.isNotEmpty)...[
-                    if(isEditable)...[
-                      TextField(
-                        controller: _additionalInfoController,
-                        textCapitalization: TextCapitalization.sentences,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          labelText: 'Additional Information',
-                          suffixIcon: Icon(Icons.edit),
-                          border: border,
-                          enabledBorder: border,
-                          focusedBorder: border,
-                        ),
-                      ),
-                    ]else...[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Description: "),
-                          if(productProvider.jobList.isNotEmpty)...[
-                            Text(ListFormatter.formatList(productProvider.jobList[0].description),
-                                style: TextStyle(fontSize: 15)),]else...[],
-                        ],
-                      ),
-                    ]
+                  if(productProvider.jobList.isNotEmpty)...[TextField(
+                    controller: _additionalInfoController,
+                    textCapitalization: TextCapitalization.sentences,
+                    maxLines: null,
+                    enabled: false,
+                    decoration: InputDecoration(
+                      labelText: 'Additional Information',
+                      suffixIcon: Icon(Icons.edit),
+                      border: border,
+                      enabledBorder: border,
+                      focusedBorder: border,
+                    ),
+                  ),
                   ]else...[],
 
                   const SizedBox(height: 20),
-                 showAppBarActions? Container(
+                 showAppBarActions && isEditable? Container(
                     color: Colors.grey.shade50,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),

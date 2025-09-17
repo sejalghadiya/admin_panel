@@ -335,145 +335,64 @@ class _ServicesDetailScreenState extends State<ServicesDetailScreen> {
                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                            children: [
-                             if(productProvider.servicesList.isNotEmpty)...[
-                               if(isEditable)...[
-                                 Text('Service/Job:--  ${productProvider.servicesList[0].serviceJob}',
-                                     style: TextStyle(fontSize: 15))
-                               ]else...[
-                                 Row(
-                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                   children: [
-                                     Text('Service/Job:',
-                                         style: TextStyle(fontSize: 15)),
-                                     Text(productProvider.servicesList[0].serviceJob),
-                                   ],
-                                 )
-                               ]
+                             if(productProvider.servicesList.isNotEmpty)...[ Text('Service/Job:--  ${productProvider.servicesList[0].serviceJob}',
+                                 style: TextStyle(fontSize: 15))
                              ]else...[],
                              if(productProvider.servicesList.isNotEmpty)...[
-                              if(isEditable)...[
-                                /*DropdownButtonFormField<String>(
-                                  value:  null,
-                                  decoration: InputDecoration(
-                                    labelText: 'Service/Job',
-                                    border: border,
-                                    enabledBorder: border,
-                                    focusedBorder: border,
-                                  ),
-                                  icon: Icon(Icons.arrow_drop_down),
-                                  items: serviceValue.map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      selectedValue = newValue!;
-                                    });
-                                  },
-                                ),*/
-                                TextField(
-                                  controller: _addServiceOrJobType,
-                                  textCapitalization: TextCapitalization.sentences,
-                                  decoration: InputDecoration(
-                                    labelText: 'Select Service Or Job Work Type',
-                                    suffixIcon: Icon(Icons.edit),
-                                    border: border,
-                                    enabledBorder: border,
-                                    focusedBorder: border,
-                                  ),
-                                )
-                              ] else...[
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Services or job work type:"),
-                                    Text("${productProvider.servicesList[0].serviceType}"),
-                                  ],
-                                )
-                              ]
-                             ]else...[],
-                             if(productProvider.servicesList.isNotEmpty)...[
-                               if(isEditable)...[
-                                  TextField(
-                                    controller: _adTitleController,
-                                    textCapitalization: TextCapitalization.sentences,
-                                    decoration: InputDecoration(
-                                      labelText: 'Ad Title',
-                                      suffixIcon: Icon(Icons.edit),
-                                      border: border,
-                                      enabledBorder: border,
-                                      focusedBorder: border,
-                                    ),
-                                  )
-                               ]else...[
-                                 Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                   children: [
-                                     Text("Title:"),
-                                     Text(ListFormatter.formatList(productProvider.servicesList[0].adTitle),
-                                         style: TextStyle(fontSize: 15)),
-                                   ],
-                                 )
-                               ]
-                             ]else...[],
-                             if(productProvider.servicesList.isNotEmpty)...[
-                               if(isEditable)...[
-                                 TextField(
-                                   controller: _addressController,
-                                   textCapitalization: TextCapitalization.sentences,
-                                   maxLines: null,
-                                   decoration: InputDecoration(
-                                     labelText: 'Address',
-                                     suffixIcon: Icon(Icons.edit),
-                                     border: border,
-                                     enabledBorder: border,
-                                     focusedBorder: border,
-                                   ),
+                               TextField(
+                                 controller: _addServiceOrJobType,
+                                 textCapitalization: TextCapitalization.sentences,
+                                 enabled: false,
+                                 decoration: InputDecoration(
+                                   labelText: 'Service Or Job Work Type',
+                                   suffixIcon: Icon(Icons.edit),
+                                   border: border,
+                                   enabledBorder: border,
+                                   focusedBorder: border,
                                  ),
-                               ]else...[
-                                 Row(
-                                   children: [
-                                     Icon(Icons.location_on_outlined,size: 17,),
-                                     const SizedBox(width: 5),
-                                     if (productProvider.servicesList.isNotEmpty)
-                                       ...[
-                                         // Text(ListFormatter.formatList(productProvider.servicesList[0].address1),
-                                         //   style: TextStyle(fontSize: 12),
-                                         // )
-                                       ]
-                                     else
-                                       ...[],
-
-                                   ],
-                                 ),
-                               ]
+                               ),
+                             ]else...[],
+                             if(productProvider.servicesList.isNotEmpty)...[TextField(
+                               controller: _adTitleController,
+                               enabled: isEditable,
+                               textCapitalization: TextCapitalization.sentences,
+                               decoration: InputDecoration(
+                                 labelText: 'Ad Title',
+                                 suffixIcon: Icon(Icons.edit),
+                                 border: border,
+                                 enabledBorder: border,
+                                 focusedBorder: border,
+                               ),
+                             ),
+                             ]else...[],
+                             if(productProvider.servicesList.isNotEmpty)...[ TextField(
+                               controller: _addressController,
+                               textCapitalization: TextCapitalization.sentences,
+                               enabled: isEditable,
+                               maxLines: null,
+                               decoration: InputDecoration(
+                                 labelText: 'Address',
+                                 suffixIcon: Icon(Icons.edit),
+                                 border: border,
+                                 enabledBorder: border,
+                                 focusedBorder: border,
+                               ),
+                             ),
                              ]else...[],
                              if(productProvider.servicesList.isNotEmpty)...[
-                               if(isEditable)...[
-                                 TextField(
-                                   controller: _additionalInformationController,
-                                   textCapitalization: TextCapitalization.sentences,
-                                   decoration: InputDecoration(
-                                     labelText: 'Additional Information',
-                                     suffixIcon: Icon(Icons.edit),
-                                     border: border,
-                                     enabledBorder: border,
-                                     focusedBorder: border,
-                                   ),
-                                 )
-                               ]else...[
-                                 Column(
-                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                   children: [
-                                     Text("Description: "),
-                                     if(productProvider.servicesList.isNotEmpty)...[
-                                       Text(ListFormatter.formatList(productProvider.servicesList[0].description),
-                                           style: TextStyle(fontSize: 15)),]else...[],
-                                   ],
-                                 ),
-                               ]
+                               TextField(
+                               controller: _additionalInformationController,
+                               textCapitalization: TextCapitalization.sentences,
+                               enabled: isEditable,
+                                maxLines: null,
+                               decoration: InputDecoration(
+                                 labelText: 'Additional Information',
+                                 suffixIcon: Icon(Icons.edit),
+                                 border: border,
+                                 enabledBorder: border,
+                                 focusedBorder: border,
+                               ),
+                             ),
                              ]else...[],
                            ],
                          ),
@@ -482,7 +401,7 @@ class _ServicesDetailScreenState extends State<ServicesDetailScreen> {
                    )
                  ],
                ),
-               showAppBarActions? Container(
+               showAppBarActions && isEditable? Container(
                   color: Colors.grey.shade50,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),

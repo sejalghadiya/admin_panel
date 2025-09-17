@@ -1,4 +1,5 @@
 import 'package:admin_panel/utils/list_formatter.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
@@ -190,57 +191,15 @@ bool isEditable = false;
                                            productProvider.petList[0].images.isNotEmpty &&
                                            selectedIndex < productProvider.petList[0].images.length &&
                                            productProvider.petList[0].images[selectedIndex].isNotEmpty
-                                           ? Image.network(
+                                           ? CachedNetworkImage( imageUrl:
                                          '$baseUrl${productProvider.petList[0].images[selectedIndex]}',
                                          fit: BoxFit.fill,
                                          width: double.infinity,
-                                         errorBuilder: (context, error, stackTrace) =>
+                                         errorWidget: (context, error, stackTrace) =>
                                              Icon(Icons.broken_image, size: 90),
                                        )
                                            : Icon(Icons.image, size: 90),
                                      ),
-                                     // Positioned(
-                                     //   right: 4,
-                                     //   top: 4,
-                                     //   child: GestureDetector(
-                                     //     onTap: () {
-                                     //       showDialog(
-                                     //         context: context,
-                                     //         builder: (context) {
-                                     //           return AlertDialog(
-                                     //             backgroundColor: Colors.white,
-                                     //             title: const Text('Delete Image'),
-                                     //             content: const Text('Are you sure you want to delete this image?'),
-                                     //             actions: [
-                                     //               TextButton(
-                                     //                 onPressed: () {
-                                     //                   Navigator.of(context).pop();
-                                     //                 },
-                                     //                 child: const Text('Cancel'),
-                                     //               ),
-                                     //               TextButton(
-                                     //                 onPressed: () async {
-                                     //                   Map<String,dynamic> body = {
-                                     //                     "productId": productId,
-                                     //                     "imagePath": productProvider.petList[0].images[selectedIndex],
-                                     //                     "modelName": productProvider.petList[0].modelName
-                                     //                   };
-                                     //                   print(body);
-                                     //                   productProvider.deleteProductImage(body);
-                                     //
-                                     //                   Navigator.of(context).pop();
-                                     //                 },
-                                     //                 child: const Text('Delete'),
-                                     //               ),
-                                     //             ],
-                                     //           );
-                                     //         },
-                                     //       );
-                                     //     },
-                                     //     child: const Icon(Icons.cancel,
-                                     //         size: 18, color: Colors.red),
-                                     //   ),
-                                     // ),
                                    ],
                                  )
                                ] else ...[],
@@ -287,10 +246,10 @@ bool isEditable = false;
                                              child:
                                              imageUrl != null &&
                                                  imageUrl.isNotEmpty
-                                                 ? Image.network(
+                                                 ? CachedNetworkImage( imageUrl:
                                                '$baseUrl$imageUrl',
                                                fit: BoxFit.fill,
-                                               errorBuilder:
+                                               errorWidget:
                                                    (
                                                    context,
                                                    error,
@@ -324,92 +283,61 @@ bool isEditable = false;
                              crossAxisAlignment:  CrossAxisAlignment.start,
                              children: [
                                if(productProvider.petList.isNotEmpty)...[
-                                 if(isEditable)...[
-                                   TextField(
-                                     controller: _priceController,
-                                     decoration: InputDecoration(
-                                       labelText: 'Price',
-                                       suffixIcon: Icon(Icons.edit),
-                                       border: border,
-                                       enabledBorder: border,
-                                       focusedBorder: border,
-                                     ),
-                                   ),
-                                 ]else...[
-                                   Text(ListFormatter.formatList(productProvider.petList[0].price),
-                                       style: TextStyle(fontSize: 16)),
-                                 ]
+                                 TextField(
+                                 controller: _priceController,
+                                 enabled: false,
+                                 decoration: InputDecoration(
+                                   labelText: 'Price',
+                                   suffixIcon: Icon(Icons.edit),
+                                   border: border,
+                                   enabledBorder: border,
+                                   focusedBorder: border,
+                                 ),
+                               ),
+                               ]else...[],
+                               if(productProvider.petList.isNotEmpty)...[TextField(
+                                 controller: _adTitleController,
+                                 textCapitalization: TextCapitalization.sentences,
+                                 maxLines: null,
+                                 enabled: isEditable,
+                                 decoration: InputDecoration(
+                                   labelText: 'Title',
+                                   suffixIcon: Icon(Icons.edit),
+                                   border: border,
+                                   enabledBorder: border,
+                                   focusedBorder: border,
+                                 ),
+                               ),
                                ]else...[],
                                if(productProvider.petList.isNotEmpty)...[
-                                 if(isEditable)...[
-                                   TextField(
-                                     controller: _adTitleController,
-                                     textCapitalization: TextCapitalization.sentences,
-                                     maxLines: null,
-                                     decoration: InputDecoration(
-                                       labelText: 'Title',
-                                       suffixIcon: Icon(Icons.edit),
-                                       border: border,
-                                       enabledBorder: border,
-                                       focusedBorder: border,
-                                     ),
-                                   ),
-                                 ]else...[
-                                   Text(ListFormatter.formatList(productProvider.petList[0].adTitle),
-                                       style: TextStyle(fontSize: 15)),
-                                 ]
+                                 TextField(
+                                 controller: _addressController,
+                                 textCapitalization: TextCapitalization.sentences,
+                                 maxLines: null,
+                                 enabled: isEditable,
+                                 decoration: InputDecoration(
+                                   labelText: 'Address',
+                                   suffixIcon: Icon(Icons.edit),
+                                   border: border,
+                                   enabledBorder: border,
+                                   focusedBorder: border,
+                                 ),
+                               ),
                                ]else...[],
                                if(productProvider.petList.isNotEmpty)...[
-                                 if(isEditable)...[
-                                   TextField(
-                                     controller: _addressController,
-                                     textCapitalization: TextCapitalization.sentences,
-                                     maxLines: null,
-                                     decoration: InputDecoration(
-                                       labelText: 'Address',
-                                       suffixIcon: Icon(Icons.edit),
-                                       border: border,
-                                       enabledBorder: border,
-                                       focusedBorder: border,
-                                     ),
-                                   ),
-                                 ]else...[
-                                   Row(
-                                     children: [
-                                       Icon(Icons.location_on_outlined,size: 17,),
-                                       const SizedBox(width: 5),
-                                       // Text(ListFormatter.formatList(productProvider.petList[0].address1),
-                                       //   style: TextStyle(fontSize: 12),
-                                       // )
-                                     ],
-                                   ),
-                                 ]
-                               ]else...[],
-                               if(productProvider.petList.isNotEmpty)...[
-                                 if(isEditable)...[
-                                   TextField(
-                                     controller: _descriptionController,
-                                     textCapitalization: TextCapitalization.sentences,
-                                     maxLines: null,
-                                     decoration: InputDecoration(
-                                       labelText: 'Description',
-                                       suffixIcon: Icon(Icons.edit),
-                                       border: border,
-                                       enabledBorder: border,
-                                       focusedBorder: border,
-                                     ),
-                                   ),
-                                 ]else...[
-                                   Column(
-                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                     children: [
-                                       Text("Description: "),
-                                       const SizedBox(height: 2,),
-                                       Text(ListFormatter.formatList(productProvider.petList[0].description),
-                                           style: TextStyle(fontSize: 15)),
-                                     ],
-                                   ),
-                                 ]
+                                 TextField(
+                                 controller: _descriptionController,
+                                 textCapitalization: TextCapitalization.sentences,
+                                 maxLines: null,
+                                 enabled: isEditable,
+                                 decoration: InputDecoration(
+                                   labelText: 'Description',
+                                   suffixIcon: Icon(Icons.edit),
+                                   border: border,
+                                   enabledBorder: border,
+                                   focusedBorder: border,
+                                 ),
+                               ),
                                ]else...[],
                              ],
                            ),
@@ -419,7 +347,7 @@ bool isEditable = false;
                  ],
                ),
                const SizedBox(height: 20),
-              showAppBarActions? Container(
+              showAppBarActions && isEditable ? Container(
                  color: Colors.grey.shade50,
                  child: Padding(
                    padding: const EdgeInsets.all(8.0),
@@ -469,132 +397,6 @@ bool isEditable = false;
                  ),
                ) : SizedBox.shrink(),
                const SizedBox(height: 10),
-               /* Consumer<ProductProvider>(
-                      builder: (context,productProvider,child) {
-                        return Expanded(
-                          child: Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border(
-                                  top: BorderSide(
-                                    color: Colors.grey.shade300,
-                                    width: 1,
-                                  ),
-                                )
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  spacing: 20,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Column(
-                                      spacing: 20,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        if(productProvider.petList.isNotEmpty)...[
-                                         if(isEditable)...[
-                                           TextField(
-                                             controller: _priceController,
-                                             decoration: InputDecoration(
-                                               labelText: 'Price',
-                                               suffixIcon: Icon(Icons.edit),
-                                               border: border,
-                                               enabledBorder: border,
-                                               focusedBorder: border,
-                                             ),
-                                           ),
-                                         ]else...[
-                                           Text(ListFormatter.formatList(productProvider.petList[0].price),
-                                               style: TextStyle(fontSize: 16)),
-                                         ]
-                                        ]else...[],
-                                        if(productProvider.petList.isNotEmpty)...[
-                                          if(isEditable)...[
-                                            TextField(
-                                              controller: _adTitleController,
-                                              textCapitalization: TextCapitalization.sentences,
-                                              maxLines: null,
-                                              decoration: InputDecoration(
-                                                labelText: 'Title',
-                                                suffixIcon: Icon(Icons.edit),
-                                                border: border,
-                                                enabledBorder: border,
-                                                focusedBorder: border,
-                                              ),
-                                            ),
-                                          ]else...[
-                                            Text(ListFormatter.formatList(productProvider.petList[0].adTitle),
-                                                style: TextStyle(fontSize: 15)),
-                                          ]
-                                          ]else...[],
-                                      ],
-                                    ),
-                                    if(productProvider.petList.isNotEmpty)...[
-                                      if(isEditable)...[
-                                        TextField(
-                                          controller: _addressController,
-                                          textCapitalization: TextCapitalization.sentences,
-                                          maxLines: null,
-                                          decoration: InputDecoration(
-                                            labelText: 'Address',
-                                            suffixIcon: Icon(Icons.edit),
-                                            border: border,
-                                            enabledBorder: border,
-                                            focusedBorder: border,
-                                          ),
-                                        ),
-                                      ]else...[
-                                        Row(
-                                          children: [
-                                            Icon(Icons.location_on_outlined,size: 17,),
-                                            const SizedBox(width: 5),
-                                                Text(ListFormatter.formatList(productProvider.petList[0].address1),
-                                                  style: TextStyle(fontSize: 12),
-                                                )
-                                          ],
-                                        ),
-                                      ]
-                                    ]else...[],
-                                    if(productProvider.petList.isNotEmpty)...[
-                                      if(isEditable)...[
-                                        TextField(
-                                          controller: _descriptionController,
-                                          textCapitalization: TextCapitalization.sentences,
-                                          maxLines: null,
-                                          decoration: InputDecoration(
-                                            labelText: 'Description',
-                                            suffixIcon: Icon(Icons.edit),
-                                            border: border,
-                                            enabledBorder: border,
-                                            focusedBorder: border,
-                                          ),
-                                        ),
-                                      ]else...[
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text("Description: "),
-                                            const SizedBox(height: 2,),
-                                            Text(ListFormatter.formatList(productProvider.petList[0].description),
-                                                style: TextStyle(fontSize: 15)),
-                                          ],
-                                        ),
-                                      ]
-                                    ]else...[],
-                                    const SizedBox(height: 20,),
-
-                                  ],
-
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-                  ),*/
              ],
            ),
          ),

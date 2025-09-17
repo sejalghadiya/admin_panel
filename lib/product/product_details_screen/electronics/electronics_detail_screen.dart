@@ -434,116 +434,68 @@ class _ElectronicsDetailsScreenState extends State<ElectronicsDetailsScreen> {
                                     if (productProvider
                                         .electronicsList
                                         .isNotEmpty) ...[
-                                      if (isEditable) ...[
-                                        TextField(
-                                          controller: _priceController,
-                                          decoration: InputDecoration(
-                                            labelText: 'Price',
-                                            suffixIcon: Icon(Icons.edit),
-                                            border: border,
-                                            enabledBorder: border,
-                                            focusedBorder: border,
-                                          ),
+                                      TextField(
+                                        controller: _priceController,
+                                        enabled: false,
+                                        decoration: InputDecoration(
+                                          labelText: 'Price',
+                                          suffixIcon: Icon(Icons.edit),
+                                          border: border,
+                                          enabledBorder: border,
+                                          focusedBorder: border,
                                         ),
-                                      ] else ...[
-                                        Text(
-                                          "₹ ${ListFormatter.formatList(productProvider.electronicsList[0].price)}",
-                                          style: TextStyle(fontSize: 16),
-                                        ),
-                                      ],
+                                      ),
                                     ] else
                                       ...[],
                                     if (productProvider
                                         .electronicsList
                                         .isNotEmpty) ...[
-                                      if (isEditable) ...[
-                                        TextField(
-                                          controller: _adTitleController,
-                                          maxLines: null,
-                                          decoration: InputDecoration(
-                                            labelText: 'Title',
-                                            suffixIcon: Icon(Icons.edit),
-                                            border: border,
-                                            enabledBorder: border,
-                                            focusedBorder: border,
-                                          ),
-                                        ),
-                                      ] else ...[
-                                        Text(
-                                          ListFormatter.formatList(
-                                            productProvider
-                                                .electronicsList[0]
-                                                .adTitle,
-                                          ),
-                                          style: TextStyle(fontSize: 15),
-                                        ),
-                                      ],
+                                          TextField(
+                                      controller: _adTitleController,
+                                      enabled: isEditable,
+                                      maxLines: null,
+                                      decoration: InputDecoration(
+                                        labelText: 'Title',
+                                        suffixIcon: Icon(Icons.edit),
+                                        border: border,
+                                        enabledBorder: border,
+                                        focusedBorder: border,
+                                      ),
+                                    ),
                                     ] else
                                       ...[],
                                     if (productProvider
                                         .electronicsList
                                         .isNotEmpty) ...[
-                                      if (isEditable) ...[
-                                        TextField(
-                                          controller: _descriptionController,
-                                          maxLines: null,
-                                          decoration: InputDecoration(
-                                            labelText: 'Description',
-                                            suffixIcon: Icon(Icons.edit),
-                                            border: border,
-                                            enabledBorder: border,
-                                            focusedBorder: border,
-                                          ),
-                                        ),
-                                      ] else ...[
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text("Description: "),
-                                            const SizedBox(height: 2),
-                                            Text(
-                                              ListFormatter.formatList(
-                                                productProvider
-                                                    .electronicsList[0]
-                                                    .description,
-                                              ),
-                                              style: TextStyle(fontSize: 15),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                          TextField(
+                                      controller: _descriptionController,
+                                      enabled: isEditable,
+                                      maxLines: null,
+                                      decoration: InputDecoration(
+                                        labelText: 'Description',
+                                        suffixIcon: Icon(Icons.edit),
+                                        border: border,
+                                        enabledBorder: border,
+                                        focusedBorder: border,
+                                      ),
+                                    ),
                                     ] else
                                       ...[],
                                     if (productProvider
                                         .electronicsList
                                         .isNotEmpty) ...[
-                                      if (isEditable) ...[
-                                        TextField(
-                                          controller: _addressController,
-                                          maxLines: null,
-                                          decoration: InputDecoration(
-                                            labelText: 'Address',
-                                            suffixIcon: Icon(Icons.edit),
-                                            border: border,
-                                            enabledBorder: border,
-                                            focusedBorder: border,
-                                          ),
-                                        ),
-                                      ] else ...[
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.location_on_outlined,
-                                              size: 17,
-                                            ),
-                                            const SizedBox(width: 5),
-                                            // Text(ListFormatter.formatList(productProvider.electronicsList[0].address1),
-                                            //   style: TextStyle(fontSize: 12),
-                                            // )
-                                          ],
-                                        ),
-                                      ],
+                                          TextField(
+                                      controller: _addressController,
+                                      maxLines: null,
+                                      enabled: isEditable,
+                                      decoration: InputDecoration(
+                                        labelText: 'Address',
+                                        suffixIcon: Icon(Icons.edit),
+                                        border: border,
+                                        enabledBorder: border,
+                                        focusedBorder: border,
+                                      ),
+                                    ),
                                     ] else
                                       ...[],
                                   ],
@@ -554,7 +506,7 @@ class _ElectronicsDetailsScreenState extends State<ElectronicsDetailsScreen> {
                         ],
                       ),
                       SizedBox(height: 20),
-                      showAppBarActions
+                      showAppBarActions && isEditable
                           ? Container(
                               color: Colors.grey.shade50,
                               child: Padding(

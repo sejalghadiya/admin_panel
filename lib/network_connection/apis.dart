@@ -2,8 +2,8 @@
 import 'constants.dart';
 
 class Apis {
-  // static const String BASE_URL = "https://api.bhavnika.shop/api";
-  static const String BASE_URL = "http://localhost:3001/api";
+  static const String BASE_URL = "https://api.bhavnika.shop/api";
+  // static const String BASE_URL = "http://localhost:3001/api";
   static const String BASE_URL_IMAGE = "https://api.bhavnika.shop";
   // static const String BASE_URL_IMAGE = "http://localhost:3001";
 

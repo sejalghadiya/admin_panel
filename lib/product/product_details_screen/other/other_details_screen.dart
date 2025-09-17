@@ -1,5 +1,6 @@
 import 'package:admin_panel/local_Storage/admin_shredPreferences.dart';
 import 'package:admin_panel/utils/list_formatter.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -198,10 +199,10 @@ void setData(){
                                               BorderRadius.vertical(top: Radius.circular(8)),
                                             ),
                                             child: productProvider.otherList[0].images[selectedIndex].isNotEmpty
-                                                ? Image.network(
+                                                ? CachedNetworkImage( imageUrl:
                                               '$baseUrl${productProvider.otherList[0].images[selectedIndex]}',
                                               fit: BoxFit.contain,width: double.infinity,
-                                              errorBuilder: (context, error, stackTrace) =>
+                                              errorWidget: (context, error, stackTrace) =>
                                                   Icon(Icons.broken_image, size: 90),
                                             )
                                                 : Icon(Icons.image, size: 90),
@@ -294,10 +295,10 @@ void setData(){
                                                   child:
                                                   imageUrl != null &&
                                                       imageUrl.isNotEmpty
-                                                      ? Image.network(
+                                                      ? CachedNetworkImage( imageUrl:
                                                     '$baseUrl$imageUrl',
                                                     fit: BoxFit.fill,
-                                                    errorBuilder:
+                                                    errorWidget:
                                                         (
                                                         context,
                                                         error,
@@ -332,134 +333,84 @@ void setData(){
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               if(productProvider.otherList.isNotEmpty)...[
-                                if(isEditable)...[
-                                  Row(
-                                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text("Product Type:"),
-                                      const SizedBox(width: 5,),
-                                      if(productProvider.otherList.isNotEmpty)...[
-                                        Text(productProvider.otherList[0].subProductName,
-                                            style: TextStyle(fontSize: 15)),]else...[],
-                                    ],
+                                TextField(
+                                  controller: TextEditingController(
+                                      text: productProvider.otherList[0].subProductType
                                   ),
-                                ]else...[
-                                  Row(
-                                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text("Product Type:"),
-                                      const SizedBox(width: 5,),
-                                      if(productProvider.otherList.isNotEmpty)...[
-                                        Text(productProvider.otherList[0].subProductName,
-                                            style: TextStyle(fontSize: 15)),]else...[],
-                                    ],
+                                  enabled: false,
+                                  decoration: InputDecoration(
+                                    labelText: 'Product Type',
+                                    suffixIcon: Icon(Icons.edit),
+                                    border: border,
+                                    enabledBorder: border,
+                                    focusedBorder: border,
                                   ),
-                                ],
+                                ),
                               ]else...[],
                               if(productProvider.otherList.isNotEmpty)...[
-                                if(isEditable)...[
-                                  TextField(
-                                    controller: _priceController,
-                                    decoration: InputDecoration(
-                                      labelText: 'Price',
-                                      suffixIcon: Icon(Icons.edit),
-                                      border: border,
-                                      enabledBorder: border,
-                                      focusedBorder: border,
-                                    ),
+                                TextField(
+                                  controller: _priceController,
+                                  enabled: false,
+                                  decoration: InputDecoration(
+                                    labelText: 'Price',
+                                    suffixIcon: Icon(Icons.edit),
+                                    border: border,
+                                    enabledBorder: border,
+                                    focusedBorder: border,
                                   ),
-                                ]else...[
-                                  Text(
-                                      "₹ ${ListFormatter.formatList(productProvider.otherList[0].price)}",
-                                      style: TextStyle(fontSize: 16))
-                                ]
+                                ),
+                              ]else...[],
+                              if(productProvider.otherList.isNotEmpty)...[TextField(
+                                controller: _adTitleController,
+                                textCapitalization: TextCapitalization.sentences,
+                                enabled: isEditable,
+                                maxLines: null,
+                                decoration: InputDecoration(
+                                  labelText: 'Title',
+                                  suffixIcon: Icon(Icons.edit),
+                                  border: border,
+                                  enabledBorder: border,
+                                  focusedBorder: border,
+                                ),
+                              ),
                               ]else...[],
                               if(productProvider.otherList.isNotEmpty)...[
-                                if(isEditable)...[
-                                  TextField(
-                                    controller: _adTitleController,
-                                    textCapitalization: TextCapitalization.sentences,
-                                    maxLines: null,
-                                    decoration: InputDecoration(
-                                      labelText: 'Title',
-                                      suffixIcon: Icon(Icons.edit),
-                                      border: border,
-                                      enabledBorder: border,
-                                      focusedBorder: border,
-                                    ),
-                                  ),
-                                ] else...[
-                                  Text(ListFormatter.formatList(productProvider.otherList[0].adTitle)),
-                                ]
+                                TextField(
+                                controller: _addressController,
+                                textCapitalization: TextCapitalization.sentences,
+                                enabled: isEditable,
+                                maxLines: null,
+                                decoration: InputDecoration(
+                                  labelText: 'Address',
+                                  suffixIcon: Icon(Icons.edit),
+                                  border: border,
+                                  enabledBorder: border,
+                                  focusedBorder: border,
+                                ),
+                              ),
                               ]else...[],
-                              if(productProvider.otherList.isNotEmpty)...[
-                                if(isEditable)...[
-                                  TextField(
-                                    controller: _addressController,
-                                    textCapitalization: TextCapitalization.sentences,
-                                    maxLines: null,
-                                    decoration: InputDecoration(
-                                      labelText: 'Address',
-                                      suffixIcon: Icon(Icons.edit),
-                                      border: border,
-                                      enabledBorder: border,
-                                      focusedBorder: border,
-                                    ),
-                                  ),
-                                ]else...[
-                                  Row(
-                                    children: [
-                                      Icon(Icons.location_on_outlined,size: 17,),
-                                      const SizedBox(width: 5),
-                                      if (productProvider.otherList.isNotEmpty)
-                                        ...[
-                                          // Text(
-                                          //   ListFormatter.formatList(productProvider.otherList[0].address1),
-                                          //   style: TextStyle(fontSize: 12),
-                                          // )
-                                        ]
-                                      else
-                                        ...[],
-
-                                    ],
-                                  ),
-                                ]
-                              ]else...[],
-                              if(productProvider.otherList.isNotEmpty)...[
-                                if(isEditable)...[
-                                  TextField(
-                                    controller: _descriptionController,
-                                    textCapitalization: TextCapitalization.sentences,
-                                    maxLines: null,
-                                    decoration: InputDecoration(
-                                      labelText: 'Additional Information',
-                                      suffixIcon: Icon(Icons.edit),
-                                      border: border,
-                                      enabledBorder: border,
-                                      focusedBorder: border,
-                                    ),
-                                  ),
-                                ]else...[
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Description: "),
-                                      const SizedBox(height: 2,),
-                                      if(productProvider.otherList.isNotEmpty)...[
-                                        Text(ListFormatter.formatList(productProvider.otherList[0].description),
-                                            style: TextStyle(fontSize: 15)),]else...[],
-                                    ],
-                                  ),
-                                ]
+                              if(productProvider.otherList.isNotEmpty)...[TextField(
+                                controller: _descriptionController,
+                                enabled: isEditable,
+                                textCapitalization: TextCapitalization.sentences,
+                                maxLines: null,
+                                decoration: InputDecoration(
+                                  labelText: 'Additional Information',
+                                  suffixIcon: Icon(Icons.edit),
+                                  border: border,
+                                  enabledBorder: border,
+                                  focusedBorder: border,
+                                ),
+                              ),
                               ]else...[],
                             ],
                           ),
                         );
                       }
-                    )
+                    ),
                   ],
                ),
-               showAppBarActions? Container(
+               showAppBarActions && isEditable ? Container(
                   color: Colors.grey.shade50,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),

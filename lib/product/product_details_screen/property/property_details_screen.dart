@@ -1,5 +1,6 @@
 import 'package:admin_panel/local_Storage/admin_shredPreferences.dart';
 import 'package:admin_panel/utils/list_formatter.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -221,57 +222,15 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                                                  productProvider.propertyList[0].images.isNotEmpty &&
                                                  selectedIndex < productProvider.propertyList[0].images.length &&
                                                  productProvider.propertyList[0].images[selectedIndex].isNotEmpty
-                                                 ? Image.network(
+                                                 ? CachedNetworkImage( imageUrl:
                                                '$baseUrl${productProvider.propertyList[0].images[selectedIndex]}',
                                                fit: BoxFit.fill,
                                                width: double.infinity,
-                                               errorBuilder: (context, error, stackTrace) =>
+                                               errorWidget: (context, error, stackTrace) =>
                                                    Icon(Icons.broken_image, size: 90),
                                              )
                                                  : Icon(Icons.image, size: 90),
                                            ),
-                                           // Positioned(
-                                           //   right: 4,
-                                           //   top: 4,
-                                           //   child: GestureDetector(
-                                           //     onTap: () {
-                                           //       showDialog(
-                                           //         context: context,
-                                           //         builder: (context) {
-                                           //           return AlertDialog(
-                                           //             backgroundColor: Colors.white,
-                                           //             title: const Text('Delete Image'),
-                                           //             content: const Text('Are you sure you want to delete this image?'),
-                                           //             actions: [
-                                           //               TextButton(
-                                           //                 onPressed: () {
-                                           //                   Navigator.of(context).pop();
-                                           //                 },
-                                           //                 child: const Text('Cancel'),
-                                           //               ),
-                                           //               TextButton(
-                                           //                 onPressed: () async {
-                                           //                   Map<String,dynamic> body = {
-                                           //                     "productId": productId,
-                                           //                     "imagePath": productProvider.propertyList[0].images[selectedIndex],
-                                           //                     "modelName": productProvider.propertyList[0].modelName
-                                           //                   };
-                                           //                   print(body);
-                                           //                   productProvider.deleteProductImage(body);
-                                           //
-                                           //                   Navigator.of(context).pop();
-                                           //                 },
-                                           //                 child: const Text('Delete'),
-                                           //               ),
-                                           //             ],
-                                           //           );
-                                           //         },
-                                           //       );
-                                           //     },
-                                           //     child: const Icon(Icons.cancel,
-                                           //         size: 18, color: Colors.red),
-                                           //   ),
-                                           // ),
                                          ],
                                        )
                                       ] else ...[],
@@ -318,10 +277,10 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                                                     child:
                                                     imageUrl != null &&
                                                         imageUrl.isNotEmpty
-                                                        ? Image.network(
+                                                        ? CachedNetworkImage( imageUrl:
                                                       '$baseUrl$imageUrl',
                                                       fit: BoxFit.fill,
-                                                      errorBuilder:
+                                                      errorWidget:
                                                           (
                                                           context,
                                                           error,
@@ -356,317 +315,117 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 if(productProvider.propertyList.isNotEmpty)...[
-                                  if(isEditable)...[
-                                    //title
-                                    TextField(
-                                      controller: titleController,
-                                      textCapitalization: TextCapitalization.sentences,
-                                      maxLines: null,
-                                      decoration: InputDecoration(
-                                        labelText: 'Title',
-                                        suffixIcon: Icon(Icons.edit),
-                                        border: border,
-                                        enabledBorder: border,
-                                        focusedBorder: border,
-                                      ),
-                                    ),
-                                  ]else...[
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text("Title:"),
-                                        Text(
-                                            ListFormatter.formatList(productProvider.propertyList[0].adTitle),
-                                            style: TextStyle(fontSize: 15)),
-                                      ],
-                                    )
-                                  ]
-                                ]else...[],
-                                if(productProvider.propertyList.isNotEmpty)...[
-                                  if(isEditable)...[
-                                    DropdownButtonFormField<String>(
-                                      value: selectedBHK,
-                                      decoration: InputDecoration(
-                                        labelText: 'Select BHK',
-                                        labelStyle: TextStyle(color: Colors.black),
-                                        border: border,
-                                        enabledBorder: border,
-                                        focusedBorder: border,
-                                      ),
-                                      iconEnabledColor: Colors.black, // down arrow color
-                                      dropdownColor: Colors.white,
-                                      items: bhkOption.map((year) {
-                                        return DropdownMenuItem<String>(
-                                          value: year,
-                                          child: Text(year),
-                                        );
-                                      }).toList(),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          selectedBHK = value!;
-                                        });
-                                      },
-                                      // validator: (value){
-                                      //   if (value == null || value.isEmpty) {
-                                      //     return 'Please select a type';
-                                      //   }
-                                      //   return null;
-                                      // },
-                                    ),
-                                  ]else...[
-                                    Container(
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                          color: Colors.white
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                              padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                              child: Text("BHK")),
-                                          Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                            child: Text(ListFormatter.formatList(productProvider.propertyList[0].bhk), style: TextStyle(fontSize: 15)),),
-                                        ],
-                                      ),
-                                    ),
-                                  ]
-                                ]else...[],
-                                if(productProvider.propertyList.isNotEmpty)...[
-                                  if(isEditable)...[
-                                    DropdownButtonFormField<String>(
-                                      value: selectedFurnishing,
-                                      decoration: InputDecoration(
-                                        labelText: 'Select Furnishing',
-                                        labelStyle: TextStyle(color: Colors.black),
-                                        border: border,
-                                        enabledBorder: border,
-                                        focusedBorder: border,
-                                      ),
-                                      iconEnabledColor: Colors.black, // down arrow color
-                                      dropdownColor: Colors.white,
-                                      items: furniture.map((year) {
-                                        return DropdownMenuItem<String>(
-                                          value: year,
-                                          child: Text(year),
-                                        );
-                                      }).toList(),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          selectedFurnishing = value!;
-                                        });
-                                      },
-                                      validator: (value){
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please select a furnishing type';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  ]else...[
-                                    Container(
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                          color: Colors.white
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                              padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                              child: Text("Furnished")),
-                                          Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                            child: Text(ListFormatter.formatList(productProvider.propertyList[0].furnishing), style: TextStyle(fontSize: 15)),),
-                                        ],
-                                      ),
-                                    ),
-                                  ]
-                                ]else...[],
-                                if(productProvider.propertyList.isNotEmpty)...[
-                                  if(isEditable)...[
-                                    DropdownButtonFormField<String>(
-                                      value: selectedListedBy,
-                                      decoration: InputDecoration(
-                                        labelText: 'Listed By',
-                                        labelStyle: TextStyle(color: Colors.black),
-                                        border: border,
-                                        enabledBorder: border,
-                                        focusedBorder: border,
-                                      ),
-                                      iconEnabledColor: Colors.black, // down arrow color
-                                      dropdownColor: Colors.white,
-                                      items: listedBy.map((year) {
-                                        return DropdownMenuItem<String>(
-                                          value: year,
-                                          child: Text(year),
-                                        );
-                                      }).toList(),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          selectedListedBy = value!;
-                                        });
-                                      },
-                                      validator: (value){
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please select a listed by';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  ] else...[
-                                    Container(
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                          color: Colors.white
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                              padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                              child: Text("Listed By")),
-                                          Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                            child: Text(ListFormatter.formatList(productProvider.propertyList[0].listedBy), style: TextStyle(fontSize: 15)),),
-                                        ],
-                                      ),
-                                    ),
-                                  ]
-                                ]else...[],
-                                if(productProvider.propertyList.isNotEmpty)...[
-                                  if(isEditable)...[
-                                    DropdownButtonFormField<String>(
-                                      value: selectedProjectStatus,
-                                      decoration: InputDecoration(
-                                        labelText: 'Project Status',
-                                        labelStyle: TextStyle(color: Colors.black),
-                                        border: border,
-                                        enabledBorder: border,
-                                        focusedBorder: border,
-                                      ),
-                                      iconEnabledColor: Colors.black, // down arrow color
-                                      dropdownColor: Colors.white,
-                                      items: projectStatus.map((year) {
-                                        return DropdownMenuItem<String>(
-                                          value: year,
-                                          child: Text(year),
-                                        );
-                                      }).toList(),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          selectedProjectStatus = value!;
-                                        });
-                                      },
-                                      validator: (value){
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please select a project status';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  ]else...[
-                                    Container(
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                          color: Colors.white
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                              padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                              child: Text("Project Status")),
-                                          Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                            child: Text(ListFormatter.formatList(productProvider.propertyList[0].projectStatus), style: TextStyle(fontSize: 15)),),
-                                        ],
-                                      ),
-                                    ),
-                                  ]
-                                ]else...[],
-                                if(productProvider.propertyList.isNotEmpty)...[if(isEditable)...[
-                                  DropdownButtonFormField<String>(
-                                    value: selectedFacing,
-                                    decoration: InputDecoration(
-                                      labelText: 'Facing',
-                                      labelStyle: TextStyle(color: Colors.black),
-                                      border: border,
-                                      enabledBorder: border,
-                                      focusedBorder: border,
-                                    ),
-                                    iconEnabledColor: Colors.black, // down arrow color
-                                    dropdownColor: Colors.white,
-                                    items: facing.map((year) {
-                                      return DropdownMenuItem<String>(
-                                        value: year,
-                                        child: Text(year),
-                                      );
-                                    }).toList(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedFacing = value!;
-                                      });
-                                    },
-                                    validator: (value){
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please select a facing';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                ]else...[
-                                  Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                            child: Text("Facing")),
-                                        Container(
-                                          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                          child: Text(ListFormatter.formatList(productProvider.propertyList[0].facing), style: TextStyle(fontSize: 15)),),
-                                      ],
-                                    ),
-                                  ),
-                                ]]else...[],
-                                if(productProvider.propertyList.isNotEmpty)...[if(isEditable)...[
                                   TextField(
-                                    controller: areaController,
+                                  controller: titleController,
+                                  enabled: isEditable,
+                                  textCapitalization: TextCapitalization.sentences,
+                                  maxLines: null,
+                                  decoration: InputDecoration(
+                                    labelText: 'Title',
+                                    suffixIcon: Icon(Icons.edit),
+                                    border: border,
+                                    enabledBorder: border,
+                                    focusedBorder: border,
+                                  ),
+                                ),
+                                ]else...[],
+                                if(productProvider.propertyList.isNotEmpty)...[
+                                  TextField(
+                                    controller: TextEditingController(
+                                        text: productProvider.propertyList[0].bhk.last
+                                    ),
                                     textCapitalization: TextCapitalization.sentences,
-                                    maxLines: null,
+                                    enabled: false,
                                     decoration: InputDecoration(
-                                      labelText: 'Area',
+                                      labelText: 'BHK',
                                       suffixIcon: Icon(Icons.edit),
                                       border: border,
                                       enabledBorder: border,
                                       focusedBorder: border,
                                     ),
                                   ),
-                                ]else...[
-                                  Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white
+                                ]else...[],
+                                if(productProvider.propertyList.isNotEmpty)...[
+                                  TextField(
+                                    controller: TextEditingController(
+                                      text: productProvider.propertyList[0].furnishing.last
                                     ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                            child: Text("Area")),
-                                        Container(
-                                          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                          child: Text(ListFormatter.formatList(productProvider.propertyList[0].area), style: TextStyle(fontSize: 15)),),
-                                      ],
+                                    textCapitalization: TextCapitalization.sentences,
+                                    maxLines: null,
+                                    enabled: false,
+                                    decoration: InputDecoration(
+                                      labelText: 'Furnishing',
+                                      suffixIcon: Icon(Icons.edit),
+                                      border: border,
+                                      enabledBorder: border,
+                                      focusedBorder: border,
                                     ),
                                   ),
-                                ]]else...[],
+                                ]else...[],
+                                if(productProvider.propertyList.isNotEmpty)...[
+                                  TextField(
+                                    controller: TextEditingController(
+                                        text: productProvider.propertyList[0].listedBy.last
+                                    ),
+                                    textCapitalization: TextCapitalization.sentences,
+                                    maxLines: null,
+                                    enabled: false,
+                                    decoration: InputDecoration(
+                                      labelText: 'Listed By',
+                                      suffixIcon: Icon(Icons.edit),
+                                      border: border,
+                                      enabledBorder: border,
+                                      focusedBorder: border,
+                                    ),
+                                  ),
+                                ]else...[],
+                                if(productProvider.propertyList.isNotEmpty)...[
+                                  TextField(
+                                    controller: TextEditingController(
+                                        text: productProvider.propertyList[0].projectStatus.last.toString()
+                                    ),
+                                    textCapitalization: TextCapitalization.sentences,
+                                    enabled: false,
+                                    decoration: InputDecoration(
+                                      labelText: 'Project Status',
+                                      suffixIcon: Icon(Icons.edit),
+                                      border: border,
+                                      enabledBorder: border,
+                                      focusedBorder: border,
+                                    ),
+                                  ),
+                                ]else...[],
+                                if(productProvider.propertyList.isNotEmpty)...[
+                                  TextField(
+                                    controller: TextEditingController(
+                                        text: productProvider.propertyList[0].facing.last.toString()
+                                    ),
+                                    textCapitalization: TextCapitalization.sentences,
+                                    enabled: false,
+                                    decoration: InputDecoration(
+                                      labelText: 'Facing',
+                                      suffixIcon: Icon(Icons.edit),
+                                      border: border,
+                                      enabledBorder: border,
+                                      focusedBorder: border,
+                                    ),
+                                  ),
+                                ]else...[],
+                                if(productProvider.propertyList.isNotEmpty)...[
+                                  TextField(
+                                  controller: areaController,
+                                  textCapitalization: TextCapitalization.sentences,
+                                  maxLines: null,
+                                  enabled: false,
+                                  decoration: InputDecoration(
+                                    labelText: 'Area',
+                                    suffixIcon: Icon(Icons.edit),
+                                    border: border,
+                                    enabledBorder: border,
+                                    focusedBorder: border,
+                                  ),
+                                ),
+                                ]else...[],
                               ],
                             ),
                           );
@@ -675,59 +434,36 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                     ],
                   ),
                   if(productProvider.propertyList.isNotEmpty)...[
-                    if(isEditable)...[
-                      TextField(
-                        controller: titleController,
-                        textCapitalization: TextCapitalization.sentences,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          labelText: 'Title',
-                          suffixIcon: Icon(Icons.edit),
-                          border: border,
-                          enabledBorder: border,
-                          focusedBorder: border,
-                        ),
-                      ),
-                    ]else...[
-                      Row(
-                          children: [
-                            Icon(Icons.location_on_outlined,size: 17,),
-                            const SizedBox(width: 5),
-                            // Text(
-                            //   ListFormatter.formatList(productProvider.propertyList[0].address1),
-                            //   style: TextStyle(fontSize: 12),
-                            // )
-                          ]
-                      ),
-                    ]
+                    TextField(
+                    controller: titleController,
+                    textCapitalization: TextCapitalization.sentences,
+                    maxLines: null,
+                    enabled: isEditable,
+                    decoration: InputDecoration(
+                      labelText: 'Title',
+                      suffixIcon: Icon(Icons.edit),
+                      border: border,
+                      enabledBorder: border,
+                      focusedBorder: border,
+                    ),
+                  ),
                   ]else...[],
                   if(productProvider.propertyList.isNotEmpty)...[
-                    if(isEditable)...[
-                      TextField(
-                        controller: additionalInformationController,
-                        textCapitalization: TextCapitalization.sentences,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          labelText: 'Description',
-                          suffixIcon: Icon(Icons.edit),
-                          border: border,
-                          enabledBorder: border,
-                          focusedBorder: border,
-                        ),
-                      ),
-                    ] else...[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Description: "),
-                          Text(
-                              ListFormatter.formatList(productProvider.propertyList[0].description),
-                              style: TextStyle(fontSize: 15))
-                        ],
-                      )
-                    ]
+                    TextField(
+                    controller: additionalInformationController,
+                    textCapitalization: TextCapitalization.sentences,
+                    maxLines: null,
+                    enabled: isEditable,
+                    decoration: InputDecoration(
+                      labelText: 'Description',
+                      suffixIcon: Icon(Icons.edit),
+                      border: border,
+                      enabledBorder: border,
+                      focusedBorder: border,
+                    ),
+                  ),
                   ]else...[],
-                 showAppBarActions? Container(
+                 showAppBarActions && isEditable? Container(
                     color: Colors.grey.shade50,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),

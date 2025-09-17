@@ -1,4 +1,5 @@
 import 'package:admin_panel/utils/list_formatter.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
@@ -209,57 +210,15 @@ class _SmartPhoneDetailsScreenState extends State<SmartPhoneDetailsScreen> {
                                                   productDetailsProvider.smartPhoneList[0].images.isNotEmpty &&
                                                   selectedIndex < productDetailsProvider.smartPhoneList[0].images.length &&
                                                   productDetailsProvider.smartPhoneList[0].images[selectedIndex].isNotEmpty
-                                                  ? Image.network(
+                                                  ? CachedNetworkImage( imageUrl:
                                                 '$baseUrl${productDetailsProvider.smartPhoneList[0].images[selectedIndex]}',
                                                 fit: BoxFit.contain,
                                                 width: double.infinity,
-                                                errorBuilder: (context, error, stackTrace) =>
+                                                errorWidget: (context, error, stackTrace) =>
                                                     Icon(Icons.broken_image, size: 90),
                                               )
                                                   : Icon(Icons.image, size: 90),
                                             ),
-                                            // Positioned(
-                                            //   right: 4,
-                                            //   top: 4,
-                                            //   child: GestureDetector(
-                                            //     onTap: () {
-                                            //       showDialog(
-                                            //         context: context,
-                                            //         builder: (context) {
-                                            //           return AlertDialog(
-                                            //             backgroundColor: Colors.white,
-                                            //             title: const Text('Delete Image'),
-                                            //             content: const Text('Are you sure you want to delete this image?'),
-                                            //             actions: [
-                                            //               TextButton(
-                                            //                 onPressed: () {
-                                            //                   Navigator.of(context).pop();
-                                            //                 },
-                                            //                 child: const Text('Cancel'),
-                                            //               ),
-                                            //               TextButton(
-                                            //                 onPressed: () async {
-                                            //                   Map<String,dynamic> body = {
-                                            //                     "productId": productId,
-                                            //                     "imagePath": productProvider.smartPhoneList[0].images[selectedIndex],
-                                            //                     "modelName": productProvider.smartPhoneList[0].modelName
-                                            //                   };
-                                            //                   print(body);
-                                            //                   productProvider.deleteProductImage(body);
-                                            //
-                                            //                   Navigator.of(context).pop();
-                                            //                 },
-                                            //                 child: const Text('Delete'),
-                                            //               ),
-                                            //             ],
-                                            //           );
-                                            //         },
-                                            //       );
-                                            //     },
-                                            //     child: const Icon(Icons.cancel,
-                                            //         size: 18, color: Colors.red),
-                                            //   ),
-                                            // ),
                                           ],
                                         )
                                       ] else ...[],
@@ -306,10 +265,10 @@ class _SmartPhoneDetailsScreenState extends State<SmartPhoneDetailsScreen> {
                                                     child:
                                                     imageUrl != null &&
                                                         imageUrl.isNotEmpty
-                                                        ? Image.network(
+                                                        ? CachedNetworkImage( imageUrl:
                                                       '$baseUrl$imageUrl',
                                                       fit: BoxFit.fill,
-                                                      errorBuilder:
+                                                      errorWidget:
                                                           (
                                                           context,
                                                           error,
@@ -343,152 +302,79 @@ class _SmartPhoneDetailsScreenState extends State<SmartPhoneDetailsScreen> {
                               spacing: 15,
                               children: [
                                 if(productProvider.smartPhoneList.isNotEmpty)...[
-                                  if(isEditable)...[
-                                    TextField(
-                                      controller: _priceController,
-                                      decoration: InputDecoration(
-                                        labelText: 'Price',
-                                        suffixIcon: Icon(Icons.edit),
-                                        border: border,
-                                        enabledBorder: border,
-                                        focusedBorder: border,
-                                      ),
-                                    ),
-                                  ]else...[
-                                    Text("₹ ${ListFormatter.formatList(productProvider.smartPhoneList[0].price)}")
-                                  ],
+                                  TextField(
+                                  controller: _priceController,
+                                  enabled: false,
+                                  decoration: InputDecoration(
+                                    labelText: 'Price',
+                                    suffixIcon: Icon(Icons.edit),
+                                    border: border,
+                                    enabledBorder: border,
+                                    focusedBorder: border,
+                                  ),
+                                ),
+                                ]else...[],
+                                if(productProvider.smartPhoneList.isNotEmpty)...[TextField(
+                                  controller: _titleController,
+                                  textCapitalization: TextCapitalization.sentences,
+                                  maxLines: null,
+                                  enabled: isEditable,
+                                  decoration: InputDecoration(
+                                    labelText: 'Title',
+                                    suffixIcon: Icon(Icons.edit),
+                                    border: border,
+                                    enabledBorder: border,
+                                    focusedBorder: border,
+                                  ),
+                                ),
                                 ]else...[],
                                 if(productProvider.smartPhoneList.isNotEmpty)...[
-                                  if(isEditable)...[
-                                    TextField(
-                                      controller: _titleController,
-                                      textCapitalization: TextCapitalization.sentences,
-                                      maxLines: null,
-                                      decoration: InputDecoration(
-                                        labelText: 'Title',
-                                        suffixIcon: Icon(Icons.edit),
-                                        border: border,
-                                        enabledBorder: border,
-                                        focusedBorder: border,
-                                      ),
-                                    ),
-                                  ]else...[
-                                    Text(ListFormatter.formatList(productProvider.smartPhoneList[0].adTitle))
-                                  ]
+                                  TextField(
+                                  controller: _modelController,
+                                  textCapitalization: TextCapitalization.sentences,
+                                  enabled: false,
+                                  decoration: InputDecoration(
+                                    labelText: 'Model',
+                                    suffixIcon: Icon(Icons.edit),
+                                    border: border,
+                                    enabledBorder: border,
+                                    focusedBorder: border,
+                                  ),
+                                ),
                                 ]else...[],
                                 if(productProvider.smartPhoneList.isNotEmpty)...[
-                                  if(isEditable)...[
-                                    TextField(
-                                      controller: _modelController,
-                                      textCapitalization: TextCapitalization.sentences,
-                                      decoration: InputDecoration(
-                                        labelText: 'Model',
-                                        suffixIcon: Icon(Icons.edit),
-                                        border: border,
-                                        enabledBorder: border,
-                                        focusedBorder: border,
-                                      ),
+                                  TextField(
+                                    controller: TextEditingController(
+                                        text:productProvider.smartPhoneList[0].brand.last
                                     ),
-                                  ]else...[
-                                    Container(
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                          color: Colors.white
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                              padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                              child: Text("Model")),
-                                          Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                            child: Text(ListFormatter.formatList(productProvider.smartPhoneList[0].model), style: TextStyle(fontSize: 15)),),
-                                        ],
-                                      ),
-                                    ),]
+                                    textCapitalization: TextCapitalization.sentences,
+                                    maxLines: null,
+                                    enabled: false,
+                                    decoration: InputDecoration(
+                                      labelText: 'Brand',
+                                      suffixIcon: Icon(Icons.edit),
+                                      border: border,
+                                      enabledBorder: border,
+                                      focusedBorder: border,
+                                    ),
+                                  ),
                                 ]else...[],
                                 if(productProvider.smartPhoneList.isNotEmpty)...[
-                                  if(isEditable)...[
-                                    DropdownButtonFormField<String>(
-                                      value: (productProvider.smartPhoneList[0].brand.last.isNotEmpty)
-                                          ? productProvider.smartPhoneList[0].brand.last.toString()
-                                          : null,
-                                      items: smartphoneBrands.map((val) {
-                                        return DropdownMenuItem<String>(
-                                          value: val,
-                                          child: Text(val),
-                                        );
-                                      }).toList(),
-                                      onChanged: (val) {
-                                        selectedBrand = val!;
-                                      },
-                                      decoration: InputDecoration(
-                                        labelText: 'Brand',
-                                        border: border,
-                                        enabledBorder: border,
-                                        focusedBorder: border,
-                                      ),
+                                  TextField(
+                                    controller: TextEditingController(
+                                      text:productProvider.smartPhoneList[0].storage.last
                                     ),
-                                  ]else...[Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white
+                                    textCapitalization: TextCapitalization.sentences,
+                                    maxLines: null,
+                                    enabled: false,
+                                    decoration: InputDecoration(
+                                      labelText: 'Storage',
+                                      suffixIcon: Icon(Icons.edit),
+                                      border: border,
+                                      enabledBorder: border,
+                                      focusedBorder: border,
                                     ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                            child: Text("Brand")),
-                                        Container(
-                                          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                          child: Text(ListFormatter.formatList(productProvider.smartPhoneList[0].brand), style: TextStyle(fontSize: 15)),),
-                                      ],
-                                    ),
-                                  ),]
-                                ]else...[],
-                                if(productProvider.smartPhoneList.isNotEmpty)...[
-                                  if(isEditable)...[
-                                    DropdownButtonFormField<String>(
-                                      value: productProvider.smartPhoneList[0].storage.isNotEmpty
-                                          ? productProvider.smartPhoneList[0].storage.last.toString()
-                                          : null,
-                                      items: storageOptions.map((val) {
-                                        return DropdownMenuItem<String>(
-                                          value: val,
-                                          child: Text(val),
-                                        );
-                                      }).toList(),
-                                      onChanged: (val) {
-                                        selectedStorage = val!;
-                                      },
-                                      decoration: InputDecoration(
-                                        labelText: 'Storage',
-                                        border: border,
-                                        enabledBorder: border,
-                                        focusedBorder: border,
-                                      ),
-                                    ),
-                                  ]else...[
-                                    Container(
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                          color: Colors.white
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                              padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                              child: Text("Storage")),
-                                          Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                            child: Text(ListFormatter.formatList(productProvider.smartPhoneList[0].storage), style: TextStyle(fontSize: 15)),),
-                                        ],
-                                      ),
-                                    ),
-                                  ]
+                                  ),
                                 ]else...[],
 
                               ],
@@ -498,77 +384,36 @@ class _SmartPhoneDetailsScreenState extends State<SmartPhoneDetailsScreen> {
                       )
                     ],
                   ),
-                  if(productProvider.smartPhoneList.isNotEmpty)...[
-                    if(isEditable)...[
-                      TextField(
-                        controller: _addressController,
-                        textCapitalization: TextCapitalization.sentences,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          labelText: 'Location',
-                          suffixIcon: Icon(Icons.edit),
-                          border: border,
-                          enabledBorder: border,
-                          focusedBorder: border,
-                        ),
-                      ),
-                    ]else...[
-                      Container(
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                          decoration: BoxDecoration(
-                              color: Colors.white
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Icon(Icons.location_on_outlined,size: 17,),
-                              const SizedBox(width: 5),
-                              if (productProvider.smartPhoneList.isNotEmpty)
-                                ...[
-                                  // Text(ListFormatter.formatList(productProvider.smartPhoneList[0].address1),
-                                  //   style: TextStyle(fontSize: 12),
-                                  // )
-                                ]
-                              else
-                                ...[],
-
-                            ],
-                          )),
-                    ]
+                  if(productProvider.smartPhoneList.isNotEmpty)...[TextField(
+                    controller: _addressController,
+                    textCapitalization: TextCapitalization.sentences,
+                    maxLines: null,
+                    enabled: isEditable,
+                    decoration: InputDecoration(
+                      labelText: 'Location',
+                      suffixIcon: Icon(Icons.edit),
+                      border: border,
+                      enabledBorder: border,
+                      focusedBorder: border,
+                    ),
+                  ),
                   ]else...[],
-                  if(productProvider.smartPhoneList.isNotEmpty)...[
-                    if(isEditable)...[
-                      TextField(
-                        controller: _descriptionController,
-                        textCapitalization: TextCapitalization.sentences,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          labelText: 'Description',
-                          suffixIcon: Icon(Icons.edit),
-                          border: border,
-                          enabledBorder: border,
-                          focusedBorder: border,
-                        ),
-                      ),
-                    ]else...[
-                      Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                          decoration: BoxDecoration(
-                              color: Colors.white
-                          ),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Description: "),
-                                Text(ListFormatter.formatList(productProvider.smartPhoneList[0].description))
-                              ]
-                          )),
-                    ]
+                  if(productProvider.smartPhoneList.isNotEmpty)...[TextField(
+                    controller: _descriptionController,
+                    textCapitalization: TextCapitalization.sentences,
+                    maxLines: null,
+                    enabled: isEditable,
+                    decoration: InputDecoration(
+                      labelText: 'Description',
+                      suffixIcon: Icon(Icons.edit),
+                      border: border,
+                      enabledBorder: border,
+                      focusedBorder: border,
+                    ),
+                  ),
                   ]else...[],
                   SizedBox(height: 20),
-                 showAppBarActions? Container(
+                 showAppBarActions && isEditable? Container(
                     color: Colors.grey.shade50,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
