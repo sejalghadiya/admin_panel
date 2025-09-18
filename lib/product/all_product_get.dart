@@ -445,7 +445,7 @@ class _AllProductGetState extends State<AllProductGet>
                     itemBuilder: (context, index) {
                       final product = productProvider.filteredProducts[index];
                       final title = product.adTitle.last.toString();
-                      final price = product.price;
+                      final price = product.price.isNotEmpty? product.price.last.toString().contains("-") || product.price.last.toString().contains(".")?"Invalid Price": product.price.last.toString(): 'No Price';
                       final description = product.description.last.toString();
                      // final area = product.address1.last.toString();
                       final imageUrl =
@@ -496,7 +496,7 @@ class _AllProductGetState extends State<AllProductGet>
                                             Text(
                                               '₹ $price',
                                               style: TextStyle(
-                                                color: Colors.green.shade800,
+                                                color: price == "Invalid Price"?Colors.red: Colors.green.shade800,
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.bold,
                                               ),
@@ -526,6 +526,15 @@ class _AllProductGetState extends State<AllProductGet>
                                       ),
                                     ),
                                   ],
+                                ),
+                              ),
+                              Divider(height: 1,),
+                              Text(
+                                product.modelName.replaceAll("_", " ").toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.grey[600],
                                 ),
                               ),
                               SizedBox(height: 6),

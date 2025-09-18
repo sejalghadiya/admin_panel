@@ -60,6 +60,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
   @override
   void initState() {
     super.initState();
+    print("This is car screen");
     productId = Get.arguments['productId'] as String;
     modelName = Get.arguments['modelName'] as String;
     showAppBarActions = Get.arguments['isEdit'] as bool? ?? true;
@@ -75,26 +76,21 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
       context,
       listen: false,
     );
-    setState(() {
-      brandController.text = productProvider.carList[0].brand.last.toString();
-      yearController.text = productProvider.carList[0].year.last.toString();
-      descriptionController.text = productProvider.carList[0].description.last
-          .toString();
-      titleController.text = productProvider.carList[0].title.last.toString();
-      modelController.text = productProvider.carList[0].model.last.toString();
-      priceController.text = productProvider.carList[0].price.last.toString();
-      kilometersDrivenController.text = productProvider.carList[0].kmDriven.last
-          .toString();
-      fuelTypeController.text = productProvider.carList[0].fuel.last.toString();
-      transmissionTypeController.text = productProvider
-          .carList[0]
-          .transmission
-          .last
-          .toString();
-      noOfOwnerController.text = productProvider.carList[0].noOfOwners.last
-          .toString();
-      // addressController.text = productProvider.carList[0].address1.last.toString();
-    });
+    if (productProvider.carList.isNotEmpty) {
+      setState(() {
+        brandController.text = productProvider.carList[0].brand.last.toString();
+        yearController.text = productProvider.carList[0].year.last.toString();
+        descriptionController.text = productProvider.carList[0].description.last.toString();
+        titleController.text = productProvider.carList[0].title.last.toString();
+        modelController.text = productProvider.carList[0].model.last.toString();
+        priceController.text = productProvider.carList[0].price.last.toString();
+        kilometersDrivenController.text = productProvider.carList[0].kmDriven.last.toString();
+        fuelTypeController.text = productProvider.carList[0].fuel.last.toString();
+        transmissionTypeController.text = productProvider.carList[0].transmission.last.toString();
+        noOfOwnerController.text = productProvider.carList[0].noOfOwners.last.toString();
+        // addressController.text = productProvider.carList[0].address1.last.toString();
+      });
+    }
   }
 
   @override
@@ -103,6 +99,19 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
       context,
       listen: true,
     );
+    if (productProvider.carList.isNotEmpty) {
+        brandController.text = productProvider.carList[0].brand.last.toString();
+        yearController.text = productProvider.carList[0].year.last.toString();
+        descriptionController.text = productProvider.carList[0].description.last.toString();
+        titleController.text = productProvider.carList[0].title.last.toString();
+        modelController.text = productProvider.carList[0].model.last.toString();
+        priceController.text = productProvider.carList[0].price.last.toString();
+        kilometersDrivenController.text = productProvider.carList[0].kmDriven.last.toString();
+        fuelTypeController.text = productProvider.carList[0].fuel.last.toString();
+        transmissionTypeController.text = productProvider.carList[0].transmission.last.toString();
+        noOfOwnerController.text = productProvider.carList[0].noOfOwners.last.toString();
+        // addressController.text = productProvider.carList[0].address1.last.toString();
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -576,8 +585,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                                           .carList
                                           .isNotEmpty) ...[
                                             TextField(
-                                        controller:
-                                        kilometersDrivenController,
+                                        controller: kilometersDrivenController,
                                         textCapitalization:
                                         TextCapitalization.sentences,
                                         enabled: false,
@@ -665,7 +673,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                           TextField(
                           controller: addressController,
                           textCapitalization: TextCapitalization.sentences,
-                          enabled: isEditable,
+                          enabled: false,
                           decoration: InputDecoration(
                             labelText: 'Address',
                             border: border,

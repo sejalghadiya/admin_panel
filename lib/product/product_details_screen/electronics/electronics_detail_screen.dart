@@ -53,18 +53,21 @@ class _ElectronicsDetailsScreenState extends State<ElectronicsDetailsScreen> {
       context,
       listen: false,
     );
-    setState(() {
-      _priceController.text = productProvider.electronicsList[0].price.last
-          .toString();
-      _adTitleController.text = productProvider.electronicsList[0].adTitle.last
-          .toString();
-      _descriptionController.text = productProvider
-          .electronicsList[0]
-          .description
-          .last
-          .toString();
-      // _addressController.text = productProvider.electronicsList[0].address1.last.toString();
-    });
+    if(productProvider.electronicsList.isNotEmpty){
+      setState(() {
+        _priceController.text = productProvider.electronicsList[0].price.last
+            .toString();
+        _adTitleController.text = productProvider.electronicsList[0].adTitle.last
+            .toString();
+        _descriptionController.text = productProvider
+            .electronicsList[0]
+            .description
+            .last
+            .toString();
+        // _addressController.text = productProvider.electronicsList[0].address1.last.toString();
+      });
+    }
+
   }
 
   @override
@@ -73,6 +76,18 @@ class _ElectronicsDetailsScreenState extends State<ElectronicsDetailsScreen> {
       context,
       listen: true,
     );
+    if(productProvider.electronicsList.isNotEmpty){
+        _priceController.text = productProvider.electronicsList[0].price.last
+            .toString();
+        _adTitleController.text = productProvider.electronicsList[0].adTitle.last
+            .toString();
+        _descriptionController.text = productProvider
+            .electronicsList[0]
+            .description
+            .last
+            .toString();
+        // _addressController.text = productProvider.electronicsList[0].address1.last.toString();
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -439,7 +454,7 @@ class _ElectronicsDetailsScreenState extends State<ElectronicsDetailsScreen> {
                                         enabled: false,
                                         decoration: InputDecoration(
                                           labelText: 'Price',
-                                          suffixIcon: Icon(Icons.edit),
+
                                           border: border,
                                           enabledBorder: border,
                                           focusedBorder: border,
@@ -450,52 +465,52 @@ class _ElectronicsDetailsScreenState extends State<ElectronicsDetailsScreen> {
                                     if (productProvider
                                         .electronicsList
                                         .isNotEmpty) ...[
-                                          TextField(
-                                      controller: _adTitleController,
-                                      enabled: isEditable,
-                                      maxLines: null,
-                                      decoration: InputDecoration(
-                                        labelText: 'Title',
-                                        suffixIcon: Icon(Icons.edit),
-                                        border: border,
-                                        enabledBorder: border,
-                                        focusedBorder: border,
+                                      TextField(
+                                        controller: _adTitleController,
+                                        enabled: isEditable,
+                                        maxLines: null,
+                                        decoration: InputDecoration(
+                                          labelText: 'Title',
+
+                                          border: border,
+                                          enabledBorder: border,
+                                          focusedBorder: border,
+                                        ),
                                       ),
-                                    ),
                                     ] else
                                       ...[],
                                     if (productProvider
                                         .electronicsList
                                         .isNotEmpty) ...[
-                                          TextField(
-                                      controller: _descriptionController,
-                                      enabled: isEditable,
-                                      maxLines: null,
-                                      decoration: InputDecoration(
-                                        labelText: 'Description',
-                                        suffixIcon: Icon(Icons.edit),
-                                        border: border,
-                                        enabledBorder: border,
-                                        focusedBorder: border,
+                                      TextField(
+                                        controller: _descriptionController,
+                                        enabled: isEditable,
+                                        maxLines: null,
+                                        decoration: InputDecoration(
+                                          labelText: 'Description',
+
+                                          border: border,
+                                          enabledBorder: border,
+                                          focusedBorder: border,
+                                        ),
                                       ),
-                                    ),
                                     ] else
                                       ...[],
                                     if (productProvider
                                         .electronicsList
                                         .isNotEmpty) ...[
-                                          TextField(
-                                      controller: _addressController,
-                                      maxLines: null,
-                                      enabled: isEditable,
-                                      decoration: InputDecoration(
-                                        labelText: 'Address',
-                                        suffixIcon: Icon(Icons.edit),
-                                        border: border,
-                                        enabledBorder: border,
-                                        focusedBorder: border,
+                                      TextField(
+                                        controller: _addressController,
+                                        maxLines: null,
+                                        enabled: false,
+                                        decoration: InputDecoration(
+                                          labelText: 'Address',
+
+                                          border: border,
+                                          enabledBorder: border,
+                                          focusedBorder: border,
+                                        ),
                                       ),
-                                    ),
                                     ] else
                                       ...[],
                                   ],

@@ -53,16 +53,21 @@ class _FurnitureDetailsScreenState extends State<FurnitureDetailsScreen> {
       context,
       listen: false,
     );
-    _priceController.text = productProvider.furnitureList[0].price.last
-        .toString();
-    _adTitleController.text = productProvider.furnitureList[0].adTitle.last
-        .toString();
-    _descriptionController.text = productProvider
-        .furnitureList[0]
-        .description
-        .last
-        .toString();
-    //_addressController.text = productProvider.furnitureList[0].address1.last.toString();
+    if (productProvider.furnitureList.isNotEmpty) {
+      _priceController.text = productProvider.furnitureList[0].price.last
+          .toString();
+      _adTitleController.text = productProvider.furnitureList[0].adTitle.last
+          .toString();
+      _descriptionController.text = productProvider
+          .furnitureList[0]
+          .description
+          .last
+          .toString();
+      //_addressController.text = productProvider.furnitureList[0].address1.last.toString();
+      setState(() {});
+    }
+
+
   }
 
   @override
@@ -71,6 +76,18 @@ class _FurnitureDetailsScreenState extends State<FurnitureDetailsScreen> {
       context,
       listen: true,
     );
+    if (productProvider.furnitureList.isNotEmpty) {
+      _priceController.text = productProvider.furnitureList[0].price.last
+          .toString();
+      _adTitleController.text = productProvider.furnitureList[0].adTitle.last
+          .toString();
+      _descriptionController.text = productProvider
+          .furnitureList[0]
+          .description
+          .last
+          .toString();
+      //_addressController.text = productProvider.furnitureList[0].address1.last.toString();
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -269,8 +286,8 @@ class _FurnitureDetailsScreenState extends State<FurnitureDetailsScreen> {
                                                       .images[selectedIndex]
                                                       .isNotEmpty
                                               ? CachedNetworkImage(
-                                                imageUrl:
-                                                  '$baseUrl${productDetailsProvider.furnitureList[0].images[selectedIndex]}',
+                                                  imageUrl:
+                                                      '$baseUrl${productDetailsProvider.furnitureList[0].images[selectedIndex]}',
                                                   fit: BoxFit.fill,
                                                   width: double.infinity,
                                                   errorWidget:
@@ -377,8 +394,9 @@ class _FurnitureDetailsScreenState extends State<FurnitureDetailsScreen> {
                                                 child:
                                                     imageUrl != null &&
                                                         imageUrl.isNotEmpty
-                                                    ? CachedNetworkImage( imageUrl:
-                                                        '$baseUrl$imageUrl',
+                                                    ? CachedNetworkImage(
+                                                        imageUrl:
+                                                            '$baseUrl$imageUrl',
                                                         fit: BoxFit.fill,
                                                         errorWidget:
                                                             (
@@ -425,7 +443,7 @@ class _FurnitureDetailsScreenState extends State<FurnitureDetailsScreen> {
                                   enabled: false,
                                   decoration: InputDecoration(
                                     labelText: 'Price',
-                                    suffixIcon: Icon(Icons.edit),
+
                                     border: border,
                                     enabledBorder: border,
                                     focusedBorder: border,
@@ -442,7 +460,7 @@ class _FurnitureDetailsScreenState extends State<FurnitureDetailsScreen> {
                                   enabled: isEditable,
                                   decoration: InputDecoration(
                                     labelText: 'Title',
-                                    suffixIcon: Icon(Icons.edit),
+
                                     border: border,
                                     enabledBorder: border,
                                     focusedBorder: border,
@@ -459,7 +477,7 @@ class _FurnitureDetailsScreenState extends State<FurnitureDetailsScreen> {
                                   maxLines: null,
                                   decoration: InputDecoration(
                                     labelText: 'Description',
-                                    suffixIcon: Icon(Icons.edit),
+
                                     border: border,
                                     enabledBorder: border,
                                     focusedBorder: border,
@@ -473,10 +491,10 @@ class _FurnitureDetailsScreenState extends State<FurnitureDetailsScreen> {
                                   textCapitalization:
                                       TextCapitalization.sentences,
                                   maxLines: null,
-                                  enabled: isEditable,
+                                  enabled: false,
                                   decoration: InputDecoration(
                                     labelText: 'Location',
-                                    suffixIcon: Icon(Icons.edit),
+
                                     border: border,
                                     enabledBorder: border,
                                     focusedBorder: border,

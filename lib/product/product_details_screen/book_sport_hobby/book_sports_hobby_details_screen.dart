@@ -511,7 +511,7 @@ class _BookSportsHobbyDetailsScreenState
                                               controller: _addressController,
                                               textCapitalization:
                                                   TextCapitalization.sentences,
-                                              enabled: isEditable,
+                                              enabled: false,
                                               decoration: InputDecoration(
                                                 labelText: 'Location',
                                                 prefixIcon: Icon(
