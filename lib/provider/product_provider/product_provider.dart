@@ -339,10 +339,10 @@ class ProductProvider extends ChangeNotifier {
         }
         notifyListeners();
       } else {
-        print('Failed to load car: ${response.reasonPhrase}');
+        print('Failed to load product: ${response.reasonPhrase}');
       }
     } catch (e) {
-      print('Error fetching car: $e');
+      print('Error fetching product: $e');
     } finally {
       setLoading(false);
     }

@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import '../../../network_connection/apis.dart';
 import '../../../provider/product_provider/product_provider.dart';
+import '../../../utils/address_extractor.dart';
 import '../../../widgets/loading_widget.dart';
 
 class ElectronicsDetailsScreen extends StatefulWidget {
@@ -54,6 +55,41 @@ class _ElectronicsDetailsScreenState extends State<ElectronicsDetailsScreen> {
       listen: false,
     );
     if(productProvider.electronicsList.isNotEmpty){
+      String oldAddress = AddressExtractor.extractAddress(
+        street1: productProvider.electronicsList[0].street1,
+        street2: productProvider.electronicsList[0].street2,
+
+        area: productProvider.electronicsList[0].area,
+
+        city: productProvider.electronicsList[0].city,
+
+        state: productProvider.electronicsList[0].state,
+
+        country: productProvider.electronicsList[0].country,
+
+        pincode: productProvider.electronicsList[0].pincode,
+      ).$1;
+      String newAddress = AddressExtractor.extractAddress(
+        street1: productProvider.electronicsList[0].street1,
+        street2: productProvider.electronicsList[0].street2,
+
+        area: productProvider.electronicsList[0].area,
+
+        city: productProvider.electronicsList[0].city,
+
+        state: productProvider.electronicsList[0].state,
+
+        country: productProvider.electronicsList[0].country,
+
+        pincode: productProvider.electronicsList[0].pincode,
+      ).$2;
+      String address = "";
+      if (oldAddress.isNotEmpty) {
+        address = oldAddress;
+      }
+      if (newAddress.isNotEmpty) {
+        address = newAddress;
+      }
       setState(() {
         _priceController.text = productProvider.electronicsList[0].price.last
             .toString();
@@ -64,7 +100,7 @@ class _ElectronicsDetailsScreenState extends State<ElectronicsDetailsScreen> {
             .description
             .last
             .toString();
-        // _addressController.text = productProvider.electronicsList[0].address1.last.toString();
+        _addressController.text = address;
       });
     }
 
@@ -77,6 +113,41 @@ class _ElectronicsDetailsScreenState extends State<ElectronicsDetailsScreen> {
       listen: true,
     );
     if(productProvider.electronicsList.isNotEmpty){
+      String oldAddress = AddressExtractor.extractAddress(
+        street1: productProvider.electronicsList[0].street1,
+        street2: productProvider.electronicsList[0].street2,
+
+        area: productProvider.electronicsList[0].area,
+
+        city: productProvider.electronicsList[0].city,
+
+        state: productProvider.electronicsList[0].state,
+
+        country: productProvider.electronicsList[0].country,
+
+        pincode: productProvider.electronicsList[0].pincode,
+      ).$1;
+      String newAddress = AddressExtractor.extractAddress(
+        street1: productProvider.electronicsList[0].street1,
+        street2: productProvider.electronicsList[0].street2,
+
+        area: productProvider.electronicsList[0].area,
+
+        city: productProvider.electronicsList[0].city,
+
+        state: productProvider.electronicsList[0].state,
+
+        country: productProvider.electronicsList[0].country,
+
+        pincode: productProvider.electronicsList[0].pincode,
+      ).$2;
+      String address = "";
+      if (oldAddress.isNotEmpty) {
+        address = oldAddress;
+      }
+      if (newAddress.isNotEmpty) {
+        address = newAddress;
+      }
         _priceController.text = productProvider.electronicsList[0].price.last
             .toString();
         _adTitleController.text = productProvider.electronicsList[0].adTitle.last
@@ -86,7 +157,7 @@ class _ElectronicsDetailsScreenState extends State<ElectronicsDetailsScreen> {
             .description
             .last
             .toString();
-        // _addressController.text = productProvider.electronicsList[0].address1.last.toString();
+        _addressController.text = address;
     }
     return Scaffold(
       backgroundColor: Colors.white,

@@ -60,6 +60,13 @@ class FurnitureModel extends ProductModel {
   bool isActive = true;
   String timestamps;
   bool isDeleted = false;
+  List<String> street1;
+  List<String> street2;
+  List<String> area;
+  List<String> city;
+  List<String> state;
+  List<String> country;
+  List<String> pincode;
   FurnitureModel({
     required this.id,
     required this.price,
@@ -76,7 +83,13 @@ class FurnitureModel extends ProductModel {
     required this.timestamps,
     required this.isActive,
     required this.isDeleted,
-
+    required this.street1,
+    required this.street2,
+    required this.area,
+    required this.city,
+    required this.state,
+    required this.country,
+    required this.pincode,
   }) : super(
     id: id,
     price: price,
@@ -108,7 +121,13 @@ class FurnitureModel extends ProductModel {
       timestamps: json['createdAt'] ?? '',
       isActive: json['isActive'] ?? true,
       isDeleted: json['isDeleted'] ?? false,
-
+        street1: List<String>.from(json['street1'] ?? []),
+        street2: List<String>.from(json['street2'] ?? []),
+        area: List<String>.from(json['area'] ?? []),
+        city: List<String>.from(json['city'] ?? []),
+        state: List<String>.from(json['state'] ?? []),
+        country: List<String>.from(json['country'] ?? []),
+        pincode: List<String>.from(json['pinCode'] ?? [])
     );
   }
 }

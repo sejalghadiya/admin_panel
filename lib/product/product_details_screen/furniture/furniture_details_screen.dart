@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../network_connection/apis.dart';
 import '../../../provider/product_provider/product_provider.dart';
+import '../../../utils/address_extractor.dart';
 import '../../../widgets/loading_widget.dart';
 
 class FurnitureDetailsScreen extends StatefulWidget {
@@ -54,6 +55,41 @@ class _FurnitureDetailsScreenState extends State<FurnitureDetailsScreen> {
       listen: false,
     );
     if (productProvider.furnitureList.isNotEmpty) {
+      String oldAddress = AddressExtractor.extractAddress(
+        street1: productProvider.furnitureList[0].street1,
+        street2: productProvider.furnitureList[0].street2,
+
+        area: productProvider.furnitureList[0].area,
+
+        city: productProvider.furnitureList[0].city,
+
+        state: productProvider.furnitureList[0].state,
+
+        country: productProvider.furnitureList[0].country,
+
+        pincode: productProvider.furnitureList[0].pincode,
+      ).$1;
+      String newAddress = AddressExtractor.extractAddress(
+        street1: productProvider.furnitureList[0].street1,
+        street2: productProvider.furnitureList[0].street2,
+
+        area: productProvider.furnitureList[0].area,
+
+        city: productProvider.furnitureList[0].city,
+
+        state: productProvider.furnitureList[0].state,
+
+        country: productProvider.furnitureList[0].country,
+
+        pincode: productProvider.furnitureList[0].pincode,
+      ).$2;
+      String address = "";
+      if (oldAddress.isNotEmpty) {
+        address = oldAddress;
+      }
+      if (newAddress.isNotEmpty) {
+        address = newAddress;
+      }
       _priceController.text = productProvider.furnitureList[0].price.last
           .toString();
       _adTitleController.text = productProvider.furnitureList[0].adTitle.last
@@ -63,7 +99,7 @@ class _FurnitureDetailsScreenState extends State<FurnitureDetailsScreen> {
           .description
           .last
           .toString();
-      //_addressController.text = productProvider.furnitureList[0].address1.last.toString();
+      _addressController.text = address;
       setState(() {});
     }
 
@@ -77,6 +113,41 @@ class _FurnitureDetailsScreenState extends State<FurnitureDetailsScreen> {
       listen: true,
     );
     if (productProvider.furnitureList.isNotEmpty) {
+      String oldAddress = AddressExtractor.extractAddress(
+        street1: productProvider.furnitureList[0].street1,
+        street2: productProvider.furnitureList[0].street2,
+
+        area: productProvider.furnitureList[0].area,
+
+        city: productProvider.furnitureList[0].city,
+
+        state: productProvider.furnitureList[0].state,
+
+        country: productProvider.furnitureList[0].country,
+
+        pincode: productProvider.furnitureList[0].pincode,
+      ).$1;
+      String newAddress = AddressExtractor.extractAddress(
+        street1: productProvider.furnitureList[0].street1,
+        street2: productProvider.furnitureList[0].street2,
+
+        area: productProvider.furnitureList[0].area,
+
+        city: productProvider.furnitureList[0].city,
+
+        state: productProvider.furnitureList[0].state,
+
+        country: productProvider.furnitureList[0].country,
+
+        pincode: productProvider.furnitureList[0].pincode,
+      ).$2;
+      String address = "";
+      if (oldAddress.isNotEmpty) {
+        address = oldAddress;
+      }
+      if (newAddress.isNotEmpty) {
+        address = newAddress;
+      }
       _priceController.text = productProvider.furnitureList[0].price.last
           .toString();
       _adTitleController.text = productProvider.furnitureList[0].adTitle.last
@@ -86,7 +157,7 @@ class _FurnitureDetailsScreenState extends State<FurnitureDetailsScreen> {
           .description
           .last
           .toString();
-      //_addressController.text = productProvider.furnitureList[0].address1.last.toString();
+      _addressController.text = address;
     }
     return Scaffold(
       backgroundColor: Colors.white,

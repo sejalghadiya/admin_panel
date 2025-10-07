@@ -126,7 +126,21 @@ class BikeModel extends ProductModel {
    String timestamps;
   bool isActive = true;
   bool isDeleted = false;
+  List<String> street1;
+  List<String> street2;
+  List<String> area;
+  List<String> city;
+  List<String> state;
+  List<String> country;
+  List<String> pincode;
   BikeModel({
+    required this.street1,
+    required this.street2,
+    required this.area,
+    required this.city,
+    required this.state,
+    required this.country,
+    required this.pincode,
     required super.id,
     required this.price,
     required this.adTitle,
@@ -185,6 +199,13 @@ class BikeModel extends ProductModel {
         timestamps: json['createdAt'] ?? '',
         isActive: json['isActive'] ?? true,
         isDeleted: json['isDeleted'] ?? false,
+        street1: List<String>.from(json['street1'] ?? []),
+        street2: List<String>.from(json['street2'] ?? []),
+        area: List<String>.from(json['area'] ?? []),
+        city: List<String>.from(json['city'] ?? []),
+        state: List<String>.from(json['state'] ?? []),
+        country: List<String>.from(json['country'] ?? []),
+        pincode: List<String>.from(json['pinCode'] ?? [])
       );
     }catch(e,stackTrace){
       print("Error in BikeModel.fromJson: $e");

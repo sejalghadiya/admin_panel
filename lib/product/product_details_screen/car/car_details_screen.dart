@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../network_connection/apis.dart';
 import '../../../provider/product_provider/product_provider.dart';
+import '../../../utils/address_extractor.dart';
 import '../../../utils/brand_list.dart';
 import '../../../widgets/loading_widget.dart';
 
@@ -76,7 +77,44 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
       context,
       listen: false,
     );
+
+
     if (productProvider.carList.isNotEmpty) {
+      String oldAddress = AddressExtractor.extractAddress(
+        street1: productProvider.carList[0].street1,
+        street2: productProvider.carList[0].street2,
+
+        area: productProvider.carList[0].area,
+
+        city: productProvider.carList[0].city,
+
+        state: productProvider.carList[0].state,
+
+        country: productProvider.carList[0].country,
+
+        pincode: productProvider.carList[0].pincode,
+      ).$1;
+      String newAddress = AddressExtractor.extractAddress(
+        street1: productProvider.carList[0].street1,
+        street2: productProvider.carList[0].street2,
+
+        area: productProvider.carList[0].area,
+
+        city: productProvider.carList[0].city,
+
+        state: productProvider.carList[0].state,
+
+        country: productProvider.carList[0].country,
+
+        pincode: productProvider.carList[0].pincode,
+      ).$2;
+      String address = "";
+      if (oldAddress.isNotEmpty) {
+        address = oldAddress;
+      }
+      if (newAddress.isNotEmpty) {
+        address = newAddress;
+      }
       setState(() {
         brandController.text = productProvider.carList[0].brand.last.toString();
         yearController.text = productProvider.carList[0].year.last.toString();
@@ -88,7 +126,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
         fuelTypeController.text = productProvider.carList[0].fuel.last.toString();
         transmissionTypeController.text = productProvider.carList[0].transmission.last.toString();
         noOfOwnerController.text = productProvider.carList[0].noOfOwners.last.toString();
-        // addressController.text = productProvider.carList[0].address1.last.toString();
+        addressController.text = address;
       });
     }
   }
@@ -100,6 +138,41 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
       listen: true,
     );
     if (productProvider.carList.isNotEmpty) {
+      String oldAddress = AddressExtractor.extractAddress(
+        street1: productProvider.carList[0].street1,
+        street2: productProvider.carList[0].street2,
+
+        area: productProvider.carList[0].area,
+
+        city: productProvider.carList[0].city,
+
+        state: productProvider.carList[0].state,
+
+        country: productProvider.carList[0].country,
+
+        pincode: productProvider.carList[0].pincode,
+      ).$1;
+      String newAddress = AddressExtractor.extractAddress(
+        street1: productProvider.carList[0].street1,
+        street2: productProvider.carList[0].street2,
+
+        area: productProvider.carList[0].area,
+
+        city: productProvider.carList[0].city,
+
+        state: productProvider.carList[0].state,
+
+        country: productProvider.carList[0].country,
+
+        pincode: productProvider.carList[0].pincode,
+      ).$2;
+      String address = "";
+      if (oldAddress.isNotEmpty) {
+        address = oldAddress;
+      }
+      if (newAddress.isNotEmpty) {
+        address = newAddress;
+      }
         brandController.text = productProvider.carList[0].brand.last.toString();
         yearController.text = productProvider.carList[0].year.last.toString();
         descriptionController.text = productProvider.carList[0].description.last.toString();
@@ -110,7 +183,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
         fuelTypeController.text = productProvider.carList[0].fuel.last.toString();
         transmissionTypeController.text = productProvider.carList[0].transmission.last.toString();
         noOfOwnerController.text = productProvider.carList[0].noOfOwners.last.toString();
-        // addressController.text = productProvider.carList[0].address1.last.toString();
+        addressController.text = address;
     }
     return Scaffold(
       backgroundColor: Colors.white,
@@ -674,6 +747,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                           controller: addressController,
                           textCapitalization: TextCapitalization.sentences,
                           enabled: false,
+                          maxLines: null,
                           decoration: InputDecoration(
                             labelText: 'Address',
                             border: border,

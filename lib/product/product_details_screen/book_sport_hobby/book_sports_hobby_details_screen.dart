@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../network_connection/apis.dart';
 import '../../../provider/product_provider/product_provider.dart';
+import '../../../utils/address_extractor.dart';
 import '../../../widgets/loading_widget.dart';
 
 class BookSportsHobbyDetailsScreen extends StatefulWidget {
@@ -49,18 +50,62 @@ class _BookSportsHobbyDetailsScreenState
         listen: false,
       );
       await productDetailsProvider.fetchProductDetails(productId, modelName);
-      _priceController.text = productDetailsProvider.bookList[0].price.last
-          .toString();
-      _adTitleController.text = productDetailsProvider.bookList[0].adTitle.last
-          .toString();
-      _descriptionController.text = productDetailsProvider
-          .bookList[0]
-          .description
-          .last
-          .toString();
+      setData();
     });
   }
 
+  void setData(){
+    ProductProvider productProvider = Provider.of<ProductProvider>(
+      context,
+      listen: false,
+    );
+    String oldAddress = AddressExtractor.extractAddress(
+      street1: productProvider.bookList[0].street1,
+      street2: productProvider.bookList[0].street2,
+
+      area: productProvider.bookList[0].area,
+
+      city: productProvider.bookList[0].city,
+
+      state: productProvider.bookList[0].state,
+
+      country: productProvider.bookList[0].country,
+
+      pincode: productProvider.bookList[0].pincode,
+    ).$1;
+    String newAddress = AddressExtractor.extractAddress(
+      street1: productProvider.bookList[0].street1,
+      street2: productProvider.bookList[0].street2,
+
+      area: productProvider.bookList[0].area,
+
+      city: productProvider.bookList[0].city,
+
+      state: productProvider.bookList[0].state,
+
+      country: productProvider.bookList[0].country,
+
+      pincode: productProvider.bookList[0].pincode,
+    ).$2;
+    String address = "";
+    if (oldAddress.isNotEmpty) {
+      address = oldAddress;
+    }
+    if (newAddress.isNotEmpty) {
+      address = newAddress;
+    }
+    if(productProvider.bookList.isNotEmpty) {
+      setState(() {
+        _priceController.text = productProvider.bookList[0].price.last.toString();
+        _adTitleController.text = productProvider.bookList[0].adTitle.last
+            .toString();
+        _descriptionController.text = productProvider.bookList[0].description.last
+            .toString();
+        _addressController.text = address;
+      });
+
+    }
+  }
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(
@@ -81,6 +126,7 @@ class _BookSportsHobbyDetailsScreenState
                 IconButton(
                   icon: Icon(Icons.edit, color: Colors.black),
                   onPressed: () async {
+                    setData();
                     setState(() {
                       isEditable = !isEditable;
                     });
@@ -512,6 +558,7 @@ class _BookSportsHobbyDetailsScreenState
                                               textCapitalization:
                                                   TextCapitalization.sentences,
                                               enabled: false,
+                                              maxLines: null,
                                               decoration: InputDecoration(
                                                 labelText: 'Location',
                                                 prefixIcon: Icon(

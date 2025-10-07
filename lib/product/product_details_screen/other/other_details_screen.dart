@@ -271,7 +271,9 @@ class _OtherProductDetailsState extends State<OtherProductDetails> {
                                                       ),
                                                 ),
                                                 child:
-                                                    productProvider
+                                                productProvider
+                                                    .otherList[0]
+                                                    .images.isNotEmpty?   productProvider
                                                         .otherList[0]
                                                         .images[selectedIndex]
                                                         .isNotEmpty
@@ -294,7 +296,10 @@ class _OtherProductDetailsState extends State<OtherProductDetails> {
                                                     : Icon(
                                                         Icons.image,
                                                         size: 90,
-                                                      ),
+                                                      ):Icon(
+                                                  Icons.image,
+                                                  size: 90,
+                                                ),
                                               ),
                                               // Positioned(
                                               //   right: 4,

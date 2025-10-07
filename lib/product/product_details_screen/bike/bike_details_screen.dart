@@ -1,4 +1,5 @@
 import 'package:admin_panel/local_Storage/admin_shredPreferences.dart';
+import 'package:admin_panel/utils/address_extractor.dart';
 import 'package:admin_panel/utils/list_formatter.dart';
 import 'package:admin_panel/widgets/loading_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import '../../../model/product_model/bike_model.dart';
 import '../../../network_connection/apis.dart';
 import '../../../provider/product_provider/product_provider.dart';
 import '../../../utils/brand_list.dart';
@@ -60,7 +62,7 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
         listen: false,
       );
       productProvider.fetchProductDetails(productId, modelName);
-      // setData();
+      setData();
     });
   }
 
@@ -70,7 +72,42 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
       listen: false,
     );
     Future.delayed(Duration(seconds: 0), () {
-      if (productProvider.bikeList.isNotEmpty) {
+      if (productProvider.bikeList.isNotEmpty){
+        String oldAddress = AddressExtractor.extractAddress(
+          street1: productProvider.bikeList[0].street1,
+          street2: productProvider.bikeList[0].street2,
+
+          area: productProvider.bikeList[0].area,
+
+          city: productProvider.bikeList[0].city,
+
+          state: productProvider.bikeList[0].state,
+
+          country: productProvider.bikeList[0].country,
+
+          pincode: productProvider.bikeList[0].pincode,
+        ).$1;
+        String newAddress = AddressExtractor.extractAddress(
+          street1: productProvider.bikeList[0].street1,
+          street2: productProvider.bikeList[0].street2,
+
+          area: productProvider.bikeList[0].area,
+
+          city: productProvider.bikeList[0].city,
+
+          state: productProvider.bikeList[0].state,
+
+          country: productProvider.bikeList[0].country,
+
+          pincode: productProvider.bikeList[0].pincode,
+        ).$2;
+        String address = "";
+        if (oldAddress.isNotEmpty) {
+          address = oldAddress;
+        }
+        if (newAddress.isNotEmpty) {
+            address = newAddress;
+        }
         setState(() {
           if (productProvider.bikeList.isNotEmpty) {
             priceController.text = productProvider.bikeList[0].price.last
@@ -88,11 +125,11 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
                 .toString();
             brandController.text = productProvider.bikeList[0].brand.last
                 .toString();
+            address1Controller.text = address;
           }
         });
       }
     });
-
   }
 
   @override
@@ -102,21 +139,15 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
       listen: true,
     );
     if (productProvider.bikeList.isNotEmpty) {
-      priceController.text = productProvider.bikeList[0].price.last
-          .toString();
-      modelController.text = productProvider.bikeList[0].model.last
-          .toString();
+      priceController.text = productProvider.bikeList[0].price.last.toString();
+      modelController.text = productProvider.bikeList[0].model.last.toString();
       kmDrivenController.text = productProvider.bikeList[0].kmDriven.last
           .toString();
       titleController.text = productProvider.bikeList[0].adTitle.last
           .toString();
-      descriptionController.text = productProvider
-          .bikeList[0]
-          .description
-          .last
+      descriptionController.text = productProvider.bikeList[0].description.last
           .toString();
-      brandController.text = productProvider.bikeList[0].brand.last
-          .toString();
+      brandController.text = productProvider.bikeList[0].brand.last.toString();
     }
     return Scaffold(
       backgroundColor: Colors.white,
@@ -140,12 +171,16 @@ class _BikeDetailsScreenState extends State<BikeDetailsScreen> {
                 ),
                 IconButton(
                   icon: Icon(
-                    productProvider.bikeList.isNotEmpty? productProvider.bikeList[0].isDeleted
-                        ? Icons.restore_from_trash
-                        : Icons.delete : Icons.error,
-                    color:productProvider.bikeList.isNotEmpty? productProvider.bikeList[0].isDeleted
-                        ? Colors.grey
-                        : Colors.red : Colors.black,
+                    productProvider.bikeList.isNotEmpty
+                        ? productProvider.bikeList[0].isDeleted
+                              ? Icons.restore_from_trash
+                              : Icons.delete
+                        : Icons.error,
+                    color: productProvider.bikeList.isNotEmpty
+                        ? productProvider.bikeList[0].isDeleted
+                              ? Colors.grey
+                              : Colors.red
+                        : Colors.black,
                   ),
                   onPressed: () async {
                     final isDeleted = productProvider.bikeList[0].isDeleted;

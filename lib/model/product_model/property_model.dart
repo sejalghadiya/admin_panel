@@ -35,8 +35,21 @@ class PropertyModel extends ProductModel {
   final UserModel user;
   String timestamps;
   bool isActive = true;
+  List<String> street1;
+  List<String> street2;
+  List<String> city;
+  List<String> state;
+  List<String> country;
+  List<String> pincode;
 
   PropertyModel({
+    required this.street1,
+    required this.street2,
+    required this.area,
+    required this.city,
+    required this.state,
+    required this.country,
+    required this.pincode,
     required this.id,
     required this.type,
     required this.bhk,
@@ -44,7 +57,6 @@ class PropertyModel extends ProductModel {
     required this.projectName,
     required this.projectStatus,
     required this.listedBy,
-    required this.area,
     required this.facing,
     required this.adTitle,
     required this.description,
@@ -84,7 +96,6 @@ class PropertyModel extends ProductModel {
       projectName: json['projectName'],
       projectStatus:json['projectStatus'],
       listedBy: json['listedBy'],
-      area: json['area'],
       facing: json['facing'],
       adTitle: json['adTitle'],
       description: json['description'],
@@ -103,6 +114,13 @@ class PropertyModel extends ProductModel {
           : throw Exception('UserModel cannot be null'),
       timestamps: json['createdAt'] ?? '',
       isActive: json['isActive'] ?? true,
+        street1: List<String>.from(json['street1'] ?? []),
+        street2: List<String>.from(json['street2'] ?? []),
+        area: List<String>.from(json['area'] ?? []),
+        city: List<String>.from(json['city'] ?? []),
+        state: List<String>.from(json['state'] ?? []),
+        country: List<String>.from(json['country'] ?? []),
+        pincode: List<String>.from(json['pinCode'] ?? [])
 
     );
   }

@@ -31,6 +31,13 @@ class SmartPhoneModel extends ProductModel {
   final UserModel user;
   String timestamps;
   bool isActive = true;
+  List<String> street1;
+  List<String> street2;
+  List<String> area;
+  List<String> city;
+  List<String> state;
+  List<String> country;
+  List<String> pincode;
 
   SmartPhoneModel({
     required this.id,
@@ -53,6 +60,13 @@ class SmartPhoneModel extends ProductModel {
    required this.user,
     required this.timestamps,
     required this.isActive,
+    required this.street1,
+    required this.street2,
+    required this.area,
+    required this.city,
+    required this.state,
+    required this.country,
+    required this.pincode,
   }): super(
     id: id,
     price: price,
@@ -89,7 +103,13 @@ class SmartPhoneModel extends ProductModel {
           : throw Exception('UserModel cannot be null'),
       timestamps: json['createdAt'] ?? '',
       isActive: json['isActive'] ?? true,
-
+        street1: List<String>.from(json['street1'] ?? []),
+        street2: List<String>.from(json['street2'] ?? []),
+        area: List<String>.from(json['area'] ?? []),
+        city: List<String>.from(json['city'] ?? []),
+        state: List<String>.from(json['state'] ?? []),
+        country: List<String>.from(json['country'] ?? []),
+        pincode: List<String>.from(json['pinCode'] ?? [])
 
     );
   }
