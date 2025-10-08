@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../../local_Storage/admin_shredPreferences.dart';
 import '../../../network_connection/apis.dart';
 import '../../../provider/product_provider/product_provider.dart';
+import '../../../utils/address_extractor.dart';
 import '../../../widgets/loading_widget.dart';
 
 class PetDetailsScreen extends StatefulWidget {
@@ -40,19 +41,58 @@ class _PetDetailsScreenState extends State<PetDetailsScreen> {
     productId = Get.arguments['productId'] as String;
     modelName = Get.arguments['modelName'] as String;
     showAppBarActions = Get.arguments['isEdit'] as bool? ?? true;
-    ProductProvider productProvider = Provider.of(context, listen: false);
-    productProvider.fetchProductDetails(productId, modelName);
+    Future.microtask(() async {
+      ProductProvider productProvider = Provider.of(context, listen: false);
+      await productProvider.fetchProductDetails(productId, modelName);
+    });
+    setData();
+
   }
 
   void setData() async {
     ProductProvider productProvider = Provider.of(context, listen: false);
     if (productProvider.petList.isNotEmpty) {
+      String oldAddress = AddressExtractor.extractAddress(
+        street1: productProvider.petList[0].street1,
+        street2: productProvider.petList[0].street2,
+
+        area: productProvider.petList[0].area,
+
+        city: productProvider.petList[0].city,
+
+        state: productProvider.petList[0].state,
+
+        country: productProvider.petList[0].country,
+
+        pincode: productProvider.petList[0].pincode,
+      ).$1;
+      String newAddress = AddressExtractor.extractAddress(
+        street1: productProvider.petList[0].street1,
+        street2: productProvider.petList[0].street2,
+
+        area: productProvider.petList[0].area,
+
+        city: productProvider.petList[0].city,
+
+        state: productProvider.petList[0].state,
+
+        country: productProvider.petList[0].country,
+
+        pincode: productProvider.petList[0].pincode,
+      ).$2;
+      String address = "";
+      if (oldAddress.isNotEmpty) {
+        address = oldAddress;
+      }
+      if (newAddress.isNotEmpty) {
+        address = newAddress;
+      }
       _adTitleController.text = productProvider.petList[0].adTitle.last
           .toString();
       _priceController.text = productProvider.petList[0].price.last.toString();
       _descriptionController.text = productProvider.petList[0].description.last
           .toString();
-      // _addressController.text = productProvider.petList[0].address1.last.toString();
+      _addressController.text = address;
       setState(() {});
     }
   }
@@ -61,12 +101,48 @@ class _PetDetailsScreenState extends State<PetDetailsScreen> {
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of(context, listen: true);
     if (productProvider.petList.isNotEmpty) {
+      String oldAddress = AddressExtractor.extractAddress(
+        street1: productProvider.petList[0].street1,
+        street2: productProvider.petList[0].street2,
+
+        area: productProvider.petList[0].area,
+
+        city: productProvider.petList[0].city,
+
+        state: productProvider.petList[0].state,
+
+        country: productProvider.petList[0].country,
+
+        pincode: productProvider.petList[0].pincode,
+      ).$1;
+      String newAddress = AddressExtractor.extractAddress(
+        street1: productProvider.petList[0].street1,
+        street2: productProvider.petList[0].street2,
+
+        area: productProvider.petList[0].area,
+
+        city: productProvider.petList[0].city,
+
+        state: productProvider.petList[0].state,
+
+        country: productProvider.petList[0].country,
+
+        pincode: productProvider.petList[0].pincode,
+      ).$2;
+      String address = "";
+      if (oldAddress.isNotEmpty) {
+        address = oldAddress;
+      }
+      if (newAddress.isNotEmpty) {
+        address = newAddress;
+      }
       _adTitleController.text = productProvider.petList[0].adTitle.last
           .toString();
       _priceController.text = productProvider.petList[0].price.last.toString();
       _descriptionController.text = productProvider.petList[0].description.last
           .toString();
-      // _addressController.text = productProvider.petList[0].address1.last.toString();
+      _addressController.text = address;
+
     }
     return Scaffold(
       backgroundColor: Colors.white,

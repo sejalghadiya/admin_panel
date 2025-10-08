@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../../../network_connection/apis.dart';
 import '../../../provider/product_provider/product_provider.dart';
+import '../../../utils/address_extractor.dart';
 import '../../../widgets/loading_widget.dart';
 
 class PropertyDetailsScreen extends StatefulWidget {
@@ -73,11 +74,14 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
     productId = Get.arguments['productId'] as String;
     modelName = Get.arguments['modelName'] as String;
     showAppBarActions = Get.arguments['isEdit'] as bool? ?? true;
-    ProductProvider productProvider = Provider.of<ProductProvider>(
-      context,
-      listen: false,
-    );
-    productProvider.fetchProductDetails(productId, modelName);
+    Future.microtask(() async {
+      ProductProvider productProvider = Provider.of<ProductProvider>(
+        context,
+        listen: false,
+      );
+      await productProvider.fetchProductDetails(productId, modelName);
+    });
+
   }
 
   void setData() async {
@@ -86,6 +90,41 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
       listen: false,
     );
     if (productProvider.propertyList.isNotEmpty) {
+      String oldAddress = AddressExtractor.extractAddress(
+        street1: productProvider.propertyList[0].street1,
+        street2: productProvider.propertyList[0].street2,
+
+        area: productProvider.propertyList[0].area,
+
+        city: productProvider.propertyList[0].city,
+
+        state: productProvider.otherList[0].state,
+
+        country: productProvider.otherList[0].country,
+
+        pincode: productProvider.otherList[0].pincode,
+      ).$1;
+      String newAddress = AddressExtractor.extractAddress(
+        street1: productProvider.otherList[0].street1,
+        street2: productProvider.otherList[0].street2,
+
+        area: productProvider.otherList[0].area,
+
+        city: productProvider.otherList[0].city,
+
+        state: productProvider.otherList[0].state,
+
+        country: productProvider.otherList[0].country,
+
+        pincode: productProvider.otherList[0].pincode,
+      ).$2;
+      String address = "";
+      if (oldAddress.isNotEmpty) {
+        address = oldAddress;
+      }
+      if (newAddress.isNotEmpty) {
+        address = newAddress;
+      }
       setState(() {
         selectedBHK = productProvider.propertyList[0].bhk.last.toString();
         selectedFurnishing = productProvider.propertyList[0].furnishing.last

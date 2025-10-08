@@ -31,8 +31,21 @@ class _UserScreenState extends State<UserScreen>
     );
     accessCodeProvider.getAccessCode();
     userProvider.getUserCategory().then((_) {
+      List<String> categories =
+          userProvider.userCategories.map((e) => e.category).toList();
       if (userProvider.userCategories.isNotEmpty) {
-        final firstCategory = userProvider.userCategories[1];
+        int initialIndex = 0;
+        if(userProvider.getSelectedCategory == "A" && categories.contains("A")){
+          initialIndex = 1;
+        } else if(userProvider.getSelectedCategory == "B" && categories.contains("B")){
+          initialIndex = 2;
+        } else if(userProvider.getSelectedCategory == "α" && categories.contains("α")){
+          initialIndex = 3;
+        } else if(userProvider.getSelectedCategory == "β" && categories.contains("β")){
+          initialIndex = 4;
+        } else{
+          initialIndex = 0;
+        }
         userProvider.getUser();
         // Create tab controller
         if (mounted) {
@@ -40,6 +53,7 @@ class _UserScreenState extends State<UserScreen>
             _tabController = TabController(
               length: userProvider.userCategories.length,
               vsync: this,
+              initialIndex: initialIndex
             );
           });
         }
@@ -52,98 +66,6 @@ class _UserScreenState extends State<UserScreen>
     _tabController?.dispose();
     super.dispose();
   }
-
-  // Future<void> showAccessCodeDialog(UserModel user) async {
-  //   //   AccessCodeProvider accessCodeProvider = Provider.of<AccessCodeProvider>(
-  //   //     context,
-  //   //     listen: false,
-  //   //   );
-  //   //   await accessCodeProvider.getAccessCode();
-  //   //   showDialog(
-  //   //     context: context,
-  //   //     builder: (context) => StatefulBuilder(
-  //   //       builder: (context, setState) => AlertDialog(
-  //   //         title: const Text("Access Code List"),
-  //   //         content: SizedBox(
-  //   //           width: double.maxFinite,
-  //   //           child: SingleChildScrollView(
-  //   //             scrollDirection: Axis.vertical,
-  //   //             child: Column(
-  //   //               mainAxisSize: MainAxisSize.min,
-  //   //               children: [
-  //   //                 LayoutBuilder(
-  //   //                   builder: (context, constraints) {
-  //   //                     // Calculate number of columns based on available width
-  //   //                     int crossAxisCount = (constraints.maxWidth / 150)
-  //   //                         .floor(); // Each tile ~150px wide
-  //   //                     return GridView.builder(
-  //   //                       shrinkWrap: true,
-  //   //                       physics: const NeverScrollableScrollPhysics(),
-  //   //                       itemCount: accessCodeProvider.accessCodes.length,
-  //   //                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-  //   //                         crossAxisCount: crossAxisCount,
-  //   //                         crossAxisSpacing: 10,
-  //   //                         mainAxisSpacing: 10,
-  //   //                         childAspectRatio: 2,
-  //   //                       ),
-  //   //                       itemBuilder: (context, index) {
-  //   //                         final codeItem =
-  //   //                             accessCodeProvider.accessCodes[index];
-  //   //                         return InkWell(
-  //   //                           onTap: () {
-  //   //                             Map<String,dynamic> body = {
-  //   //                               "code": codeItem.code,
-  //   //                               "email": user.email,
-  //   //                               "userCategory": user.category,
-  //   //                             };
-  //   //                             accessCodeProvider.userAccess(body);
-  //   //                           },
-  //   //                           child: Card(
-  //   //                             color: Colors.white,
-  //   //                             elevation: 1,
-  //   //                             child: Padding(
-  //   //                               padding: const EdgeInsets.all(8.0),
-  //   //                               child: Column(
-  //   //                                 mainAxisAlignment: MainAxisAlignment.center,
-  //   //                                 crossAxisAlignment: CrossAxisAlignment.start,
-  //   //                                 children: [
-  //   //                                   Text(
-  //   //                                     "Code: ${codeItem.code}",
-  //   //                                     style: const TextStyle(
-  //   //                                       fontWeight: FontWeight.bold,
-  //   //                                       fontSize: 10,
-  //   //                                     ),
-  //   //                                   ),
-  //   //                                   //const SizedBox(height: 4),
-  //   //                                   Text(
-  //   //                                     "Use Count: ${codeItem.useCount}",
-  //   //                                     style: const TextStyle(fontSize: 12),
-  //   //                                   ),
-  //   //                                   Align(
-  //   //                                     alignment: Alignment.bottomRight,
-  //   //                                     child: Icon(
-  //   //                                       Icons.check_circle,
-  //   //                                       color: Colors.grey,
-  //   //                                       size: 14,
-  //   //                                     ),
-  //   //                                   ),
-  //   //                                 ],
-  //   //                               ),
-  //   //                             ),
-  //   //                           ),
-  //   //                         );
-  //   //                       },
-  //   //                     );
-  //   //                   },
-  //   //                 ),
-  //   //               ],
-  //   //             ),
-  //   //           ),
-  //   //         ),
-  //   //       ),
-  //   //     ),
-  //   //   );
-  //   // }
 
   Future<void> showAccessCodeDialog(UserModel user) async {
     AccessCodeProvider accessCodeProvider = Provider.of<AccessCodeProvider>(

@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../../local_Storage/admin_shredPreferences.dart';
 import '../../../network_connection/apis.dart';
 import '../../../provider/product_provider/product_provider.dart';
+import '../../../utils/address_extractor.dart';
 import '../../../utils/brand_list.dart';
 import '../../../widgets/loading_widget.dart';
 
@@ -62,6 +63,41 @@ class _SmartPhoneDetailsScreenState extends State<SmartPhoneDetailsScreen> {
       listen: false,
     );
     if (productProvider.smartPhoneList.isNotEmpty) {
+      String oldAddress = AddressExtractor.extractAddress(
+        street1: productProvider.smartPhoneList[0].street1,
+        street2: productProvider.smartPhoneList[0].street2,
+
+        area: productProvider.smartPhoneList[0].area,
+
+        city: productProvider.smartPhoneList[0].city,
+
+        state: productProvider.smartPhoneList[0].state,
+
+        country: productProvider.smartPhoneList[0].country,
+
+        pincode: productProvider.smartPhoneList[0].pincode,
+      ).$1;
+      String newAddress = AddressExtractor.extractAddress(
+        street1: productProvider.smartPhoneList[0].street1,
+        street2: productProvider.smartPhoneList[0].street2,
+
+        area: productProvider.smartPhoneList[0].area,
+
+        city: productProvider.smartPhoneList[0].city,
+
+        state: productProvider.smartPhoneList[0].state,
+
+        country: productProvider.smartPhoneList[0].country,
+
+        pincode: productProvider.smartPhoneList[0].pincode,
+      ).$2;
+      String address = "";
+      if (oldAddress.isNotEmpty) {
+        address = oldAddress;
+      }
+      if (newAddress.isNotEmpty) {
+        address = newAddress;
+      }
       _modelController.text = productProvider.smartPhoneList[0].model.last
           .toString();
       _priceController.text = productProvider.smartPhoneList[0].price.last
@@ -78,7 +114,7 @@ class _SmartPhoneDetailsScreenState extends State<SmartPhoneDetailsScreen> {
           .toString();
       _titleController.text = productProvider.smartPhoneList[0].adTitle.last
           .toString();
-      // _addressController.text = productProvider.smartPhoneList[0].address1.last.toString();
+      _addressController.text = address;
       selectedBrand = productProvider.smartPhoneList[0].brand.last.toString();
       selectedStorage = productProvider.smartPhoneList[0].storage.last
           .toString();
@@ -93,6 +129,41 @@ class _SmartPhoneDetailsScreenState extends State<SmartPhoneDetailsScreen> {
       listen: true,
     );
     if (productProvider.smartPhoneList.isNotEmpty) {
+      String oldAddress = AddressExtractor.extractAddress(
+        street1: productProvider.smartPhoneList[0].street1,
+        street2: productProvider.smartPhoneList[0].street2,
+
+        area: productProvider.smartPhoneList[0].area,
+
+        city: productProvider.smartPhoneList[0].city,
+
+        state: productProvider.smartPhoneList[0].state,
+
+        country: productProvider.smartPhoneList[0].country,
+
+        pincode: productProvider.smartPhoneList[0].pincode,
+      ).$1;
+      String newAddress = AddressExtractor.extractAddress(
+        street1: productProvider.smartPhoneList[0].street1,
+        street2: productProvider.smartPhoneList[0].street2,
+
+        area: productProvider.smartPhoneList[0].area,
+
+        city: productProvider.smartPhoneList[0].city,
+
+        state: productProvider.smartPhoneList[0].state,
+
+        country: productProvider.smartPhoneList[0].country,
+
+        pincode: productProvider.smartPhoneList[0].pincode,
+      ).$2;
+      String address = "";
+      if (oldAddress.isNotEmpty) {
+        address = oldAddress;
+      }
+      if (newAddress.isNotEmpty) {
+        address = newAddress;
+      }
       _modelController.text = productProvider.smartPhoneList[0].model.last
           .toString();
       _priceController.text = productProvider.smartPhoneList[0].price.last
@@ -109,7 +180,7 @@ class _SmartPhoneDetailsScreenState extends State<SmartPhoneDetailsScreen> {
           .toString();
       _titleController.text = productProvider.smartPhoneList[0].adTitle.last
           .toString();
-      // _addressController.text = productProvider.smartPhoneList[0].address1.last.toString();
+      _addressController.text = address;
       selectedBrand = productProvider.smartPhoneList[0].brand.last.toString();
       selectedStorage = productProvider.smartPhoneList[0].storage.last
           .toString();

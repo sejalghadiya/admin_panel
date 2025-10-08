@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../network_connection/apis.dart';
 import '../../../provider/product_provider/product_provider.dart';
+import '../../../utils/address_extractor.dart';
 import '../../../widgets/loading_widget.dart';
 
 class ServicesDetailScreen extends StatefulWidget {
@@ -43,11 +44,14 @@ class _ServicesDetailScreenState extends State<ServicesDetailScreen> {
     productId = Get.arguments['productId'] as String;
     modelName = Get.arguments['modelName'] as String;
     showAppBarActions = Get.arguments['isEdit'] as bool? ?? true;
-    ProductProvider productProvider = Provider.of<ProductProvider>(
-      context,
-      listen: false,
-    );
-    productProvider.fetchProductDetails(productId, modelName);
+    Future.microtask(() async {
+      ProductProvider productProvider = Provider.of<ProductProvider>(
+        context,
+        listen: false,
+      );
+      await productProvider.fetchProductDetails(productId, modelName);
+    });
+
   }
 
   void setData() async {
@@ -56,6 +60,41 @@ class _ServicesDetailScreenState extends State<ServicesDetailScreen> {
       listen: false,
     );
     if (productProvider.servicesList.isNotEmpty) {
+      String oldAddress = AddressExtractor.extractAddress(
+        street1: productProvider.servicesList[0].street1,
+        street2: productProvider.servicesList[0].street2,
+
+        area: productProvider.servicesList[0].area,
+
+        city: productProvider.servicesList[0].city,
+
+        state: productProvider.servicesList[0].state,
+
+        country: productProvider.servicesList[0].country,
+
+        pincode: productProvider.servicesList[0].pincode,
+      ).$1;
+      String newAddress = AddressExtractor.extractAddress(
+        street1: productProvider.servicesList[0].street1,
+        street2: productProvider.servicesList[0].street2,
+
+        area: productProvider.servicesList[0].area,
+
+        city: productProvider.servicesList[0].city,
+
+        state: productProvider.servicesList[0].state,
+
+        country: productProvider.servicesList[0].country,
+
+        pincode: productProvider.servicesList[0].pincode,
+      ).$2;
+      String address = "";
+      if (oldAddress.isNotEmpty) {
+        address = oldAddress;
+      }
+      if (newAddress.isNotEmpty) {
+        address = newAddress;
+      }
       setState(() {
         _adTitleController.text = productProvider.servicesList[0].adTitle.last
             .toString();
@@ -65,7 +104,7 @@ class _ServicesDetailScreenState extends State<ServicesDetailScreen> {
             .last
             .toString();
         _addServiceOrJobType.text = productProvider.servicesList[0].serviceJob;
-        // _addressController.text = productProvider.servicesList[0].address1.last.toString();
+        _addressController.text = address;
       });
     }
   }
@@ -77,6 +116,41 @@ class _ServicesDetailScreenState extends State<ServicesDetailScreen> {
       listen: true,
     );
     if (productProvider.servicesList.isNotEmpty) {
+      String oldAddress = AddressExtractor.extractAddress(
+        street1: productProvider.servicesList[0].street1,
+        street2: productProvider.servicesList[0].street2,
+
+        area: productProvider.servicesList[0].area,
+
+        city: productProvider.servicesList[0].city,
+
+        state: productProvider.servicesList[0].state,
+
+        country: productProvider.servicesList[0].country,
+
+        pincode: productProvider.servicesList[0].pincode,
+      ).$1;
+      String newAddress = AddressExtractor.extractAddress(
+        street1: productProvider.servicesList[0].street1,
+        street2: productProvider.servicesList[0].street2,
+
+        area: productProvider.servicesList[0].area,
+
+        city: productProvider.servicesList[0].city,
+
+        state: productProvider.servicesList[0].state,
+
+        country: productProvider.servicesList[0].country,
+
+        pincode: productProvider.servicesList[0].pincode,
+      ).$2;
+      String address = "";
+      if (oldAddress.isNotEmpty) {
+        address = oldAddress;
+      }
+      if (newAddress.isNotEmpty) {
+        address = newAddress;
+      }
       _adTitleController.text = productProvider.servicesList[0].adTitle.last
           .toString();
       _additionalInformationController.text = productProvider
@@ -85,7 +159,7 @@ class _ServicesDetailScreenState extends State<ServicesDetailScreen> {
           .last
           .toString();
       _addServiceOrJobType.text = productProvider.servicesList[0].serviceJob;
-      // _addressController.text = productProvider.servicesList[0].address1.last.toString();
+      _addressController.text = address;
     }
     return Scaffold(
       backgroundColor: Colors.white,

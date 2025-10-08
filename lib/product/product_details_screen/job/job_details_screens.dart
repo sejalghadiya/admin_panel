@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../network_connection/apis.dart';
 import '../../../provider/product_provider/product_provider.dart';
+import '../../../utils/address_extractor.dart';
 import '../../../widgets/loading_widget.dart';
 
 class JobDetailsScreen extends StatefulWidget {
@@ -56,11 +57,15 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
     productId = Get.arguments['productId'] as String;
     modelName = Get.arguments['modelName'] as String;
     showAppBarActions = Get.arguments['isEdit'] as bool? ?? true;
-    ProductProvider productProvider = Provider.of<ProductProvider>(
-      context,
-      listen: false,
-    );
-    productProvider.fetchProductDetails(productId, modelName);
+    Future.microtask(() async {
+      ProductProvider productProvider = Provider.of<ProductProvider>(
+        context,
+        listen: false,
+      );
+     await productProvider.fetchProductDetails(productId, modelName);
+      setData();
+    });
+
   }
 
   void setData() async {
@@ -69,6 +74,41 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
       listen: false,
     );
     if (productProvider.jobList.isNotEmpty) {
+        String oldAddress = AddressExtractor.extractAddress(
+          street1: productProvider.jobList[0].street1,
+          street2: productProvider.jobList[0].street2,
+
+          area: productProvider.jobList[0].area,
+
+          city: productProvider.jobList[0].city,
+
+          state: productProvider.jobList[0].state,
+
+          country: productProvider.jobList[0].country,
+
+          pincode: productProvider.jobList[0].pincode,
+        ).$1;
+        String newAddress = AddressExtractor.extractAddress(
+          street1: productProvider.jobList[0].street1,
+          street2: productProvider.jobList[0].street2,
+
+          area: productProvider.jobList[0].area,
+
+          city: productProvider.jobList[0].city,
+
+          state: productProvider.jobList[0].state,
+
+          country: productProvider.jobList[0].country,
+
+          pincode: productProvider.jobList[0].pincode,
+        ).$2;
+        String address = "";
+        if (oldAddress.isNotEmpty) {
+          address = oldAddress;
+        }
+        if (newAddress.isNotEmpty) {
+          address = newAddress;
+        }
       selectedPositionalType = productProvider.jobList[0].positionType.last
           .toString();
       selectedSalaryType = productProvider.jobList[0].salaryPeriod.last
@@ -84,7 +124,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
           .description
           .last
           .toString();
-      // _addressController.text = productProvider.jobList[0].address1.last.toString();
+      _addressController.text = address;
       selectedSalaryType = productProvider.jobList[0].salaryPeriod.last
           .toString();
       selectedForTypes = productProvider.jobList[0].productType.toString();
@@ -99,6 +139,41 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
       listen: true,
     );
     if (productProvider.jobList.isNotEmpty) {
+      String oldAddress = AddressExtractor.extractAddress(
+        street1: productProvider.jobList[0].street1,
+        street2: productProvider.jobList[0].street2,
+
+        area: productProvider.jobList[0].area,
+
+        city: productProvider.jobList[0].city,
+
+        state: productProvider.jobList[0].state,
+
+        country: productProvider.jobList[0].country,
+
+        pincode: productProvider.jobList[0].pincode,
+      ).$1;
+      String newAddress = AddressExtractor.extractAddress(
+        street1: productProvider.jobList[0].street1,
+        street2: productProvider.jobList[0].street2,
+
+        area: productProvider.jobList[0].area,
+
+        city: productProvider.jobList[0].city,
+
+        state: productProvider.jobList[0].state,
+
+        country: productProvider.jobList[0].country,
+
+        pincode: productProvider.jobList[0].pincode,
+      ).$2;
+      String address = "";
+      if (oldAddress.isNotEmpty) {
+        address = oldAddress;
+      }
+      if (newAddress.isNotEmpty) {
+        address = newAddress;
+      }
       selectedPositionalType = productProvider.jobList[0].positionType.last
           .toString();
       selectedSalaryType = productProvider.jobList[0].salaryPeriod.last
@@ -114,7 +189,7 @@ class _JobDetailsScreenState extends State<JobDetailsScreen> {
           .description
           .last
           .toString();
-      // _addressController.text = productProvider.jobList[0].address1.last.toString();
+      _addressController.text = address;
       selectedSalaryType = productProvider.jobList[0].salaryPeriod.last
           .toString();
       selectedForTypes = productProvider.jobList[0].productType.toString();

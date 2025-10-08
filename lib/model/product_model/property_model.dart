@@ -10,7 +10,7 @@ class PropertyModel extends ProductModel {
   List<dynamic> projectName;
   List<dynamic> projectStatus;
   List<dynamic> listedBy;
-  List<dynamic> area;
+  List<String> area;
   List<dynamic> facing;
   @override
   List<dynamic> adTitle;

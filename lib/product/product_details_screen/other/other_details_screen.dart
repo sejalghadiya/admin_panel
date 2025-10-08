@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../network_connection/apis.dart';
 import '../../../provider/product_provider/product_provider.dart';
+import '../../../utils/address_extractor.dart';
 import '../../../widgets/loading_widget.dart';
 
 class OtherProductDetails extends StatefulWidget {
@@ -42,11 +43,16 @@ class _OtherProductDetailsState extends State<OtherProductDetails> {
     productId = Get.arguments['productId'] as String;
     modelName = Get.arguments['modelName'] as String;
     showAppBarActions = Get.arguments['isEdit'] as bool? ?? true;
-    ProductProvider productProvider = Provider.of<ProductProvider>(
-      context,
-      listen: false,
-    );
-    productProvider.fetchProductDetails(productId, modelName);
+
+    Future.microtask(() async {
+      ProductProvider productProvider = Provider.of<ProductProvider>(
+        context,
+        listen: false,
+      );
+      await productProvider.fetchProductDetails(productId, modelName);
+      setData();
+    });
+
   }
 
   void setData() {
@@ -55,6 +61,41 @@ class _OtherProductDetailsState extends State<OtherProductDetails> {
       listen: false,
     );
     if (productProvider.otherList.isNotEmpty) {
+      String oldAddress = AddressExtractor.extractAddress(
+        street1: productProvider.otherList[0].street1,
+        street2: productProvider.otherList[0].street2,
+
+        area: productProvider.otherList[0].area,
+
+        city: productProvider.otherList[0].city,
+
+        state: productProvider.otherList[0].state,
+
+        country: productProvider.otherList[0].country,
+
+        pincode: productProvider.otherList[0].pincode,
+      ).$1;
+      String newAddress = AddressExtractor.extractAddress(
+        street1: productProvider.otherList[0].street1,
+        street2: productProvider.otherList[0].street2,
+
+        area: productProvider.otherList[0].area,
+
+        city: productProvider.otherList[0].city,
+
+        state: productProvider.otherList[0].state,
+
+        country: productProvider.otherList[0].country,
+
+        pincode: productProvider.otherList[0].pincode,
+      ).$2;
+      String address = "";
+      if (oldAddress.isNotEmpty) {
+        address = oldAddress;
+      }
+      if (newAddress.isNotEmpty) {
+        address = newAddress;
+      }
       setState(() {
         _adTitleController.text = productProvider.otherList[0].adTitle.last
             .toString();
@@ -65,7 +106,7 @@ class _OtherProductDetailsState extends State<OtherProductDetails> {
             .description
             .last
             .toString();
-        // _addressController.text = productProvider.otherList[0].address1.last.toString();
+        _addressController.text = address;
         _addSubProductTypeController.text =
             productProvider.otherList[0].subProductType;
       });
@@ -79,6 +120,41 @@ class _OtherProductDetailsState extends State<OtherProductDetails> {
       listen: true,
     );
     if (productProvider.otherList.isNotEmpty) {
+      String oldAddress = AddressExtractor.extractAddress(
+        street1: productProvider.otherList[0].street1,
+        street2: productProvider.otherList[0].street2,
+
+        area: productProvider.otherList[0].area,
+
+        city: productProvider.otherList[0].city,
+
+        state: productProvider.otherList[0].state,
+
+        country: productProvider.otherList[0].country,
+
+        pincode: productProvider.otherList[0].pincode,
+      ).$1;
+      String newAddress = AddressExtractor.extractAddress(
+        street1: productProvider.otherList[0].street1,
+        street2: productProvider.otherList[0].street2,
+
+        area: productProvider.otherList[0].area,
+
+        city: productProvider.otherList[0].city,
+
+        state: productProvider.otherList[0].state,
+
+        country: productProvider.otherList[0].country,
+
+        pincode: productProvider.otherList[0].pincode,
+      ).$2;
+      String address = "";
+      if (oldAddress.isNotEmpty) {
+        address = oldAddress;
+      }
+      if (newAddress.isNotEmpty) {
+        address = newAddress;
+      }
         _adTitleController.text = productProvider.otherList[0].adTitle.last
             .toString();
         _priceController.text = productProvider.otherList[0].price.last
@@ -88,7 +164,7 @@ class _OtherProductDetailsState extends State<OtherProductDetails> {
             .description
             .last
             .toString();
-        // _addressController.text = productProvider.otherList[0].address1.last.toString();
+        _addressController.text = address;
         _addSubProductTypeController.text =
             productProvider.otherList[0].subProductType;
     }
