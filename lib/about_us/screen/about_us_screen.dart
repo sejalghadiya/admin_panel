@@ -15,6 +15,30 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = true;
 
+  // List of available icons with their names
+  static final List<Map<String, dynamic>> _availableIcons = [
+    {'name': 'trust', 'icon': Icons.verified_user},
+    {'name': 'community', 'icon': Icons.groups},
+    {'name': 'quality', 'icon': Icons.star},
+    {'name': 'security', 'icon': Icons.security},
+    {'name': 'support', 'icon': Icons.support_agent},
+    {'name': 'innovation', 'icon': Icons.lightbulb},
+    {'name': 'growth', 'icon': Icons.trending_up},
+    {'name': 'reliability', 'icon': Icons.verified},
+    {'name': 'excellence', 'icon': Icons.military_tech},
+    {'name': 'transparency', 'icon': Icons.visibility},
+    {'name': 'collaboration', 'icon': Icons.handshake},
+    {'name': 'integrity', 'icon': Icons.favorite},
+    {'name': 'sustainability', 'icon': Icons.eco},
+    {'name': 'customer_focus', 'icon': Icons.person_pin},
+    {'name': 'teamwork', 'icon': Icons.group_work},
+    {'name': 'respect', 'icon': Icons.thumb_up},
+    {'name': 'accountability', 'icon': Icons.assignment_turned_in},
+    {'name': 'diversity', 'icon': Icons.diversity_3},
+    {'name': 'empowerment', 'icon': Icons.emoji_events},
+    {'name': 'passion', 'icon': Icons.favorite_border},
+  ];
+
   // Text editing controllers
   final _nameController = TextEditingController();
   final _tagLineController = TextEditingController();
@@ -149,9 +173,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
     final dialogFormKey = GlobalKey<FormState>();
 
     // Create temporary controllers for the dialog
-    final iconController = TextEditingController(
-      text: isEditing ? _valueControllers[index]['icon']!.text : '',
-    );
+    String selectedIconName = isEditing ? _valueControllers[index]['icon']!.text : '';
     final titleController = TextEditingController(
       text: isEditing ? _valueControllers[index]['title']!.text : '',
     );
@@ -162,98 +184,133 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
     final result = await showDialog<Map<String, String>>(
       context: context,
       builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: Text(isEditing ? 'Edit Value' : 'Add New Value'),
-          content: SingleChildScrollView(
-            child: Form(
-              key: dialogFormKey,
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width > 600
-                    ? 500
-                    : MediaQuery.of(context).size.width * 0.9,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextFormField(
-                      controller: iconController,
-                      decoration: InputDecoration(
-                        labelText: 'Icon Name',
-                        hintText: 'e.g., trust, community, quality',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              title: Text(isEditing ? 'Edit Value' : 'Add New Value'),
+              content: SingleChildScrollView(
+                child: Form(
+                  key: dialogFormKey,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width > 600
+                        ? 500
+                        : MediaQuery.of(context).size.width * 0.9,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Icon selection dropdown with search
+                        DropdownButtonFormField<String>(
+                          value: selectedIconName.isEmpty ? null : selectedIconName,
+                          decoration: InputDecoration(
+                            labelText: 'Select Icon',
+                            // prefixIcon: selectedIconName.isNotEmpty
+                            //     ? Icon(
+                            //         _availableIcons.firstWhere(
+                            //           (icon) => icon['name'] == selectedIconName,
+                            //           orElse: () => _availableIcons.first,
+                            //         )['icon'],
+                            //       )
+                            //     : const Icon(Icons.category),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          isExpanded: true,
+                          items: _availableIcons.map((iconData) {
+                            return DropdownMenuItem<String>(
+                              value: iconData['name'],
+                              child: Row(
+                                children: [
+                                  Icon(iconData['icon'], size: 20),
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    iconData['name'].replaceAll('_', ' ').toUpperCase(),
+                                    style: const TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setDialogState(() {
+                              selectedIconName = value ?? '';
+                            });
+                          },
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please select an icon';
+                            }
+                            return null;
+                          },
+                          menuMaxHeight: 300,
                         ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter an icon name';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: titleController,
-                      decoration: InputDecoration(
-                        labelText: 'Title',
-                        hintText: 'Enter value title',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: titleController,
+                          decoration: InputDecoration(
+                            labelText: 'Title',
+                            hintText: 'Enter value title',
+                            prefixIcon: const Icon(Icons.title),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a title';
+                            }
+                            return null;
+                          },
                         ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a title';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: descriptionController,
-                      decoration: InputDecoration(
-                        labelText: 'Description',
-                        hintText: 'Enter value description',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: descriptionController,
+                          decoration: InputDecoration(
+                            labelText: 'Description',
+                            hintText: 'Enter value description',
+                            prefixIcon: const Icon(Icons.description),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          maxLines: 4,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a description';
+                            }
+                            return null;
+                          },
                         ),
-                      ),
-                      maxLines: 4,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a description';
-                        }
-                        return null;
-                      },
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop(),
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (dialogFormKey.currentState!.validate()) {
-                  Navigator.of(dialogContext).pop({
-                    'icon': iconController.text,
-                    'title': titleController.text,
-                    'description': descriptionController.text,
-                  });
-                }
-              },
-              child: Text(isEditing ? 'Update' : 'Add'),
-            ),
-          ],
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(dialogContext).pop(),
+                  child: const Text('Cancel'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    if (dialogFormKey.currentState!.validate()) {
+                      Navigator.of(dialogContext).pop({
+                        'icon': selectedIconName,
+                        'title': titleController.text,
+                        'description': descriptionController.text,
+                      });
+                    }
+                  },
+                  child: Text(isEditing ? 'Update' : 'Add'),
+                ),
+              ],
+            );
+          },
         );
       },
     );
 
     // Dispose temporary controllers
-    iconController.dispose();
     titleController.dispose();
     descriptionController.dispose();
 
