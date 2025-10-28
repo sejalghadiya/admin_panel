@@ -2,8 +2,8 @@
 import 'constants.dart';
 
 class Apis {
-  // static const String BASE_URL = "https://api.bhavnika.shop/api";
-  static const String BASE_URL = "http://localhost:3001/api";
+  static const String BASE_URL = "https://api.bhavnika.shop/api";
+  // static const String BASE_URL = "http://localhost:3001/api";
   static const String BASE_URL_IMAGE = "https://api.bhavnika.shop";
   // static const String BASE_URL_IMAGE = "http://localhost:3001";
 
@@ -25,4 +25,5 @@ class Apis {
 
   // feature request
   static const String GET_FEATURE_REQUEST = '$BASE_URL${Constants.GET_FEATURE_REQUEST}';
+  static  String UPDATE_FEATURE_REQUEST_STATUS(String featureRequestId) => '$BASE_URL${Constants.UPDATE_FEATURE_REQUEST_STATUS(featureRequestId)}';
 }

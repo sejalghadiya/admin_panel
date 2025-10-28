@@ -211,18 +211,36 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                     ),
                     ListTile(
+                        leading: Icon(
+                          Icons.info,
+                          color: tabProvider.selectedIndex == 9 ? Colors.green : Colors.black,
+                        ),
+                        title: Text(
+                          "About Us",
+                          style: TextStyle(
+                            color: tabProvider.selectedIndex == 9 ? Colors.green : Colors.black,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        selected: tabProvider.selectedIndex == 9,
+                        selectedTileColor: Colors.green.shade100,
+                        onTap: (){
+                          tabProvider.setSelectedIndex(9);
+                        }
+                    ),
+                    ListTile(
                       leading: Icon(
                         Icons.logout,
-                        color: tabProvider.selectedIndex == 9 ? Colors.green : Colors.black,
+                        color: tabProvider.selectedIndex == 10 ? Colors.green : Colors.black,
                       ),
                       title: Text(
                         "Logout",
                         style: TextStyle(
-                          color: tabProvider.selectedIndex == 9 ? Colors.green : Colors.black,
+                          color: tabProvider.selectedIndex == 10 ? Colors.green : Colors.black,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      selected: tabProvider.selectedIndex == 9,
+                      selected: tabProvider.selectedIndex == 10,
                       selectedTileColor: Colors.green.shade100,
                       onTap: (){
                         _logout();

@@ -1,3 +1,4 @@
+import 'package:admin_panel/about_us/screen/about_us_screen.dart';
 import 'package:admin_panel/app_version/app_version.dart';
 import 'package:admin_panel/feature_request/feature_request_screen.dart';
 import 'package:admin_panel/screens/rating.dart';
@@ -28,6 +29,7 @@ class TabProvider with ChangeNotifier {
       case 6: selectedWidget = FeatureRequestScreen(); break;
       case 7: selectedWidget = Rating(); break;
       case 8: selectedWidget = Center(child: Text("Chat Under Development"),); break;
+      case 9: selectedWidget = AboutUsScreen(); break;
       default: selectedWidget = Dashboard();
     }
 

@@ -1,7 +1,7 @@
+enum FeatureRequestStatus { pending, accepted, declined }
 class FeatureRequestDataListModel {
   final bool success;
   final List<FeatureRequestData> data;
-
   FeatureRequestDataListModel({
     required this.success,
     required this.data,
@@ -32,6 +32,9 @@ class FeatureRequestData {
   final UserData userId;
   final DateTime createdAt;
   final DateTime updatedAt;
+  // enum string value for status : ["pending", "accepted", "declined"]
+  String status = FeatureRequestStatus.pending.name;
+  final String statusMessage;
 
   FeatureRequestData({
     required this.id,
@@ -40,6 +43,8 @@ class FeatureRequestData {
     required this.userId,
     required this.createdAt,
     required this.updatedAt,
+    required this.status,
+    required this.statusMessage,
   });
 
   factory FeatureRequestData.fromJson(Map<String, dynamic> json) {
@@ -54,6 +59,8 @@ class FeatureRequestData {
       updatedAt: json['updatedAt'] != null
           ? DateTime.parse(json['updatedAt'])
           : DateTime.now(),
+      status: json['status'] ?? FeatureRequestStatus.pending.name,
+      statusMessage: json['statusMessage'] ?? '',
     );
   }
 
@@ -65,6 +72,8 @@ class FeatureRequestData {
       'userId': userId.toJson(),
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
+      'status': status,
+      'statusMessage': statusMessage,
     };
   }
 }

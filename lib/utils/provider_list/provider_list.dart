@@ -11,6 +11,7 @@ import 'package:admin_panel/provider/user_provider/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
+import '../../about_us/provider/about_us_provider.dart';
 import '../../provider/dashboard_provider/total_user_provider.dart';
 
 class ProviderList {
@@ -27,6 +28,7 @@ class ProviderList {
     ChangeNotifierProvider(create: (_) => AppVersionProvider()),
     ChangeNotifierProvider(create: (_) => RateProvider()),
     ChangeNotifierProvider(create: (_) => FeatureRequestProvider()),
+    ChangeNotifierProvider(create: (_) => AboutUsProvider()),
 
   ];
 }

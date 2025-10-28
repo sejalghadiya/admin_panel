@@ -12,6 +12,7 @@ class Constants {
 
   static const IMAGE_URL = '';
   static const GET_FEATURE_REQUEST = '/feature-request/admin/list';
+  static  UPDATE_FEATURE_REQUEST_STATUS(String featureRequestId) => '/feature-request/admin/status/$featureRequestId';
 }
 
 class Url {

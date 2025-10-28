@@ -183,6 +183,8 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                       InfoRow(title: "Category", value: userProvider.userCategory),
                       //InfoRow(title: "Verified", value: userProvider.isVerified ? "Yes" : "No"),
                       InfoRow(title: "Blocked", value: userProvider.isBlocked ? "Yes" : "No"),
+                      InfoRow(title: "Aadhaar Number", value: userProvider.userAadhaarNumber ),
+                      InfoRow(title: "UId Number", value: userProvider.uIdNumber ),
                       if(userProvider.userCategory == "A")...[
                         InfoRow(title: "Pin Verified", value: userProvider.isPinVerified ? "Yes" : "No"),
                       ] else...[
@@ -244,7 +246,8 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                             border: Border.all(
                               color: Colors.green.shade700,
                               width: 1.5,
-                            ),
+                            )
+
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

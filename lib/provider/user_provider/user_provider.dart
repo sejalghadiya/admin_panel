@@ -68,6 +68,8 @@ class UserProvider extends ChangeNotifier {
 
   String _userAadhaarNumber = "";
   String get userAadhaarNumber => _userAadhaarNumber;
+  String _uIdNumber = "";
+  String get uIdNumber => _uIdNumber;
 
   String _userOccupationId = "";
   String get userOccupationId => _userOccupationId;
@@ -238,6 +240,7 @@ class UserProvider extends ChangeNotifier {
     _userArea = "";
     _userPinCode = "";
     _userAadhaarNumber = "";
+    _uIdNumber = "";
     _userProfileImage = "";
     _userAadhaarFront = "";
     _userAadhaarBack = "";
@@ -272,6 +275,7 @@ class UserProvider extends ChangeNotifier {
     _userArea = "";
     _userPinCode = "";
     _userAadhaarNumber = "";
+    _uIdNumber = "";
     _userProfileImage = "";
     _userAadhaarFront = "";
     _userAadhaarBack = "";
@@ -324,6 +328,7 @@ class UserProvider extends ChangeNotifier {
         _userArea = (userData['area'] as List).isNotEmpty ? userData['area'].last : "";
         _userPinCode = (userData['pinCode'] as List).isNotEmpty ? userData['pinCode'].last : "";
         _userAadhaarNumber = (userData['aadharNumber'] as List).isNotEmpty ? userData['aadharNumber'].last : "";
+        _uIdNumber = (userData['uIdNumber'] as List).isNotEmpty ? userData['uIdNumber'].last : "";
         _userProfileImage = (userData['profileImage'] as List).isNotEmpty ? Apis.BASE_URL_IMAGE + userData['profileImage'].last : "";
         _userAadhaarFront = (userData['aadhaarCardImage1'] as List).isNotEmpty ? Apis.BASE_URL_IMAGE + userData['aadhaarCardImage1'].last : "";
         _userAadhaarBack = (userData['aadhaarCardImage2'] as List).isNotEmpty ? Apis.BASE_URL_IMAGE + userData['aadhaarCardImage2'].last : "";

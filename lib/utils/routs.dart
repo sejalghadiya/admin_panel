@@ -1,3 +1,4 @@
+import 'package:admin_panel/about_us/screen/about_us_screen.dart';
 import 'package:admin_panel/admin_auth/login_page.dart';
 import 'package:admin_panel/app_version/app_version.dart';
 import 'package:admin_panel/dashboard.dart';
@@ -50,6 +51,6 @@ class Routs{
     GetPage(name: PropertyDetailsScreen.routeName, page: () => PropertyDetailsScreen()),
     GetPage(name: AppVersion.routeName, page: () => AppVersion()),
     GetPage(name: FeatureRequestScreen.routeName, page: () => FeatureRequestScreen()),
-
+    GetPage(name: AboutUsScreen.routeName, page: () => AboutUsScreen()),
   ];
 }

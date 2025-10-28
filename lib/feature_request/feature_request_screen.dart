@@ -130,15 +130,8 @@ class FeatureRequestCard extends StatefulWidget {
 }
 
 class _FeatureRequestCardState extends State<FeatureRequestCard> {
-  String _status = 'pending';
-  String _note = '';
-  bool _isNoteDialogOpen = false;
-
   void _showNoteDialog(String action) {
-    setState(() {
-      _isNoteDialogOpen = true;
-    });
-
+    final TextEditingController _noteController = TextEditingController();
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -150,9 +143,7 @@ class _FeatureRequestCardState extends State<FeatureRequestCard> {
             Text('Add a note for future reference:'),
             const SizedBox(height: 8),
             TextField(
-              onChanged: (value) {
-                _note = value;
-              },
+              controller: _noteController,
               maxLines: 3,
               decoration: InputDecoration(
                 hintText: 'Add your reason for ${action.toLowerCase()}ing',
@@ -165,36 +156,30 @@ class _FeatureRequestCardState extends State<FeatureRequestCard> {
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
-              setState(() {
-                _isNoteDialogOpen = false;
-              });
             },
             child: Text('Cancel'),
           ),
           ElevatedButton(
             onPressed: () {
-              setState(() {
-                _status = action.toLowerCase();
-                _isNoteDialogOpen = false;
-              });
+              if(_noteController.text.trim().isEmpty){
+                ToastMessage.error("Error", "Please add a note");
+                return;
+              }
+              FeatureRequestProvider provider =
+                  Provider.of<FeatureRequestProvider>(context, listen: false);
+              provider.updateFeatureRequestStatus(
+                featureRequestId: widget.request.id,
+                featureStatus: action,
+                featureRequestStatusMessage: _noteController.text.trim(),
+              );
               Navigator.of(context).pop();
 
-              // Show confirmation message
-              if(action.toLowerCase() == 'accept') {
-                ToastMessage.success(
-                  "Success",
-                  'Feature request ${action.toLowerCase()}ed with note',
-                );
-              } else {
-                ToastMessage.warning(
-                  "Success",
-                  'Feature request ${action.toLowerCase()}ed with note',
-                );
-              }
 
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: action == 'Accept' ? Colors.green : Colors.red,
+              backgroundColor: action == FeatureRequestStatus.accepted.name
+                  ? Colors.green
+                  : Colors.red,
               foregroundColor: Colors.white,
             ),
             child: Text('Submit'),
@@ -217,17 +202,21 @@ class _FeatureRequestCardState extends State<FeatureRequestCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Status badge
-            if (_status != 'pending')
+            if (widget.request.status != FeatureRequestStatus.pending.name)
               Align(
                 alignment: Alignment.topRight,
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: _status == 'accept' ? Colors.green : Colors.red,
+                    color:
+                        widget.request.status ==
+                            FeatureRequestStatus.accepted.name
+                        ? Colors.green
+                        : Colors.red,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    _status.capitalize(),
+                    widget.request.status,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 12,
@@ -268,7 +257,7 @@ class _FeatureRequestCardState extends State<FeatureRequestCard> {
             ),
 
             // Note section if note exists
-            if (_note.isNotEmpty)
+            if (widget.request.statusMessage.isNotEmpty)
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(8),
@@ -287,7 +276,7 @@ class _FeatureRequestCardState extends State<FeatureRequestCard> {
                       ),
                     ),
                     Text(
-                      _note,
+                      widget.request.statusMessage,
                       style: TextStyle(fontSize: 12),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -302,11 +291,12 @@ class _FeatureRequestCardState extends State<FeatureRequestCard> {
                 Expanded(child: UserInfoRow(user: widget.request.userId)),
 
                 // Action buttons
-                if (_status == 'pending' && !_isNoteDialogOpen)
+                if (widget.request.status == FeatureRequestStatus.pending.name)
                   Row(
                     children: [
                       ElevatedButton(
-                        onPressed: () => _showNoteDialog('Accept'),
+                        onPressed: () =>
+                            _showNoteDialog(FeatureRequestStatus.accepted.name),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                           foregroundColor: Colors.white,
@@ -320,7 +310,8 @@ class _FeatureRequestCardState extends State<FeatureRequestCard> {
                       ),
                       SizedBox(width: 8),
                       ElevatedButton(
-                        onPressed: () => _showNoteDialog('Decline'),
+                        onPressed: () =>
+                            _showNoteDialog(FeatureRequestStatus.declined.name),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
                           foregroundColor: Colors.white,
