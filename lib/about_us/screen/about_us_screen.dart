@@ -137,21 +137,176 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   }
 
   void _addNewValue() {
-    setState(() {
-      _valueControllers.add({
-        'icon': TextEditingController(),
-        'title': TextEditingController(),
-        'description': TextEditingController(),
+    _showValueDialog();
+  }
+
+  void _editValue(int index) {
+    _showValueDialog(index: index);
+  }
+
+  Future<void> _showValueDialog({int? index}) async {
+    final isEditing = index != null;
+    final dialogFormKey = GlobalKey<FormState>();
+
+    // Create temporary controllers for the dialog
+    final iconController = TextEditingController(
+      text: isEditing ? _valueControllers[index]['icon']!.text : '',
+    );
+    final titleController = TextEditingController(
+      text: isEditing ? _valueControllers[index]['title']!.text : '',
+    );
+    final descriptionController = TextEditingController(
+      text: isEditing ? _valueControllers[index]['description']!.text : '',
+    );
+
+    final result = await showDialog<Map<String, String>>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text(isEditing ? 'Edit Value' : 'Add New Value'),
+          content: SingleChildScrollView(
+            child: Form(
+              key: dialogFormKey,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width > 600
+                    ? 500
+                    : MediaQuery.of(context).size.width * 0.9,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextFormField(
+                      controller: iconController,
+                      decoration: InputDecoration(
+                        labelText: 'Icon Name',
+                        hintText: 'e.g., trust, community, quality',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter an icon name';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: titleController,
+                      decoration: InputDecoration(
+                        labelText: 'Title',
+                        hintText: 'Enter value title',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a title';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: descriptionController,
+                      decoration: InputDecoration(
+                        labelText: 'Description',
+                        hintText: 'Enter value description',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      maxLines: 4,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a description';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (dialogFormKey.currentState!.validate()) {
+                  Navigator.of(dialogContext).pop({
+                    'icon': iconController.text,
+                    'title': titleController.text,
+                    'description': descriptionController.text,
+                  });
+                }
+              },
+              child: Text(isEditing ? 'Update' : 'Add'),
+            ),
+          ],
+        );
+      },
+    );
+
+    // Dispose temporary controllers
+    iconController.dispose();
+    titleController.dispose();
+    descriptionController.dispose();
+
+    if (result != null) {
+      setState(() {
+        if (isEditing) {
+          // Update existing value
+          _valueControllers[index]['icon']!.text = result['icon']!;
+          _valueControllers[index]['title']!.text = result['title']!;
+          _valueControllers[index]['description']!.text = result['description']!;
+        } else {
+          // Add new value
+          _valueControllers.add({
+            'icon': TextEditingController(text: result['icon']!),
+            'title': TextEditingController(text: result['title']!),
+            'description': TextEditingController(text: result['description']!),
+          });
+        }
       });
-    });
+    }
   }
 
   void _removeValue(int index) {
-    setState(() {
-      // First dispose the controllers
-      _valueControllers[index].forEach((_, controller) => controller.dispose());
-      _valueControllers.removeAt(index);
-    });
+    // Show confirmation dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm Delete'),
+          content: const Text('Are you sure you want to delete this value?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  // First dispose the controllers
+                  _valueControllers[index].forEach((_, controller) => controller.dispose());
+                  _valueControllers.removeAt(index);
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -427,80 +582,100 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   }
 
   List<Widget> _buildValuesList(bool isWideScreen) {
+    if (_valueControllers.isEmpty) {
+      return [
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Text(
+              'No values added yet. Click "Add Value" to create one.',
+              style: TextStyle(
+                color: Colors.grey[600],
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ),
+      ];
+    }
+
     return List.generate(
       _valueControllers.length,
       (index) => Card(
         margin: const EdgeInsets.symmetric(vertical: 8.0),
         elevation: 2,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Value ${index + 1}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.delete, color: Colors.red),
-                    onPressed: () => _removeValue(index),
-                    tooltip: 'Remove Value',
-                  ),
-                ],
+        child: ListTile(
+          leading: CircleAvatar(
+            backgroundColor: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+            child: Text(
+              '${index + 1}',
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.bold,
               ),
-              const SizedBox(height: 8),
-              if (isWideScreen)
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: _buildTextField(
-                        _valueControllers[index]['icon']!,
-                        'Icon Name',
-                        'Enter icon name',
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      flex: 2,
-                      child: _buildTextField(
-                        _valueControllers[index]['title']!,
-                        'Title',
-                        'Enter value title',
-                      ),
-                    ),
-                  ],
-                )
-              else
-                Column(
-                  children: [
-                    _buildTextField(
-                      _valueControllers[index]['icon']!,
-                      'Icon Name',
-                      'Enter icon name',
-                    ),
-                    const SizedBox(height: 16),
-                    _buildTextField(
-                      _valueControllers[index]['title']!,
-                      'Title',
-                      'Enter value title',
-                    ),
-                  ],
+            ),
+          ),
+          title: Row(
+            children: [
+              Icon(
+                Icons.label,
+                size: 16,
+                color: Colors.grey[600],
+              ),
+              const SizedBox(width: 4),
+              Text(
+                _valueControllers[index]['icon']!.text.isEmpty
+                    ? '(No icon)'
+                    : _valueControllers[index]['icon']!.text,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey[600],
                 ),
-              const SizedBox(height: 16),
-              _buildTextField(
-                _valueControllers[index]['description']!,
-                'Description',
-                'Enter value description',
-                maxLines: 3,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  _valueControllers[index]['title']!.text.isEmpty
+                      ? '(No title)'
+                      : _valueControllers[index]['title']!.text,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
               ),
             ],
+          ),
+          subtitle: Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Text(
+              _valueControllers[index]['description']!.text.isEmpty
+                  ? '(No description)'
+                  : _valueControllers[index]['description']!.text,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(color: Colors.grey[700]),
+            ),
+          ),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.edit, color: Colors.blue),
+                onPressed: () => _editValue(index),
+                tooltip: 'Edit Value',
+              ),
+              IconButton(
+                icon: const Icon(Icons.delete, color: Colors.red),
+                onPressed: () => _removeValue(index),
+                tooltip: 'Delete Value',
+              ),
+            ],
+          ),
+          isThreeLine: true,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16.0,
+            vertical: 12.0,
           ),
         ),
       ),
